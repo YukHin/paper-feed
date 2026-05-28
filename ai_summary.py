@@ -108,17 +108,56 @@ def get_env_int(name, default):
     return value if value > 0 else default
 
 
+def load_api_config():
+    raw = os.environ.get("AI_API_CONFIG", "").strip()
+    if raw:
+        if raw.startswith("{"):
+            try:
+                parsed = json.loads(raw)
+            except json.JSONDecodeError:
+                return None
+
+            if isinstance(parsed, dict):
+                return {
+                    "base_url": str(parsed.get("base_url", "")).strip(),
+                    "api_key": str(parsed.get("api_key", "")).strip(),
+                    "model": str(parsed.get("model", "")).strip(),
+                }
+
+            return None
+
+        lines = [line.strip() for line in raw.splitlines() if line.strip()]
+        if len(lines) < 3:
+            return None
+
+        return {
+            "base_url": lines[0],
+            "api_key": lines[1],
+            "model": lines[2],
+        }
+
+    return {
+        "base_url": os.environ.get("AI_BASE_URL", "").strip(),
+        "api_key": os.environ.get("AI_API_KEY", "").strip(),
+        "model": os.environ.get("AI_MODEL", "").strip(),
+    }
+
+
 def load_ai_config():
     if not get_env_bool("AI_SUMMARY_ENABLED", True):
         return None
 
-    base_url = os.environ.get("AI_BASE_URL", "").strip()
-    api_key = os.environ.get("AI_API_KEY", "").strip()
-    model = os.environ.get("AI_MODEL", "").strip()
+    api_config = load_api_config() or {}
+    base_url = api_config.get("base_url", "")
+    api_key = api_config.get("api_key", "")
+    model = api_config.get("model", "")
     prompt = os.environ.get("AI_SUMMARY_PROMPT", "").strip()
 
     if not all([base_url, api_key, model, prompt]):
-        print("AI summary skipped: AI_BASE_URL, AI_API_KEY, AI_MODEL, or AI_SUMMARY_PROMPT is missing.")
+        print(
+            "AI summary skipped: AI_API_CONFIG (or legacy AI_BASE_URL/AI_API_KEY/AI_MODEL) "
+            "and AI_SUMMARY_PROMPT are required."
+        )
         return None
 
     return AiSummaryConfig(

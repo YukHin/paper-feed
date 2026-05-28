@@ -48,9 +48,14 @@
 
 AI 总结默认不强制启用。只有当以下必需 Secrets 都存在时，`ai_summary.py` 才会在 GitHub Actions 中运行；否则会跳过，不影响普通 RSS。
 
-*   **Name**: `AI_BASE_URL` | **Secret**: OpenAI 兼容接口地址，例如 `https://api.openai.com/v1`。
-*   **Name**: `AI_API_KEY` | **Secret**: API Key。
-*   **Name**: `AI_MODEL` | **Secret**: 模型名。
+*   **Name**: `AI_API_CONFIG` | **Secret**: 按顺序填写三行，分别是 Base URL、API Key、模型名：
+
+    ```text
+    https://api.openai.com/v1
+    sk-***
+    gpt-4.1-mini
+    ```
+
 *   **Name**: `AI_SUMMARY_PROMPT` | **Secret**: 你的研究方向，建议按重要性排序分行填写，可以是关键词、短句或者一句话。
 
 可选 Secrets：
