@@ -3,6 +3,7 @@ import html
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -19,6 +20,9 @@ DEFAULT_TIMEOUT_SECONDS = 300
 SCREENING_BATCH_SIZE = 25
 MAX_SELECTED_PAPERS = 40
 DEFAULT_MAX_CANDIDATES = 100
+RETRY_ATTEMPTS_PER_ROUND = 3
+RETRY_ROUNDS = 2
+RETRY_SLEEP_SECONDS = 10 * 60
 
 BATCH_INSIGHT_SYSTEM_PROMPT = (
     "You are a world-class scientific literature screening and summarization assistant. "
@@ -544,7 +548,30 @@ def to_rfc822(value):
     return date.astimezone(datetime.timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT")
 
 
-def run_ai_summary(config=None, client=None, now=None):
+def generate_report_with_retries(config, candidates, client, now, sleep_fn=time.sleep):
+    last_error = None
+    total_attempts = RETRY_ATTEMPTS_PER_ROUND * RETRY_ROUNDS
+
+    for round_index in range(RETRY_ROUNDS):
+        for attempt_index in range(RETRY_ATTEMPTS_PER_ROUND):
+            attempt_number = round_index * RETRY_ATTEMPTS_PER_ROUND + attempt_index + 1
+            try:
+                return generate_ai_summary_report(config, candidates, client, now)
+            except Exception as error:
+                last_error = error
+                print(f"AI summary attempt {attempt_number}/{total_attempts} failed: {error}")
+
+        if round_index < RETRY_ROUNDS - 1:
+            print(
+                f"AI summary failed after {RETRY_ATTEMPTS_PER_ROUND} attempts; "
+                f"sleeping {RETRY_SLEEP_SECONDS} seconds before the next retry round."
+            )
+            sleep_fn(RETRY_SLEEP_SECONDS)
+
+    raise RuntimeError(f"AI summary failed after {total_attempts} attempts: {last_error}")
+
+
+def run_ai_summary(config=None, client=None, now=None, sleep_fn=time.sleep):
     config = config or load_ai_config()
     if config is None:
         return False
@@ -568,7 +595,7 @@ def run_ai_summary(config=None, client=None, now=None):
     print(f"Starting AI summary for {len(candidates)} candidate papers...")
     client = client or ChatCompletionClient(config)
     try:
-        report = generate_ai_summary_report(config, candidates, client, now)
+        report = generate_report_with_retries(config, candidates, client, now, sleep_fn)
         write_ai_html(report)
         write_ai_feed(report)
     except Exception as error:
