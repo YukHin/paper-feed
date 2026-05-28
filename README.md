@@ -7,7 +7,8 @@
 本工具是一个基于 GitHub Actions 的全自动文献监测系统。它旨在解决科研工作中的信息筛选效率问题，功能逻辑如下：
 1.  **抓取**：定时从指定的期刊 RSS 源获取最新发表的论文。
 2.  **筛选**：根据预设的关键词逻辑（支持 `AND` 组合）对标题和摘要进行匹配。
-3.  **分发**：将命中的论文重组为标准化的 RSS 订阅源，供 Zotero 等阅读器订阅。
+3.  **AI总结**：借助AI减轻手动翻阅订阅的负担，现在只需打开汇总网页扫一眼。
+4.  **分发**：将命中的论文重组为标准化的 RSS 订阅源，供 Zotero 等阅读器订阅，如果你是Zotero用户，可能会对[插件版](https://github.com/Jarvis-Towne/paper-feed-zotero)感兴趣。
 
 ---
 
@@ -50,7 +51,7 @@ AI 总结默认不强制启用。只有当以下必需 Secrets 都存在时，`a
 *   **Name**: `AI_BASE_URL` | **Secret**: OpenAI 兼容接口地址，例如 `https://api.openai.com/v1`。
 *   **Name**: `AI_API_KEY` | **Secret**: API Key。
 *   **Name**: `AI_MODEL` | **Secret**: 模型名。
-*   **Name**: `AI_SUMMARY_PROMPT` | **Secret**: 你的研究方向，建议按重要性排序分行填写。
+*   **Name**: `AI_SUMMARY_PROMPT` | **Secret**: 你的研究方向，建议按重要性排序分行填写，可以是关键词、短句或者一句话。
 
 可选 Secrets：
 
