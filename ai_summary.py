@@ -567,9 +567,13 @@ def run_ai_summary(config=None, client=None, now=None):
 
     print(f"Starting AI summary for {len(candidates)} candidate papers...")
     client = client or ChatCompletionClient(config)
-    report = generate_ai_summary_report(config, candidates, client, now)
-    write_ai_html(report)
-    write_ai_feed(report)
+    try:
+        report = generate_ai_summary_report(config, candidates, client, now)
+        write_ai_html(report)
+        write_ai_feed(report)
+    except Exception as error:
+        print(f"AI summary failed: {error}")
+        return False
 
     submitted_ids.update(entry["id"] for entry in candidates)
     write_state(
