@@ -17,6 +17,7 @@
 *   **多维度检索**：支持简单的关键词匹配及 `Keyword A AND Keyword B` 的组合逻辑检索。
 *   **数据清洗**：内置 XML 字符清洗程序，自动移除非法字符，确保订阅源的兼容性与稳定性。
 *   **隐私保护**：支持通过 GitHub Secrets 注入配置，隐藏用户的研究领域与关注列表。
+*   **AI 总结（可选）**：支持调用 OpenAI 兼容接口，对新增命中文献生成中文 HTML 总结，并输出独立 RSS。
 *   **通用兼容**：生成的 `filtered_feed.xml` 遵循 RSS 2.0 标准，适配所有主流 RSS 阅读器。
 
 ---
@@ -42,6 +43,27 @@
     *   **Name**: `RSS_JOURNALS` | **Secret**: 填入期刊链接（换行分隔）。
     *   **Name**: `RSS_KEYWORDS` | **Secret**: 填入关键词（换行分隔）。
 
+#### 可选：AI 总结配置
+
+AI 总结默认不强制启用。只有当以下必需 Secrets 都存在时，`ai_summary.py` 才会在 GitHub Actions 中运行；否则会跳过，不影响普通 RSS。
+
+*   **Name**: `AI_BASE_URL` | **Secret**: OpenAI 兼容接口地址，例如 `https://api.openai.com/v1`。
+*   **Name**: `AI_API_KEY` | **Secret**: API Key。
+*   **Name**: `AI_MODEL` | **Secret**: 模型名。
+*   **Name**: `AI_SUMMARY_PROMPT` | **Secret**: 你的研究方向，建议按重要性排序分行填写。
+
+可选 Secrets：
+
+*   `AI_SUMMARY_ENABLED`：设为 `false`、`0`、`no` 或 `off` 时强制关闭 AI 总结。
+*   `AI_SUMMARY_INTERVAL_HOURS`：AI 总结间隔，默认 `24` 小时。
+*   `AI_SUMMARY_MAX_CANDIDATES`：每次最多提交给 AI 的新增候选文献数，默认 `100`。
+
+AI 总结会生成：
+
+*   `ai_summary_feed.xml`：AI 总结订阅源。
+*   `ai_summary.html`：最新一期 AI 总结 HTML 页面。
+*   `ai_summary_state.json`：已总结文献和上次成功时间，用于避免重复提交给 AI。
+
 ### 3. 启动服务
 1.  **配置 Pages**：
     *   进入 **Settings** -> **Pages**。
@@ -59,6 +81,8 @@
 
 1.  **获取订阅链接**：
     `https://{你的GitHub用户名}.github.io/{仓库名}/filtered_feed.xml`
+    若启用了 AI 总结，AI 订阅链接为：
+    `https://{你的GitHub用户名}.github.io/{仓库名}/ai_summary_feed.xml`
 2.  **添加订阅**：
     *   Zotero 菜单栏：`文件` -> `新建文献库` -> `新建订阅` -> `从网址`。
     *   粘贴上述链接。

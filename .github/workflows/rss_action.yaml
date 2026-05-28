@@ -28,14 +28,26 @@ jobs:
 
     - name: Run RSS Script
       env: 
+        RSS_JOURNALS: ${{ secrets.RSS_JOURNALS }}
         RSS_KEYWORDS: ${{ secrets.RSS_KEYWORDS }}
       run: python get_RSS.py
+
+    - name: Run AI Summary Script
+      env:
+        AI_SUMMARY_ENABLED: ${{ secrets.AI_SUMMARY_ENABLED }}
+        AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
+        AI_API_KEY: ${{ secrets.AI_API_KEY }}
+        AI_MODEL: ${{ secrets.AI_MODEL }}
+        AI_SUMMARY_PROMPT: ${{ secrets.AI_SUMMARY_PROMPT }}
+        AI_SUMMARY_INTERVAL_HOURS: ${{ secrets.AI_SUMMARY_INTERVAL_HOURS }}
+        AI_SUMMARY_MAX_CANDIDATES: ${{ secrets.AI_SUMMARY_MAX_CANDIDATES }}
+      run: python ai_summary.py
 
     - name: Commit and Push changes
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add filtered_feed.xml
+        git add filtered_feed.xml ai_summary_feed.xml ai_summary.html ai_summary_state.json
         # 只有当有新文件生成或文件变动时才提交
         git commit -m "Auto-update RSS feed" || echo "No changes to commit"
         git push
