@@ -71,9 +71,9 @@ AI 总结默认不强制启用。只有当以下必需 Secrets 都存在时，`a
     "max_candidates": 100,
     "screening_batch_size": 10,
     "requests_per_minute": 5,
-    "max_output_tokens": 8192,
-    "max_prompt_title_chars": 512,
-    "max_prompt_abstract_chars": 4096,
+    "max_output_tokens": 0,
+    "max_prompt_title_chars": 0,
+    "max_prompt_abstract_chars": 0,
     "retry_attempts_per_round": 3,
     "retry_rounds": 2,
     "retry_sleep_seconds": 600
@@ -89,7 +89,7 @@ AI 总结默认不强制启用。只有当以下必需 Secrets 都存在时，`a
 
 `requests_per_minute` 是 AI API 请求速率限制，默认 `5`，即相邻两次请求至少间隔约 12 秒；
 
-`max_output_tokens` 用于避免模型输出过长、生成时间过久导致网关超时，太多内容被截断可以尝试调大。
+`max_output_tokens`、`max_prompt_title_chars`、`max_prompt_abstract_chars` 用于避免输入输出过长、生成时间过久导致网关超时，默认为0，表示不限制。
 
 AI 总结会生成：
 

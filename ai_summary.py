@@ -73,8 +73,9 @@ class ChatCompletionClient:
             "model": self.config.model,
             "messages": messages,
             "temperature": 0.2,
-            "max_tokens": self.config.max_output_tokens,
         }
+        if self.config.max_output_tokens > 0:
+            payload["max_tokens"] = self.config.max_output_tokens
         data = json.dumps(payload).encode("utf-8")
         request = urllib.request.Request(
             url,
@@ -146,12 +147,27 @@ def get_config_int(section, key, default, env_name=None):
     return positive_int(section.get(key), default)
 
 
+def get_non_negative_config_int(section, key, default, env_name=None):
+    if env_name and os.environ.get(env_name, "").strip():
+        return non_negative_int(os.environ.get(env_name), default)
+
+    return non_negative_int(section.get(key), default)
+
+
 def positive_int(value, default):
     try:
         parsed = int(value)
     except (TypeError, ValueError):
         return default
     return parsed if parsed > 0 else default
+
+
+def non_negative_int(value, default):
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError):
+        return default
+    return parsed if parsed >= 0 else default
 
 
 def load_api_config():
@@ -229,7 +245,7 @@ def load_ai_config():
             DEFAULT_MAX_CANDIDATES,
             "AI_SUMMARY_MAX_CANDIDATES",
         ),
-        max_output_tokens=get_config_int(
+        max_output_tokens=get_non_negative_config_int(
             ai_public_config,
             "max_output_tokens",
             DEFAULT_MAX_OUTPUT_TOKENS,
@@ -245,12 +261,12 @@ def load_ai_config():
             "requests_per_minute",
             DEFAULT_REQUESTS_PER_MINUTE,
         ),
-        max_prompt_title_chars=get_config_int(
+        max_prompt_title_chars=get_non_negative_config_int(
             ai_public_config,
             "max_prompt_title_chars",
             DEFAULT_MAX_PROMPT_TITLE_CHARS,
         ),
-        max_prompt_abstract_chars=get_config_int(
+        max_prompt_abstract_chars=get_non_negative_config_int(
             ai_public_config,
             "max_prompt_abstract_chars",
             DEFAULT_MAX_PROMPT_ABSTRACT_CHARS,
@@ -441,6 +457,8 @@ class RequestRateLimiter:
 
 def limit_prompt_text(value, max_chars):
     text = re.sub(r"\s+", " ", str(value or "")).strip()
+    if max_chars == 0:
+        return text
     if len(text) <= max_chars:
         return text
     return f"{text[:max_chars].rstrip()}..."
