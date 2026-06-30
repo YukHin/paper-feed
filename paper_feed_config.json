@@ -1,6 +1,6 @@
 {
   "rss": {
-    "fetch_interval_hours": 8
+    "fetch_interval_hours": 1
   },
   "ai_summary": {
     "enabled": true,
