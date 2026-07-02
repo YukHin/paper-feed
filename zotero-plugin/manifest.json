@@ -6,7 +6,7 @@
   "author": "paper-feed",
   "applications": {
     "zotero": {
-      "id": "paper-feed-sync@paper-feed",
+      "id": "paper-feed-sync@yukhin.github.io",
       "strict_min_version": "6.999"
     }
   }
