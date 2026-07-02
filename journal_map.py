@@ -219,6 +219,50 @@ def get_abbr(journal_raw: str) -> str:
     return journal_raw
 
 
+# =============================================================================
+# 出版社归属：把期刊缩写归到出版社，供“出版社 → 期刊”两层分类使用。
+# key 用 get_abbr 得到的标准缩写；未列出的归入 "Other"。
+# 新增期刊时在对应出版社的集合里补一个缩写即可。
+# =============================================================================
+PUBLISHER_MAP = {
+    "Preprints": {"arXiv", "ChemRxiv"},
+    "Nature Portfolio": {
+        "Nature", "Nat. Commun.", "Nat. Mater.", "Nat. Nanotechnol.",
+        "Nat. Mach. Intell.", "npj Comput. Mater.", "Commun. Mater.",
+        "Light: Science & Applications",
+    },
+    "Science/AAAS": {"Science", "Sci. Adv.", "Sci. Robot."},
+    "ACS": {"JACS", "JACS Au", "ACS Nano", "JCTC", "J. Phys. Chem. C", "ACS Catal."},
+    "Wiley": {
+        "Adv. Mater.", "Adv. Energy Mater.", "Adv. Funct. Mater.", "Adv. Sci.",
+        "Adv. Intell. Discov.", "Angew. Chem. Int. Ed.", "Small", "Small Methods",
+        "Small Struct.", "InfoMat", "Carbon Energy", "Energy Environ. Mater.",
+        "Chin. J. Chem.",
+    },
+    "APS": {"PRB", "PRL", "PRX", "PRX Energy", "Phys. Rev. Applied", "Phys. Rev. X"},
+    "AIP": {"Appl. Phys. Lett.", "Appl. Phys. Rev.", "APL Energy Current Issue",
+            "APL Mach. Learn."},
+    "Cell Press": {"Chem", "Joule", "Matter", "Cell Rep. Phys. Sci.", "iScience"},
+    "Elsevier": {
+        "Nano Energy", "J. Catal.", "J. Energy Storage", "Mater. Today",
+        "Mater. Today Phys.", "Comput. Mater. Sci.", "Solid State Ionics",
+        "Sensors and Actuators A: Physical", "Prog. Mater. Sci.", "Acta Mater.",
+        "J. Materiomics", "eScience", "Sci. Bull.", "Chinese Journal of Catalysis",
+    },
+    "RSC": {"Digital Discovery"},
+    "Taylor & Francis": {"Mater. Res. Lett."},
+    "PNAS": {"PNAS"},
+}
+
+# 反向索引：缩写 -> 出版社
+_ABBR_TO_PUBLISHER = {abbr: pub for pub, abbrs in PUBLISHER_MAP.items() for abbr in abbrs}
+
+
+def get_publisher(abbr: str) -> str:
+    """根据标准缩写返回出版社名；未收录的归入 'Other'。"""
+    return _ABBR_TO_PUBLISHER.get((abbr or "").strip(), "Other")
+
+
 def clean_title(title: str, journal_raw: str) -> str:
     """
     移除 RSS 标题中形如 "[<journal_prefix>] " 或 "[<journal_prefix>] [ASAP] " 的前缀。

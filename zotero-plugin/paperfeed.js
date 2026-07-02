@@ -182,12 +182,24 @@ var PaperFeed = {
 
     const existingUrls = await this._getExistingUrls(libraryID);
     let added = 0;
+    const pubCache = {};  // publisher name -> collection, so we make each once
 
     for (const f of feeds) {
       if (this._abort) { this._log("sync aborted by user"); break; }
       let coll;
       try {
-        coll = await this._ensureCollection(libraryID, f.name, parent.id);
+        // Nest as: <parent> / <publisher> / <journal>. Journals with no known
+        // publisher (or older feeds.json without the field) fall back to being
+        // a direct child of <parent>.
+        let journalParentID = parent.id;
+        const publisher = f.publisher;
+        if (publisher) {
+          if (!pubCache[publisher]) {
+            pubCache[publisher] = await this._ensureCollection(libraryID, publisher, parent.id);
+          }
+          journalParentID = pubCache[publisher].id;
+        }
+        coll = await this._ensureCollection(libraryID, f.name, journalParentID);
         const xml = await this._fetchText(this._joinUrl(base, f.file));
         const papers = this._parseRss(xml);
         let feedAdded = 0;

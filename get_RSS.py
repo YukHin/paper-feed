@@ -8,7 +8,7 @@ import datetime
 import time
 from rfeed import Item, Feed, Guid, Serializable
 from email.utils import parsedate_to_datetime
-from journal_map import get_abbr, clean_title
+from journal_map import get_abbr, clean_title, get_publisher
 
 
 class DcSource(Serializable):
@@ -271,11 +271,20 @@ def write_index(index):
     with open(FEEDS_INDEX_JSON, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
-    rows = "\n".join(
-        f'    <li><a href="{html.escape(f["file"])}">{html.escape(f["name"])}</a>'
-        f' <span class="count">({f["count"]})</span></li>'
-        for f in index
-    )
+    # 按出版社分组展示
+    by_pub = {}
+    for f in index:
+        by_pub.setdefault(f.get("publisher", "Other"), []).append(f)
+    rows_parts = []
+    for pub in sorted(by_pub):
+        rows_parts.append(f'  <h2>{html.escape(pub)}</h2>\n  <ul>')
+        for f in sorted(by_pub[pub], key=lambda x: x["name"].lower()):
+            rows_parts.append(
+                f'    <li><a href="{html.escape(f["file"])}">{html.escape(f["name"])}</a>'
+                f' <span class="count">({f["count"]})</span></li>'
+            )
+        rows_parts.append("  </ul>")
+    rows = "\n".join(rows_parts)
     page = f"""<!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -285,7 +294,8 @@ def write_index(index):
 <style>
 body{{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:760px;margin:2rem auto;padding:0 1rem;line-height:1.6}}
 h1{{font-size:1.4rem}}
-ul{{list-style:none;padding:0}}
+h2{{font-size:1.05rem;margin:1.4rem 0 .3rem;color:#444}}
+ul{{list-style:none;padding:0;margin:0}}
 li{{padding:.4rem 0;border-bottom:1px solid #eee}}
 a{{text-decoration:none;color:#0b62d6}}
 .count{{color:#999;font-size:.9em}}
@@ -295,10 +305,8 @@ a{{text-decoration:none;color:#0b62d6}}
 <body>
 <h1>Paper-Feed 分期刊订阅</h1>
 <p class="meta">共 {len(index)} 本期刊 · 更新于 {payload['generated']}</p>
-<p>把下面任意链接作为 RSS 地址加入 Zotero / 阅读器，即可单独订阅该期刊。</p>
-<ul>
+<p>把下面任意链接作为 RSS 地址加入 Zotero / 阅读器，即可单独订阅该期刊。按出版社分组。</p>
 {rows}
-</ul>
 </body>
 </html>
 """
@@ -342,7 +350,13 @@ def generate_feeds(items):
         path = feed_path(slug)
         with open(path, "w", encoding="utf-8") as f:
             f.write(xml)
-        index.append({'slug': slug, 'name': bucket['name'], 'file': path, 'count': count})
+        index.append({
+            'slug': slug,
+            'name': bucket['name'],
+            'publisher': get_publisher(bucket['name']),
+            'file': path,
+            'count': count,
+        })
         print(f"  {path}: {count} items ({bucket['name']})")
 
     write_index(index)

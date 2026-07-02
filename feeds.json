@@ -1,339 +1,395 @@
 {
-  "generated": "2026-07-02T18:09:24",
+  "generated": "2026-07-02T18:14:36",
   "feeds": [
     {
       "slug": "acs-nano",
       "name": "ACS Nano",
+      "publisher": "ACS",
       "file": "feeds/filtered_feed.acs-nano.xml",
       "count": 1
     },
     {
       "slug": "acta-mater",
       "name": "Acta Mater.",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.acta-mater.xml",
       "count": 2
     },
     {
       "slug": "adv-energy-mater",
       "name": "Adv. Energy Mater.",
+      "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-energy-mater.xml",
       "count": 5
     },
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
+      "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
       "count": 98
     },
     {
       "slug": "adv-intell-discov",
       "name": "Adv. Intell. Discov.",
+      "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-intell-discov.xml",
       "count": 5
     },
     {
       "slug": "adv-mater",
       "name": "Adv. Mater.",
+      "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-mater.xml",
       "count": 39
     },
     {
       "slug": "adv-sci",
       "name": "Adv. Sci.",
+      "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
       "count": 19
     },
     {
       "slug": "apl-energy-current-issue",
       "name": "APL Energy Current Issue",
+      "publisher": "AIP",
       "file": "feeds/filtered_feed.apl-energy-current-issue.xml",
       "count": 1
     },
     {
       "slug": "apl-mach-learn",
       "name": "APL Mach. Learn.",
+      "publisher": "AIP",
       "file": "feeds/filtered_feed.apl-mach-learn.xml",
       "count": 2
     },
     {
       "slug": "appl-phys-lett",
       "name": "Appl. Phys. Lett.",
+      "publisher": "AIP",
       "file": "feeds/filtered_feed.appl-phys-lett.xml",
       "count": 10
     },
     {
       "slug": "appl-phys-rev",
       "name": "Appl. Phys. Rev.",
+      "publisher": "AIP",
       "file": "feeds/filtered_feed.appl-phys-rev.xml",
       "count": 2
     },
     {
       "slug": "arxiv",
       "name": "arXiv",
+      "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
       "count": 408
     },
     {
       "slug": "carbon-energy",
       "name": "Carbon Energy",
+      "publisher": "Wiley",
       "file": "feeds/filtered_feed.carbon-energy.xml",
       "count": 1
     },
     {
       "slug": "cell-rep-phys-sci",
       "name": "Cell Rep. Phys. Sci.",
+      "publisher": "Cell Press",
       "file": "feeds/filtered_feed.cell-rep-phys-sci.xml",
       "count": 2
     },
     {
       "slug": "chem",
       "name": "Chem",
+      "publisher": "Cell Press",
       "file": "feeds/filtered_feed.chem.xml",
       "count": 67
     },
     {
       "slug": "chemrxiv",
       "name": "ChemRxiv",
+      "publisher": "Preprints",
       "file": "feeds/filtered_feed.chemrxiv.xml",
       "count": 15
     },
     {
       "slug": "chinese-journal-of-catalysis",
       "name": "Chinese Journal of Catalysis",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.chinese-journal-of-catalysis.xml",
       "count": 1
     },
     {
       "slug": "commun-mater",
       "name": "Commun. Mater.",
+      "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.commun-mater.xml",
       "count": 4
     },
     {
       "slug": "comput-mater-sci",
       "name": "Comput. Mater. Sci.",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.comput-mater-sci.xml",
       "count": 7
     },
     {
       "slug": "digital-discovery",
       "name": "Digital Discovery",
+      "publisher": "RSC",
       "file": "feeds/filtered_feed.digital-discovery.xml",
       "count": 7
     },
     {
       "slug": "energy-environ-mater",
       "name": "Energy Environ. Mater.",
+      "publisher": "Wiley",
       "file": "feeds/filtered_feed.energy-environ-mater.xml",
       "count": 1
     },
     {
       "slug": "escience",
       "name": "eScience",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.escience.xml",
       "count": 4
     },
     {
       "slug": "iscience",
       "name": "iScience",
+      "publisher": "Cell Press",
       "file": "feeds/filtered_feed.iscience.xml",
       "count": 18
     },
     {
       "slug": "j-catal",
       "name": "J. Catal.",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.j-catal.xml",
       "count": 2
     },
     {
       "slug": "j-energy-storage",
       "name": "J. Energy Storage",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.j-energy-storage.xml",
       "count": 26
     },
     {
       "slug": "j-materiomics",
       "name": "J. Materiomics",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.j-materiomics.xml",
       "count": 3
     },
     {
       "slug": "jacs",
       "name": "JACS",
+      "publisher": "ACS",
       "file": "feeds/filtered_feed.jacs.xml",
       "count": 4
     },
     {
       "slug": "jacs-au",
       "name": "JACS Au",
+      "publisher": "ACS",
       "file": "feeds/filtered_feed.jacs-au.xml",
       "count": 1
     },
     {
       "slug": "jctc",
       "name": "JCTC",
+      "publisher": "ACS",
       "file": "feeds/filtered_feed.jctc.xml",
       "count": 2
     },
     {
       "slug": "joule",
       "name": "Joule",
+      "publisher": "Cell Press",
       "file": "feeds/filtered_feed.joule.xml",
       "count": 5
     },
     {
       "slug": "light-science-applications",
       "name": "Light: Science & Applications",
+      "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.light-science-applications.xml",
       "count": 3
     },
     {
       "slug": "mater-res-lett",
       "name": "Mater. Res. Lett.",
+      "publisher": "Taylor & Francis",
       "file": "feeds/filtered_feed.mater-res-lett.xml",
       "count": 1
     },
     {
       "slug": "mater-today",
       "name": "Mater. Today",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.mater-today.xml",
       "count": 1
     },
     {
       "slug": "mater-today-phys",
       "name": "Mater. Today Phys.",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.mater-today-phys.xml",
       "count": 1
     },
     {
       "slug": "matter",
       "name": "Matter",
+      "publisher": "Cell Press",
       "file": "feeds/filtered_feed.matter.xml",
       "count": 5
     },
     {
       "slug": "nano-energy",
       "name": "Nano Energy",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.nano-energy.xml",
       "count": 4
     },
     {
       "slug": "nat-commun",
       "name": "Nat. Commun.",
+      "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-commun.xml",
       "count": 11
     },
     {
       "slug": "nat-mach-intell",
       "name": "Nat. Mach. Intell.",
+      "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-mach-intell.xml",
       "count": 4
     },
     {
       "slug": "nat-mater",
       "name": "Nat. Mater.",
+      "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-mater.xml",
       "count": 3
     },
     {
       "slug": "nat-nanotechnol",
       "name": "Nat. Nanotechnol.",
+      "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-nanotechnol.xml",
       "count": 3
     },
     {
       "slug": "nature",
       "name": "Nature",
+      "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nature.xml",
       "count": 18
     },
     {
       "slug": "npj-comput-mater",
       "name": "npj Comput. Mater.",
+      "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.npj-comput-mater.xml",
       "count": 10
     },
     {
       "slug": "phys-rev-applied",
       "name": "Phys. Rev. Applied",
+      "publisher": "APS",
       "file": "feeds/filtered_feed.phys-rev-applied.xml",
       "count": 18
     },
     {
       "slug": "phys-rev-x",
       "name": "Phys. Rev. X",
+      "publisher": "APS",
       "file": "feeds/filtered_feed.phys-rev-x.xml",
       "count": 7
     },
     {
       "slug": "pnas",
       "name": "PNAS",
+      "publisher": "PNAS",
       "file": "feeds/filtered_feed.pnas.xml",
       "count": 4
     },
     {
       "slug": "prb",
       "name": "PRB",
+      "publisher": "APS",
       "file": "feeds/filtered_feed.prb.xml",
       "count": 15
     },
     {
       "slug": "prl",
       "name": "PRL",
+      "publisher": "APS",
       "file": "feeds/filtered_feed.prl.xml",
       "count": 9
     },
     {
       "slug": "prog-mater-sci",
       "name": "Prog. Mater. Sci.",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.prog-mater-sci.xml",
       "count": 1
     },
     {
       "slug": "sci-adv",
       "name": "Sci. Adv.",
+      "publisher": "Science/AAAS",
       "file": "feeds/filtered_feed.sci-adv.xml",
       "count": 4
     },
     {
       "slug": "sci-bull",
       "name": "Sci. Bull.",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.sci-bull.xml",
       "count": 1
     },
     {
       "slug": "sci-robot",
       "name": "Sci. Robot.",
+      "publisher": "Science/AAAS",
       "file": "feeds/filtered_feed.sci-robot.xml",
       "count": 10
     },
     {
       "slug": "sensors-and-actuators-a-physical",
       "name": "Sensors and Actuators A: Physical",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.sensors-and-actuators-a-physical.xml",
       "count": 100
     },
     {
       "slug": "small",
       "name": "Small",
+      "publisher": "Wiley",
       "file": "feeds/filtered_feed.small.xml",
       "count": 12
     },
     {
       "slug": "small-methods",
       "name": "Small Methods",
+      "publisher": "Wiley",
       "file": "feeds/filtered_feed.small-methods.xml",
       "count": 4
     },
     {
       "slug": "small-struct",
       "name": "Small Struct.",
+      "publisher": "Wiley",
       "file": "feeds/filtered_feed.small-struct.xml",
       "count": 5
     },
     {
       "slug": "solid-state-ionics",
       "name": "Solid State Ionics",
+      "publisher": "Elsevier",
       "file": "feeds/filtered_feed.solid-state-ionics.xml",
       "count": 3
     }
