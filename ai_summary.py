@@ -18,6 +18,7 @@ INPUT_FEED_FILE = "filtered_feed.xml"  # legacy combined feed (fallback only)
 INPUT_FEED_GLOB = os.path.join(FEED_DIR, "filtered_feed.*.xml")  # per-journal feeds
 OUTPUT_FEED_FILE = "ai_summary_feed.xml"  # legacy combined AI feed, removed after split
 OUTPUT_HTML_FILE = "ai_summary.html"      # AI summary index landing page (root)
+OUTPUT_OPML_FILE = "ai_summary.opml"      # one-click bulk import of AI feeds (root)
 AI_OUTPUT_PREFIX = "ai_summary"           # per-journal: ai_summary.<slug>.html / .xml
 EMAIL_BODY_FILE = "email_body.html"       # transient: written only when new summaries exist
 STATE_FILE = "ai_summary_state.json"
@@ -870,6 +871,25 @@ a{{text-decoration:none;color:#0b62d6}}
 """
     with open(OUTPUT_HTML_FILE, "w", encoding="utf-8") as handle:
         handle.write(page)
+
+    # OPML for one-click bulk import of the per-journal AI feeds into Zotero.
+    outlines = "\n".join(
+        '    <outline text="{n}" title="{n}" type="rss" xmlUrl="{u}"/>'.format(
+            n=escape_xml(f"{item['name']} · AI"),
+            u=escape_xml(get_public_file_url(item["feed"])),
+        )
+        for item in index
+    )
+    opml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head><title>Paper-Feed 分期刊 AI 总结</title></head>
+  <body>
+{outlines}
+  </body>
+</opml>
+"""
+    with open(OUTPUT_OPML_FILE, "w", encoding="utf-8") as handle:
+        handle.write(opml)
 
 
 def get_public_file_url(filename):
