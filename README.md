@@ -2,6 +2,7 @@
 
 [![GitHub Actions](https://img.shields.io/badge/Actions-Automated-blue.svg)](https://github.com/features/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Zotero Plugin](https://img.shields.io/badge/Zotero-Plugin-CC2936.svg?logo=zotero&logoColor=white)](zotero-plugin/)
 
 ### 系统概述
 本工具是一个基于 GitHub Actions 的全自动文献监测系统。它旨在解决科研工作中的信息筛选效率问题，功能逻辑如下：
@@ -176,6 +177,35 @@ def group_by_topic(entry):
 
 ACTIVE_GROUPER = group_by_topic
 ```
+
+---
+
+## 🧩 Zotero 插件：Paper-Feed Sync
+
+除了手动订阅 / 导入 OPML，本仓库还内置了一个 Zotero 7/8/9 插件（目录 [`zotero-plugin/`](zotero-plugin/)），可以**自动**把分期刊源同步进你的文献库并按出版社归类。
+
+**能做什么：**
+
+*   读取站点的 `feeds.json`，得到全部期刊（后端新增期刊后自动跟进）。
+*   在文献库里建立 **`Paper-Feed / 出版社 / 期刊`** 三层分类（如 `Paper-Feed / Wiley / Adv. Mater.`）。
+*   定时（默认每 6 小时）抓取每个 `feeds/filtered_feed.<slug>.xml`，把**新**文献作为 `journalArticle` 存进对应分类，按 URL 去重（已存在的、以及你已加笔记的文献不会被覆盖）。
+*   新拉取的文献自动打 **`unread`** 标签，便于筛未读。
+*   同步后自动清理父分类下**完全没有文献**的空分类（安全，不删任何文献；可在设置中关闭）。
+
+**安装：**
+
+1.  下载 [`zotero-plugin/paper-feed-sync.xpi`](zotero-plugin/paper-feed-sync.xpi)。
+2.  Zotero → `工具` → `插件` → 右上角齿轮 → **Install Add-on From File…** → 选择该 `.xpi`。
+
+**配置与使用（`工具` 菜单）：**
+
+*   **Paper-Feed：设置…** — 填写站点基址（如 `https://yukhin.github.io/paper-feed`，只填根地址）、更新间隔、父分类名、是否自动清理空分类。
+*   **Paper-Feed：立即同步** — 手动触发一次。
+*   **Paper-Feed：停止同步** — 中止正在进行的同步。
+*   **Paper-Feed：禁用/启用自动同步** — 开关定时拉取。
+*   **Paper-Feed：重建（清空后重新同步）** — 删掉整个父分类后按最新结构重建（不会删除文献与笔记）。
+
+> 详细说明与常见问题见 [`zotero-plugin/README.md`](zotero-plugin/README.md)。去重是与「库里当前的文献」比对，因此手动删除且仍在源里的文献，下次同步会被重新拉回。
 
 ---
 
