@@ -21,7 +21,7 @@ var PaperFeed = {
     this._setDefault("parentCollection", "Paper-Feed");
     this._setDefault("enabled", true);
     this._setDefault("cleanup", true);
-    this._setDefault("scrapeDoi", true);
+    this._setDefault("lookupDoi", true);
 
     for (const win of Zotero.getMainWindows()) this.addToWindow(win);
     this.restartTimer();
@@ -247,11 +247,11 @@ var PaperFeed = {
         for (const p of papers) {
           if (this._abort) break;
           if (p.url && existing.urls.has(p.url)) continue;  // already have this URL
-          // DOI from the feed/URL; if none, try scraping the article page's
-          // citation_doi meta (AIP, ScienceDirect… don't expose it in the RSS).
+          // DOI from the feed/URL; if none, look it up on Crossref by title
+          // (AIP, ScienceDirect… don't expose a DOI in the RSS or URL).
           let doi = p.doi ? this._normDoi(p.doi) : "";
-          if (!doi && p.url && this._getPref("scrapeDoi") !== false) {
-            doi = this._normDoi(await this._fetchDoiFromPage(p.url));
+          if (!doi && p.title && this._getPref("lookupDoi") !== false) {
+            doi = this._normDoi(await this._fetchDoiFromCrossref(p.title, p.journal));
             if (doi) p.doi = doi;
           }
           if (!p.url && !doi) continue;
@@ -448,29 +448,48 @@ var PaperFeed = {
     return "";
   },
 
-  // Fallback: fetch the article page and read the DOI from standard scholarly
-  // meta tags (citation_doi / dc.identifier / prism.doi). Returns "" on any
-  // failure so a blocked/odd page never breaks the sync.
-  async _fetchDoiFromPage(url) {
-    if (!/^https?:\/\//i.test(url || "")) return "";
+  // Fallback: look the DOI up on Crossref by title. Pure JSON API (not blocked
+  // by Cloudflare). The top candidates are validated against our title so we
+  // never attach a wrong DOI. Returns "" on any failure/no confident match.
+  async _fetchDoiFromCrossref(title, journal) {
+    const q = this._normTitle(title);
+    if (q.length < 12) return "";  // too short to match confidently
+    const url = "https://api.crossref.org/works?rows=5&select=DOI,title,container-title"
+      + "&query.bibliographic=" + encodeURIComponent(title)
+      + "&mailto=paper-feed-sync@users.noreply.github.com";
     try {
       const xhr = await Zotero.HTTP.request("GET", url, {
         responseType: "text",
         timeout: 20000,
+        headers: { "User-Agent": "paper-feed-sync (Zotero plugin)" },
       });
-      const html = xhr.responseText || "";
-      const patterns = [
-        /<meta[^>]+name=["'](?:citation_doi|dc\.identifier|dc\.Identifier|prism\.doi|DOI)["'][^>]+content=["']([^"']+)["']/i,
-        /<meta[^>]+content=["']([^"']+)["'][^>]+name=["'](?:citation_doi|prism\.doi)["']/i,
-      ];
-      for (const re of patterns) {
-        const m = html.match(re);
-        if (m && /10\.\d{4,9}\//.test(m[1])) return m[1].trim();
+      const data = JSON.parse(xhr.responseText || "{}");
+      const items = (data.message && data.message.items) || [];
+      for (const it of items) {
+        const cand = this._normTitle((it.title && it.title[0]) || "");
+        if (!cand) continue;
+        // Accept only a strong title match (equal, or one contains the other
+        // with >=90% length overlap) so we don't attach a wrong DOI.
+        const shorter = cand.length < q.length ? cand : q;
+        const longer = cand.length < q.length ? q : cand;
+        if (cand === q || (longer.indexOf(shorter) !== -1 &&
+            shorter.length / longer.length >= 0.9)) {
+          if (it.DOI && /10\.\d{4,9}\//.test(it.DOI)) return it.DOI;
+        }
       }
     } catch (e) {
-      this._log("DOI page fetch failed for " + url + ": " + (e && e.message ? e.message : e));
+      this._log("Crossref lookup failed for \"" + (title || "").slice(0, 40) +
+        "\": " + (e && e.message ? e.message : e));
     }
     return "";
+  },
+
+  _normTitle(s) {
+    return String(s || "")
+      .toLowerCase()
+      .replace(/&[a-z]+;/g, " ")   // strip html entities
+      .replace(/[^a-z0-9]+/g, "")  // keep only alphanumerics
+      .trim();
   },
 
   _stripHtml(s) {

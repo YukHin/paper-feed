@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Paper-Feed Sync",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Subscribe to paper-feed per-journal RSS feeds, auto-create a collection per journal, and periodically pull new papers into your Zotero library.",
   "author": "paper-feed",
   "applications": {
