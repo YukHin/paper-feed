@@ -20,6 +20,7 @@ var PaperFeed = {
     this._setDefault("intervalHours", 6);
     this._setDefault("parentCollection", "Paper-Feed");
     this._setDefault("enabled", true);
+    this._setDefault("cleanup", true);
 
     for (const win of Zotero.getMainWindows()) this.addToWindow(win);
     this.restartTimer();
@@ -131,8 +132,16 @@ var PaperFeed = {
       if (parent.value.trim()) this._setPref("parentCollection", parent.value.trim());
     }
 
+    // 同步后自动清理空分类（仅删除整个子树无文献的分类，安全）
+    const cleanupYes = ps.confirm(
+      window, "Paper-Feed 设置",
+      "同步后自动清理空分类？\n（只删除 " + (this._getPref("parentCollection") || "Paper-Feed") +
+      " 下完全没有文献的分类，不会删除任何文献）\n\n确定=开启，取消=关闭"
+    );
+    this._setPref("cleanup", cleanupYes);
+
     this.restartTimer();
-    this._notify("设置已保存");
+    this._notify("设置已保存（自动清理：" + (cleanupYes ? "开" : "关") + "）");
   },
 
   // ---- timer ----
@@ -217,11 +226,55 @@ var PaperFeed = {
       }
     }
 
-    this._notify((this._abort ? "同步已停止，" : "同步完成，") + "新增 " + added + " 条文献");
-    this._log("sync done, added " + added);
+    let cleaned = 0;
+    if (!this._abort && this._getPref("cleanup") !== false) {
+      cleaned = await this._cleanupEmpty(parent);
+    }
+
+    this._notify(
+      (this._abort ? "同步已停止，" : "同步完成，") + "新增 " + added + " 条文献" +
+      (cleaned ? "，清理空分类 " + cleaned + " 个" : "")
+    );
+    this._log("sync done, added " + added + ", cleaned " + cleaned);
     } finally {
       this._syncing = false;
     }
+  },
+
+  // Recursively delete collections under `parent` whose entire subtree has no
+  // items. Scope is strictly inside the Paper-Feed parent; the parent itself is
+  // never deleted. Deleting an (empty) collection never removes any item.
+  async _cleanupEmpty(parent) {
+    let removed = 0;
+    const prune = async (coll) => {
+      let hasItems = false;
+      try {
+        hasItems = coll.getChildItems(false, false).length > 0;
+      } catch (e) {
+        hasItems = true;  // be conservative: unknown => keep
+      }
+      const children = coll.getChildCollections ? coll.getChildCollections() : [];
+      for (const child of children) {
+        if (await prune(child)) hasItems = true;
+      }
+      if (!hasItems) {
+        try {
+          await coll.eraseTx();
+          removed++;
+          this._log("removed empty collection: " + coll.name);
+        } catch (e) {
+          this._log("failed to remove collection " + coll.name + ": " + e);
+          return true;  // couldn't delete => treat as non-empty so ancestor stays
+        }
+      }
+      return hasItems;
+    };
+    // Prune each child of the parent; never delete the parent itself.
+    const topChildren = parent.getChildCollections ? parent.getChildCollections() : [];
+    for (const child of topChildren) {
+      await prune(child);
+    }
+    return removed;
   },
 
   // ---- Zotero data helpers ----
