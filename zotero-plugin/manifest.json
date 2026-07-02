@@ -7,7 +7,9 @@
   "applications": {
     "zotero": {
       "id": "paper-feed-sync@yukhin.github.io",
-      "strict_min_version": "6.999"
+      "update_url": "https://yukhin.github.io/paper-feed/zotero-plugin/updates.json",
+      "strict_min_version": "6.999",
+      "strict_max_version": "9.0.*"
     }
   }
 }
