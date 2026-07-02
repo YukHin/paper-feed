@@ -354,6 +354,7 @@ var PaperFeed = {
     if (p.url) item.setField("url", p.url);
     if (p.journal) item.setField("publicationTitle", p.journal);
     if (p.date) item.setField("date", p.date);
+    if (p.doi) item.setField("DOI", p.doi);
     item.setCollections([collectionID]);
     item.addTag("unread");  // mark freshly pulled papers as unread
     await item.saveTx();
@@ -397,16 +398,33 @@ var PaperFeed = {
         return el && el.textContent ? el.textContent.trim() : "";
       };
       const link = get("link");
+      const guid = get("guid") || link;
       out.push({
         title: get("title"),
         url: link,
-        guid: get("guid") || link,
+        guid: guid,
         abstract: this._stripHtml(get("description")),
         journal: get("dc:source") || get("source") || get("author"),
         date: this._normalizeDate(get("pubDate")),
+        doi: get("prism:doi") || get("dc:identifier") || this._extractDoi(guid, link),
       });
     }
     return out;
+  },
+
+  // Derive a DOI from the item's guid/link. Most publishers embed it directly
+  // (JACS dx.doi.org/…, Wiley guid = bare DOI, APS link.aps.org/doi/…); Nature
+  // article URLs let us reconstruct it as 10.1038/<article-id>. ScienceDirect
+  // PII links carry no DOI, so those return "".
+  _extractDoi(guid, link) {
+    for (const s of [guid, link]) {
+      if (!s) continue;
+      const m = s.match(/\b(10\.\d{4,9}\/[^\s"'<>?#&]+)/);
+      if (m) return m[1].replace(/[.,;)]+$/, "");
+    }
+    const nature = (link || "").match(/nature\.com\/articles\/([^/?#]+)/);
+    if (nature) return "10.1038/" + nature[1];
+    return "";
   },
 
   _stripHtml(s) {
