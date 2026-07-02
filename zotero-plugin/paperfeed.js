@@ -65,6 +65,9 @@ var PaperFeed = {
       this.syncNow().catch((e) => this._log("sync error: " + e));
     });
     mkItem("paperfeed-stop", "Paper-Feed：停止同步", () => this.stopSync());
+    mkItem("paperfeed-rebuild", "Paper-Feed：重建（清空后重新同步）", () => {
+      this.rebuild(window).catch((e) => this._log("rebuild error: " + e));
+    });
     this._toggleItem = mkItem("paperfeed-toggle", this._autoLabel(), () => {
       this.toggleAuto();
     });
@@ -73,7 +76,7 @@ var PaperFeed = {
 
   removeFromWindow(window) {
     const doc = window.document;
-    for (const id of ["paperfeed-sync-now", "paperfeed-stop", "paperfeed-toggle", "paperfeed-settings"]) {
+    for (const id of ["paperfeed-sync-now", "paperfeed-stop", "paperfeed-rebuild", "paperfeed-toggle", "paperfeed-settings"]) {
       const el = doc.getElementById(id);
       if (el) el.remove();
     }
@@ -90,6 +93,34 @@ var PaperFeed = {
       const el = win.document.getElementById("paperfeed-toggle");
       if (el) el.setAttribute("label", this._autoLabel());
     }
+  },
+
+  // Delete the whole Paper-Feed parent collection (and its subtree), then
+  // re-sync from scratch. Items are NOT deleted — erasing a collection only
+  // removes the grouping. Asks for confirmation first.
+  async rebuild(window) {
+    if (this._syncing) { this._notify("正在同步中，请先停止再重建"); return; }
+    const parentName = this._getPref("parentCollection") || "Paper-Feed";
+    const ok = Services.prompt.confirm(
+      window, "Paper-Feed 重建",
+      "将删除分类 “" + parentName + "” 及其下所有子分类，然后重新同步。\n" +
+      "（不会删除任何文献，只是取消其在这些分类中的归类；你添加的笔记/标签也会保留。）\n\n确定继续？"
+    );
+    if (!ok) return;
+
+    const libraryID = Zotero.Libraries.userLibraryID;
+    const parent = this._findCollection(libraryID, parentName, null);
+    if (parent) {
+      try {
+        await parent.eraseTx();  // recursively erases subcollections too
+        this._log("rebuild: erased parent collection " + parentName);
+      } catch (e) {
+        this._notify("删除父分类失败：" + (e && e.message ? e.message : e));
+        return;
+      }
+    }
+    this._abort = false;
+    await this.syncNow();
   },
 
   // Abort an in-progress sync and cancel the pending startup sync.
@@ -279,12 +310,18 @@ var PaperFeed = {
 
   // ---- Zotero data helpers ----
 
-  async _ensureCollection(libraryID, name, parentID) {
+  _findCollection(libraryID, name, parentID) {
     const all = Zotero.Collections.getByLibrary(libraryID, true);
     for (const c of all) {
       const sameParent = parentID ? c.parentID === parentID : !c.parentID;
       if (c.name === name && sameParent) return c;
     }
+    return null;
+  },
+
+  async _ensureCollection(libraryID, name, parentID) {
+    const existing = this._findCollection(libraryID, name, parentID);
+    if (existing) return existing;
     const c = new Zotero.Collection();
     c.libraryID = libraryID;
     c.name = name;
