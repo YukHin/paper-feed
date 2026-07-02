@@ -263,26 +263,48 @@ def get_publisher(abbr: str) -> str:
     return _ABBR_TO_PUBLISHER.get((abbr or "").strip(), "Other")
 
 
-def _titlecase_word(word: str) -> str:
-    """把单个词首字母大写，但保留缩略词/含大写或数字的原样（DNA、GaN、6G、FRET）。"""
+# 标题中保持小写的介词/冠词/并列连词（首词、末词除外，见 to_title_case）
+_TITLE_MINOR_WORDS = {
+    "a", "an", "the",
+    "and", "but", "or", "nor", "for", "so", "yet",
+    "as", "at", "by", "in", "of", "off", "on", "to", "up", "via",
+    "per", "vs", "with", "from", "into", "onto", "over", "than", "that",
+}
+
+
+def _titlecase_word(word: str, force_lower: bool = False) -> str:
+    """把单个词首字母大写，但保留缩略词/含大写或数字的原样（DNA、GaN、6G、FRET）。
+
+    force_lower=True 时把普通小词整体小写（用于介词/冠词等，缩略词仍保留原样）。
+    """
     if not word:
         return word
     # 已含内部大写（GaN、pH、DNA）或含数字（6G、Eu³⁺）→ 视为专有写法，保持原样
     if any(c.isupper() for c in word[1:]) or any(c.isdigit() for c in word):
         return word
+    if force_lower:
+        return word.lower()
     # 普通全小写/首字母词：首个字母大写，其余小写
     return word[:1].upper() + word[1:].lower() if word[:1].isalpha() else word
 
 
 def to_title_case(title: str) -> str:
-    """把标题规范成 Title Case（每个单词首字母大写），保留缩略词与连字符结构。"""
+    """把标题规范成 Title Case：实词首字母大写，介词/冠词/并列连词小写；
+    但首词与末词始终大写。保留缩略词与连字符结构。"""
     if not title:
         return title
-    # 以空白分词，逐词处理；连字符片段也分别首字母大写（Machine-Learning）
+    tokens = title.split()
+    last = len(tokens) - 1
     out_words = []
-    for token in title.split():
+    for i, token in enumerate(tokens):
+        # 冒号/问号/句号等结束的前一个词之后，视作新句开头，强制大写
+        after_break = i > 0 and tokens[i - 1].endswith((":", "?", "!", "."))
+        # 仅当整个词是小词、且不在首/末位置、且不是新句开头时才小写
+        minor = token.strip(".,;:!?()[]").lower() in _TITLE_MINOR_WORDS
+        force_lower = minor and i != 0 and i != last and not after_break
+        # 连字符片段分别处理（Machine-Learning）；小词判断按整词
         parts = token.split("-")
-        out_words.append("-".join(_titlecase_word(p) for p in parts))
+        out_words.append("-".join(_titlecase_word(p, force_lower) for p in parts))
     return " ".join(out_words)
 
 
