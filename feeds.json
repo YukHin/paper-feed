@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-02T09:27:35",
+  "generated": "2026-07-02T18:09:24",
   "feeds": [
     {
       "slug": "acs-nano",
@@ -17,7 +17,7 @@
       "slug": "adv-energy-mater",
       "name": "Adv. Energy Mater.",
       "file": "feeds/filtered_feed.adv-energy-mater.xml",
-      "count": 4
+      "count": 5
     },
     {
       "slug": "adv-funct-mater",
@@ -35,25 +35,13 @@
       "slug": "adv-mater",
       "name": "Adv. Mater.",
       "file": "feeds/filtered_feed.adv-mater.xml",
-      "count": 37
+      "count": 39
     },
     {
       "slug": "adv-sci",
       "name": "Adv. Sci.",
       "file": "feeds/filtered_feed.adv-sci.xml",
       "count": 19
-    },
-    {
-      "slug": "advanced-energy-materials",
-      "name": "Advanced Energy Materials",
-      "file": "feeds/filtered_feed.advanced-energy-materials.xml",
-      "count": 1
-    },
-    {
-      "slug": "advanced-materials",
-      "name": "Advanced Materials",
-      "file": "feeds/filtered_feed.advanced-materials.xml",
-      "count": 2
     },
     {
       "slug": "apl-energy-current-issue",
@@ -200,6 +188,12 @@
       "count": 3
     },
     {
+      "slug": "mater-res-lett",
+      "name": "Mater. Res. Lett.",
+      "file": "feeds/filtered_feed.mater-res-lett.xml",
+      "count": 1
+    },
+    {
       "slug": "mater-today",
       "name": "Mater. Today",
       "file": "feeds/filtered_feed.mater-today.xml",
@@ -209,12 +203,6 @@
       "slug": "mater-today-phys",
       "name": "Mater. Today Phys.",
       "file": "feeds/filtered_feed.mater-today-phys.xml",
-      "count": 1
-    },
-    {
-      "slug": "materials-research-letters",
-      "name": "Materials Research Letters",
-      "file": "feeds/filtered_feed.materials-research-letters.xml",
       "count": 1
     },
     {
@@ -302,21 +290,21 @@
       "count": 1
     },
     {
+      "slug": "sci-adv",
+      "name": "Sci. Adv.",
+      "file": "feeds/filtered_feed.sci-adv.xml",
+      "count": 4
+    },
+    {
       "slug": "sci-bull",
       "name": "Sci. Bull.",
       "file": "feeds/filtered_feed.sci-bull.xml",
       "count": 1
     },
     {
-      "slug": "science-advances",
-      "name": "Science Advances",
-      "file": "feeds/filtered_feed.science-advances.xml",
-      "count": 4
-    },
-    {
-      "slug": "science-robotics",
-      "name": "Science Robotics",
-      "file": "feeds/filtered_feed.science-robotics.xml",
+      "slug": "sci-robot",
+      "name": "Sci. Robot.",
+      "file": "feeds/filtered_feed.sci-robot.xml",
       "count": 10
     },
     {
@@ -341,13 +329,7 @@
       "slug": "small-struct",
       "name": "Small Struct.",
       "file": "feeds/filtered_feed.small-struct.xml",
-      "count": 4
-    },
-    {
-      "slug": "small-structures",
-      "name": "Small Structures",
-      "file": "feeds/filtered_feed.small-structures.xml",
-      "count": 1
+      "count": 5
     },
     {
       "slug": "solid-state-ionics",

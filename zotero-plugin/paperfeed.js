@@ -63,15 +63,54 @@ var PaperFeed = {
     mkItem("paperfeed-sync-now", "Paper-Feed：立即同步", () => {
       this.syncNow().catch((e) => this._log("sync error: " + e));
     });
+    mkItem("paperfeed-stop", "Paper-Feed：停止同步", () => this.stopSync());
+    this._toggleItem = mkItem("paperfeed-toggle", this._autoLabel(), () => {
+      this.toggleAuto();
+    });
     mkItem("paperfeed-settings", "Paper-Feed：设置…", () => this.openSettings(window));
   },
 
   removeFromWindow(window) {
     const doc = window.document;
-    for (const id of ["paperfeed-sync-now", "paperfeed-settings"]) {
+    for (const id of ["paperfeed-sync-now", "paperfeed-stop", "paperfeed-toggle", "paperfeed-settings"]) {
       const el = doc.getElementById(id);
       if (el) el.remove();
     }
+  },
+
+  _autoLabel() {
+    return this._getPref("enabled") === false
+      ? "Paper-Feed：启用自动同步"
+      : "Paper-Feed：禁用自动同步";
+  },
+
+  _refreshToggleLabels() {
+    for (const win of Zotero.getMainWindows()) {
+      const el = win.document.getElementById("paperfeed-toggle");
+      if (el) el.setAttribute("label", this._autoLabel());
+    }
+  },
+
+  // Abort an in-progress sync and cancel the pending startup sync.
+  stopSync() {
+    this._abort = true;
+    if (this._startupTimer) { this._startupTimer.cancel(); this._startupTimer = null; }
+    this._notify("已请求停止：当前同步将在处理完当前条目后中止");
+  },
+
+  // Toggle the repeating auto-sync on/off (persisted).
+  toggleAuto() {
+    const nowEnabled = this._getPref("enabled") !== false;
+    this._setPref("enabled", !nowEnabled);
+    if (nowEnabled) {
+      this.stopTimer();
+      this._abort = true;
+      this._notify("已禁用自动同步（不再定时拉取）");
+    } else {
+      this.restartTimer();
+      this._notify("已启用自动同步，每 " + (this._getPref("intervalHours") || 6) + " 小时一次");
+    }
+    this._refreshToggleLabels();
   },
 
   openSettings(window) {
@@ -126,9 +165,13 @@ var PaperFeed = {
   // ---- core sync ----
 
   async syncNow() {
+    if (this._syncing) { this._notify("已有同步在进行中"); return; }
     const base = (this._getPref("baseUrl") || "").replace(/\/+$/, "");
     if (!base) { this._notify("请先在 工具 → Paper-Feed：设置 里填写站点基址"); return; }
 
+    this._syncing = true;
+    this._abort = false;
+    try {
     const libraryID = Zotero.Libraries.userLibraryID;
     const parentName = this._getPref("parentCollection") || "Paper-Feed";
     this._notify("开始同步…");
@@ -141,6 +184,7 @@ var PaperFeed = {
     let added = 0;
 
     for (const f of feeds) {
+      if (this._abort) { this._log("sync aborted by user"); break; }
       let coll;
       try {
         coll = await this._ensureCollection(libraryID, f.name, parent.id);
@@ -148,6 +192,7 @@ var PaperFeed = {
         const papers = this._parseRss(xml);
         let feedAdded = 0;
         for (const p of papers) {
+          if (this._abort) break;
           if (!p.url || existingUrls.has(p.url)) continue;
           await this._createItem(libraryID, coll.id, p);
           existingUrls.add(p.url);
@@ -160,8 +205,11 @@ var PaperFeed = {
       }
     }
 
-    this._notify("同步完成，新增 " + added + " 条文献");
+    this._notify((this._abort ? "同步已停止，" : "同步完成，") + "新增 " + added + " 条文献");
     this._log("sync done, added " + added);
+    } finally {
+      this._syncing = false;
+    }
   },
 
   // ---- Zotero data helpers ----
@@ -205,6 +253,7 @@ var PaperFeed = {
     if (p.journal) item.setField("publicationTitle", p.journal);
     if (p.date) item.setField("date", p.date);
     item.setCollections([collectionID]);
+    item.addTag("unread");  // mark freshly pulled papers as unread
     await item.saveTx();
   },
 

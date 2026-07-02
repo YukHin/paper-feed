@@ -353,6 +353,14 @@ def generate_feeds(items):
         os.remove(stale)
         print(f"Removed stale root feed {stale}.")
 
+    # 清理 OUTPUT_DIR/ 内本轮不再生成的旧分期刊源（例如映射修正后合并掉的重复刊），
+    # 否则残留文件会让客户端继续看到已废弃的期刊分类。
+    current = {os.path.basename(f['file']) for f in index}
+    for path in glob.glob(os.path.join(OUTPUT_DIR, f"{FEED_PREFIX}.*.xml")):
+        if os.path.basename(path) not in current:
+            os.remove(path)
+            print(f"Removed stale feed {path}.")
+
     print(f"Successfully generated {len(index)} per-journal feeds in {OUTPUT_DIR}/.")
 
 def main():

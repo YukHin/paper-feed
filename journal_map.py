@@ -71,28 +71,38 @@ JOURNAL_MAP = [
                                                             "abbr": "J. Phys. Chem. C"},
 
     # ── Wiley ─────────────────────────────────────────────────────────────────
-    {"prefix": "Wiley: Advanced Materials: Table of Contents",
-                                                            "abbr": "Adv. Mater."},
-    {"prefix": "Wiley: Advanced Energy Materials: Table of Contents",
+    # 注意：Wiley 的 RSS 频道标题前缀既出现过 "Wiley:" 也出现过
+    # "Wiley-Online-Library:"。get_abbr 用“包含”匹配，故这里去掉平台前缀，
+    # 只保留 "<刊名>: Table of Contents"，两种平台写法都能命中，避免同刊被拆成两个源。
+    {"prefix": "Advanced Materials: Table of Contents",     "abbr": "Adv. Mater."},
+    {"prefix": "Advanced Energy Materials: Table of Contents",
                                                             "abbr": "Adv. Energy Mater."},
-    {"prefix": "Wiley: Advanced Functional Materials: Table of Contents",
+    {"prefix": "Advanced Functional Materials: Table of Contents",
                                                             "abbr": "Adv. Funct. Mater."},
-    {"prefix": "Wiley: Advanced Science: Table of Contents",
-                                                            "abbr": "Adv. Sci."},
-    {"prefix": "Wiley: Advanced Intelligent Discovery: Table of Contents",
+    {"prefix": "Advanced Science: Table of Contents",       "abbr": "Adv. Sci."},
+    {"prefix": "Advanced Intelligent Discovery: Table of Contents",
                                                             "abbr": "Adv. Intell. Discov."},
-    {"prefix": "Wiley: Angewandte Chemie International Edition: Table of Contents",
+    {"prefix": "Angewandte Chemie International Edition: Table of Contents",
                                                             "abbr": "Angew. Chem. Int. Ed."},
-    {"prefix": "Wiley: Small: Table of Contents",           "abbr": "Small"},
-    {"prefix": "Wiley: Small Methods: Table of Contents",   "abbr": "Small Methods"},
-    {"prefix": "Wiley: Small Structures: Table of Contents","abbr": "Small Struct."},
-    {"prefix": "Wiley: InfoMat: Table of Contents",         "abbr": "InfoMat"},
-    {"prefix": "Wiley: ENERGY &amp; ENVIRONMENTAL MATERIALS: Table of Contents",
+    {"prefix": "Small Methods: Table of Contents",          "abbr": "Small Methods"},
+    {"prefix": "Small Structures: Table of Contents",       "abbr": "Small Struct."},
+    {"prefix": "Small: Table of Contents",                  "abbr": "Small"},
+    {"prefix": "InfoMat: Table of Contents",                "abbr": "InfoMat"},
+    {"prefix": "Carbon Energy: Table of Contents",          "abbr": "Carbon Energy"},
+    {"prefix": "ENERGY &amp; ENVIRONMENTAL MATERIALS: Table of Contents",
                                                             "abbr": "Energy Environ. Mater."},
-    {"prefix": "Wiley: Chinese Journal of Chemistry: Table of Contents",
+    {"prefix": "ENERGY & ENVIRONMENTAL MATERIALS: Table of Contents",
+                                                            "abbr": "Energy Environ. Mater."},
+    {"prefix": "Chinese Journal of Chemistry: Table of Contents",
                                                             "abbr": "Chin. J. Chem."},
-    {"prefix": "Wiley: ENERGY & ENVIRONMENTAL MATERIALS: Table of Contents",
-                                                            "abbr": "Energy Environ. Mater."},                                                            
+
+    # ── AAAS (Science family) ──────────────────────────────────────────────────
+    {"prefix": "Science Advances: Table of Contents",       "abbr": "Sci. Adv."},
+    {"prefix": "Science Robotics: Table of Contents",       "abbr": "Sci. Robot."},
+
+    # ── Taylor & Francis ───────────────────────────────────────────────────────
+    {"prefix": "Materials Research Letters: Table of Contents",
+                                                            "abbr": "Mater. Res. Lett."},
 
     # ── Elsevier / ScienceDirect ──────────────────────────────────────────────
     {"prefix": "ScienceDirect Publication: Joule",          "abbr": "Joule"},
