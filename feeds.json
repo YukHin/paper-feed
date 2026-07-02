@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-02T14:22:26",
+  "generated": "2026-07-02T19:43:25",
   "feeds": [
     {
       "slug": "acs-nano",
@@ -286,7 +286,7 @@
       "name": "Nature",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nature.xml",
-      "count": 18
+      "count": 19
     },
     {
       "slug": "npj-comput-mater",
@@ -357,6 +357,13 @@
       "publisher": "Science/AAAS",
       "file": "feeds/filtered_feed.sci-robot.xml",
       "count": 10
+    },
+    {
+      "slug": "science",
+      "name": "Science",
+      "publisher": "Science/AAAS",
+      "file": "feeds/filtered_feed.science.xml",
+      "count": 3
     },
     {
       "slug": "sensors-and-actuators-a-physical",

@@ -53,6 +53,7 @@
     <outline text="Sci. Adv." title="Sci. Adv." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.sci-adv.xml"/>
     <outline text="Sci. Bull." title="Sci. Bull." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.sci-bull.xml"/>
     <outline text="Sci. Robot." title="Sci. Robot." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.sci-robot.xml"/>
+    <outline text="Science" title="Science" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.science.xml"/>
     <outline text="Sensors and Actuators A: Physical" title="Sensors and Actuators A: Physical" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.sensors-and-actuators-a-physical.xml"/>
     <outline text="Small" title="Small" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.small.xml"/>
     <outline text="Small Methods" title="Small Methods" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.small-methods.xml"/>
