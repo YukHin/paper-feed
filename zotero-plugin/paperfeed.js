@@ -146,14 +146,17 @@ var PaperFeed = {
         coll = await this._ensureCollection(libraryID, f.name, parent.id);
         const xml = await this._fetchText(this._joinUrl(base, f.file));
         const papers = this._parseRss(xml);
+        let feedAdded = 0;
         for (const p of papers) {
           if (!p.url || existingUrls.has(p.url)) continue;
           await this._createItem(libraryID, coll.id, p);
           existingUrls.add(p.url);
           added++;
+          feedAdded++;
         }
+        this._log("feed " + f.name + ": parsed " + papers.length + ", added " + feedAdded);
       } catch (e) {
-        this._log("feed failed (" + (f && f.name) + "): " + e);
+        this._log("feed failed (" + (f && f.name) + "): " + (e && e.message ? e.message : e));
       }
     }
 
@@ -201,7 +204,7 @@ var PaperFeed = {
     if (p.url) item.setField("url", p.url);
     if (p.journal) item.setField("publicationTitle", p.journal);
     if (p.date) item.setField("date", p.date);
-    item.addToCollection(collectionID);
+    item.setCollections([collectionID]);
     await item.saveTx();
   },
 
@@ -221,9 +224,19 @@ var PaperFeed = {
   },
 
   _parseRss(xml) {
-    const parser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
-      .createInstance(Components.interfaces.nsIDOMParser);
+    // nsIDOMParser (XPCOM) was removed in modern Gecko (Zotero 9), so build a
+    // DOMParser from the main window instead.
+    const win = Zotero.getMainWindow();
+    let parser;
+    if (win && win.DOMParser) {
+      parser = new win.DOMParser();
+    } else {
+      parser = Components.classes["@mozilla.org/xmlextras/domparser;1"].createInstance();
+    }
     const doc = parser.parseFromString(xml, "text/xml");
+    if (doc.documentElement && doc.documentElement.nodeName === "parsererror") {
+      throw new Error("XML parse error");
+    }
     const nodes = doc.getElementsByTagName("item");
     const out = [];
     for (let i = 0; i < nodes.length; i++) {
