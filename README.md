@@ -58,6 +58,23 @@ AI 总结默认不强制启用。只有当以下必需 Secrets 都存在时，`a
 
 *   **Name**: `AI_SUMMARY_PROMPT` | **Secret**: 你的研究方向，建议按重要性排序分行填写，可以是关键词、短句或者一句话。
 
+#### 可选：邮件推送
+
+在**生成了新的 AI 总结时**，把本次各期刊摘要全文邮件推送给你。邮件配置采用与期刊/关键词相同的私密方式（环境变量优先，其次本地文件 `email.dat`，`email.dat` 已在 `.gitignore` 中）。未配置时自动跳过，不影响其余流程。
+
+推送节奏由 workflow 定时（默认每 6 小时）与 AI 总结的 `interval_hours` 共同决定：只有 AI 实际产出新总结时才发信。**若想每 6 小时都收到新内容，请把 `interval_hours` 也设为 6。**
+
+*   **Name**: `EMAIL_CONFIG` | **Secret**: 按顺序填写，第 4 行可省略（默认 Gmail）：
+
+    ```text
+    收件人@example.com          # 可用逗号/分号分隔多个收件人
+    你的Gmail地址@gmail.com      # 发件账号（SMTP 用户名）
+    应用专用密码                 # Gmail 的 App Password（非登录密码）
+    smtp.gmail.com:465          # 可选，SMTP 主机:端口，默认即此
+    ```
+
+    > Gmail 需在账号开启两步验证后，于「应用专用密码」页面生成一个 16 位密码填在第 3 行。其它邮箱（QQ/网易/Outlook 等）把第 2、3、4 行换成对应的账号、授权码与 `SMTP:端口` 即可。
+
 非敏感参数在 `paper_feed_config.json` 中修改，无需删除或新增 GitHub Actions 变量：
 
 ```json
@@ -91,11 +108,14 @@ AI 总结默认不强制启用。只有当以下必需 Secrets 都存在时，`a
 
 `max_output_tokens`、`max_prompt_title_chars`、`max_prompt_abstract_chars` 用于避免输入输出过长、生成时间过久导致网关超时，默认为0，表示不限制。
 
-AI 总结会生成：
+AI 总结**同样按期刊分条**，每本期刊各自生成一份摘要，会生成：
 
-*   `ai_summary_feed.xml`：AI 总结订阅源。
-*   `ai_summary.html`：最新一期 AI 总结 HTML 页面。
+*   `ai_summary.<slug>.html`：某本期刊最新一期的 AI 总结页面。
+*   `ai_summary.<slug>.xml`：该期刊的 AI 总结订阅源。
+*   `ai_summary.html`：AI 总结**索引页**，列出所有期刊的摘要页与订阅链接。
 *   `ai_summary_state.json`：已总结文献和上次成功时间，用于避免重复提交给 AI。
+
+> 为控制 API 成本，每次运行的候选文献总数仍受 `max_candidates` 限制，再按期刊拆分；因此只有本次有新文献的期刊会重新生成摘要，其余期刊保留上一期页面。
 
 ### 3. 启动服务
 1.  **配置 Pages**：
@@ -112,17 +132,42 @@ AI 总结会生成：
 
 ## 📈 客户端接入 (以 Zotero 为例)
 
-1.  **获取订阅链接**：
-    `https://{你的GitHub用户名}.github.io/{仓库名}/filtered_feed.xml`
-    若启用了 AI 总结，AI 订阅链接为：
-    `https://{你的GitHub用户名}.github.io/{仓库名}/ai_summary_feed.xml`
-    当然你也可以直接在浏览器访问：
+命中的文献**按期刊分条输出**：每本期刊各自生成一个订阅源 `filtered_feed.<slug>.xml`，你可以只订阅关心的期刊，互不干扰。
+
+1.  **查看订阅列表**：
+    浏览器打开索引页，里面列出了每本期刊的订阅链接与命中数量：
+    `https://{你的GitHub用户名}.github.io/{仓库名}/feeds.html`
+    （机器可读版本为 `feeds.json`。）
+2.  **获取单本期刊的订阅链接**：
+    `https://{你的GitHub用户名}.github.io/{仓库名}/filtered_feed.<slug>.xml`
+    例如 `filtered_feed.jacs.xml`、`filtered_feed.nat-commun.xml`。`slug` 由期刊标准缩写规范化而来，可在 `feeds.html`/`feeds.json` 里直接复制。
+    若启用了 AI 总结，AI 也是**按期刊分条**的。索引页列出每本期刊的 AI 摘要页与订阅链接：
     `https://{你的GitHub用户名}.github.io/{仓库名}/ai_summary.html`
-2.  **添加订阅**：
+    单本期刊的 AI 订阅链接为 `.../ai_summary.<slug>.xml`，AI 摘要页为 `.../ai_summary.<slug>.html`。
+3.  **添加订阅**：
     *   Zotero 菜单栏：`文件` -> `新建文献库` -> `新建订阅` -> `从网址`。
-    *   粘贴上述链接。
-3.  **设置同步频率**：
+    *   粘贴某本期刊的订阅链接。订阅名会自动使用该期刊的规范名称（如 `JACS`、`Nat. Commun.`）。
+4.  **设置同步频率**：
     *   建议在 Zotero 订阅设置中将更新时间设为与 `fetch_interval_hours` 相同或更短，以匹配后端的更新频率。
+
+> **迁移说明**：旧的合并订阅源 `filtered_feed.xml` 已停用，运行后会被自动拆分成上述分期刊源并删除。原来订阅了 `filtered_feed.xml` 的客户端需改订对应的分期刊链接。
+
+### 🔌 预留接口：更换分条维度
+
+分条逻辑集中在 `get_RSS.py` 顶部的 **grouper** 函数。默认按期刊分条（`group_by_journal`）。若以后想按别的维度分条（关键词专题、作者、年份……），只需新增一个同签名的函数——接收一条文献、返回若干 `(slug, 显示名)`（一条文献可进入多个订阅）——并把 `ACTIVE_GROUPER` 指过去即可，其余流程无需改动：
+
+```python
+def group_by_topic(entry):
+    text = (entry["title"] + " " + entry["summary"]).lower()
+    hits = []
+    if "perovskite" in text:
+        hits.append(("perovskite", "Perovskite"))
+    if "catalysis" in text:
+        hits.append(("catalysis", "Catalysis"))
+    return hits or [("misc", "Misc")]
+
+ACTIVE_GROUPER = group_by_topic
+```
 
 ---
 

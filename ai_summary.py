@@ -1,18 +1,24 @@
 import datetime
+import glob
 import html
 import json
 import os
 import re
+import smtplib
 import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
-from email.utils import parsedate_to_datetime
+from email.mime.text import MIMEText
+from email.utils import formataddr, parsedate_to_datetime
 from xml.etree import ElementTree
 
-INPUT_FEED_FILE = "filtered_feed.xml"
-OUTPUT_FEED_FILE = "ai_summary_feed.xml"
-OUTPUT_HTML_FILE = "ai_summary.html"
+INPUT_FEED_FILE = "filtered_feed.xml"  # legacy combined feed (fallback only)
+INPUT_FEED_GLOB = "filtered_feed.*.xml"  # per-journal feeds
+OUTPUT_FEED_FILE = "ai_summary_feed.xml"  # legacy combined AI feed, removed after split
+OUTPUT_HTML_FILE = "ai_summary.html"      # AI summary index landing page
+AI_OUTPUT_PREFIX = "ai_summary"           # per-journal: ai_summary.<slug>.html / .xml
+EMAIL_BODY_FILE = "email_body.html"       # transient: written only when new summaries exist
 STATE_FILE = "ai_summary_state.json"
 CONFIG_FILE = "paper_feed_config.json"
 
@@ -376,6 +382,62 @@ def load_feed_entries(filename):
     return entries
 
 
+def slug_from_feed_path(path):
+    """filtered_feed.<slug>.xml -> <slug>; legacy filtered_feed.xml -> 'all'."""
+    base = os.path.basename(path)
+    match = re.match(r"filtered_feed\.(.+)\.xml$", base)
+    return match.group(1) if match else "all"
+
+
+def feed_channel_title(path):
+    try:
+        root = ElementTree.parse(path).getroot()
+        node = root.find(".//channel/title")
+        return node.text.strip() if node is not None and node.text else ""
+    except Exception:
+        return ""
+
+
+def ai_html_path(slug):
+    return f"{AI_OUTPUT_PREFIX}.{slug}.html"
+
+
+def ai_feed_path(slug):
+    return f"{AI_OUTPUT_PREFIX}.{slug}.xml"
+
+
+def load_all_feed_entries():
+    """Load candidates from every per-journal feed, deduped by id.
+
+    Each entry is tagged with its source journal (`feed_slug`, `feed_name`) so
+    the summary can be produced per journal. Falls back to the legacy combined
+    filtered_feed.xml if no per-journal feeds are present.
+    """
+    paths = sorted(glob.glob(INPUT_FEED_GLOB))
+    if not paths and os.path.exists(INPUT_FEED_FILE):
+        paths = [INPUT_FEED_FILE]
+
+    if not paths:
+        print("AI summary skipped: no feed files found.")
+        return []
+
+    seen = set()
+    entries = []
+    for path in paths:
+        slug = slug_from_feed_path(path)
+        name = feed_channel_title(path) or slug
+        for entry in load_feed_entries(path):
+            if entry["id"] in seen:
+                continue
+            seen.add(entry["id"])
+            entry["feed_slug"] = slug
+            entry["feed_name"] = name
+            entries.append(entry)
+
+    entries.sort(key=lambda item: item["pubDate"], reverse=True)
+    return entries
+
+
 def child_text(parent, tag):
     child = parent.find(tag)
     return child.text if child is not None and child.text else ""
@@ -670,14 +732,14 @@ def generate_ai_summary_report(config, papers, client, now, sleep_fn=time.sleep)
     }
 
 
-def write_ai_html(report):
+def write_ai_html(report, html_file, journal_name):
     document = "\n".join(
         [
             "<!doctype html>",
             '<html lang="zh-CN">',
             "<head>",
             '  <meta charset="utf-8">',
-            "  <title>Daily AI Literature Insights</title>",
+            f"  <title>Daily AI Literature Insights - {html.escape(journal_name)}</title>",
             '  <meta name="viewport" content="width=device-width, initial-scale=1">',
             "</head>",
             "<body>",
@@ -687,21 +749,21 @@ def write_ai_html(report):
             "",
         ]
     )
-    with open(OUTPUT_HTML_FILE, "w", encoding="utf-8") as handle:
+    with open(html_file, "w", encoding="utf-8") as handle:
         handle.write(document)
 
 
-def write_ai_feed(report):
+def write_ai_feed(report, feed_file, html_file, journal_name):
     pub_date = to_rfc822(parse_timestamp(report["generated_at"]))
-    html_url = get_public_file_url(OUTPUT_HTML_FILE)
+    html_url = get_public_file_url(html_file)
     xml = "".join(
         [
             '<?xml version="1.0" encoding="UTF-8"?>',
             '<rss version="2.0">',
             "<channel>",
-            "<title>Paper Feed AI Summary</title>",
+            f"<title>{escape_xml(journal_name)} — AI Summary</title>",
             f"<link>{escape_xml(html_url)}</link>",
-            "<description>AI-generated literature digest for filtered papers</description>",
+            f"<description>AI-generated literature digest for {escape_xml(journal_name)}</description>",
             "<language>zh-CN</language>",
             f"<lastBuildDate>{escape_xml(pub_date)}</lastBuildDate>",
             "<item>",
@@ -716,8 +778,94 @@ def write_ai_feed(report):
         ]
     )
 
-    with open(OUTPUT_FEED_FILE, "w", encoding="utf-8") as handle:
+    with open(feed_file, "w", encoding="utf-8") as handle:
         handle.write(xml)
+
+
+def write_email_body(sections, generated_at):
+    """Write email_body.html: this run's per-journal digests inlined for the push."""
+    blocks = "\n".join(
+        f'<section style="margin:0 0 2rem"><h2 style="font-size:1.15rem;border-bottom:2px solid #0b62d6;'
+        f'padding-bottom:.2rem">{html.escape(s["name"])} '
+        f'<span style="color:#999;font-size:.8em">({s["selected"]}/{s["candidates"]})</span></h2>\n'
+        f'{s["html"]}\n</section>'
+        for s in sections
+    )
+    document = f"""<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"></head>
+<body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:760px;margin:auto;line-height:1.6">
+<h1 style="font-size:1.4rem">Paper-Feed AI 总结</h1>
+<p style="color:#999;font-size:.85em">{escape_xml(generated_at[:16].replace('T', ' '))} · 本次更新 {len(sections)} 本期刊</p>
+{blocks}
+</body>
+</html>
+"""
+    with open(EMAIL_BODY_FILE, "w", encoding="utf-8") as handle:
+        handle.write(document)
+
+
+def build_ai_index(run_info):
+    """List every per-journal AI page on disk, merging this run's counts.
+
+    Scans ai_summary.<slug>.html so the landing page stays cumulative across
+    runs (journals not updated this run keep their previous page and link).
+    """
+    index = []
+    for html_path in sorted(glob.glob(f"{AI_OUTPUT_PREFIX}.*.html")):
+        slug = html_path[len(AI_OUTPUT_PREFIX) + 1:-len(".html")]
+        feed_path = ai_feed_path(slug)
+        name = feed_channel_title(feed_path) if os.path.exists(feed_path) else slug
+        name = name.replace(" — AI Summary", "").strip() or slug
+        info = run_info.get(slug, {})
+        index.append({
+            "slug": slug,
+            "name": name,
+            "html": html_path,
+            "feed": feed_path if os.path.exists(feed_path) else html_path,
+            "selected": info.get("selected", "·"),
+            "candidates": info.get("candidates", "·"),
+        })
+    return index
+
+
+def write_ai_index(index, generated_at):
+    """Write the ai_summary.html landing page linking every per-journal digest."""
+    rows = "\n".join(
+        f'    <li><a href="{html.escape(item["html"])}">{html.escape(item["name"])}</a>'
+        f' <span class="count">({item["selected"]}/{item["candidates"]})</span>'
+        f' <a class="rss" href="{html.escape(item["feed"])}">RSS</a></li>'
+        for item in index
+    )
+    page = f"""<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper-Feed AI 总结</title>
+<style>
+body{{font-family:-apple-system,Segoe UI,Roboto,sans-serif;max-width:760px;margin:2rem auto;padding:0 1rem;line-height:1.6}}
+h1{{font-size:1.4rem}}
+ul{{list-style:none;padding:0}}
+li{{padding:.4rem 0;border-bottom:1px solid #eee}}
+a{{text-decoration:none;color:#0b62d6}}
+.count{{color:#999;font-size:.9em}}
+.rss{{font-size:.8em;color:#e8850c;margin-left:.4rem}}
+.meta{{color:#999;font-size:.85em}}
+</style>
+</head>
+<body>
+<h1>Paper-Feed 分期刊 AI 总结</h1>
+<p class="meta">本次更新 {len(index)} 本期刊 · {escape_xml(generated_at[:16].replace('T', ' '))}</p>
+<p>每本期刊都有独立的 AI 总结页面和 RSS 订阅。括号内为本次「入选 / 候选」文献数。</p>
+<ul>
+{rows}
+</ul>
+</body>
+</html>
+"""
+    with open(OUTPUT_HTML_FILE, "w", encoding="utf-8") as handle:
+        handle.write(page)
 
 
 def get_public_file_url(filename):
@@ -753,6 +901,73 @@ def to_rfc822(value):
     return date.astimezone(datetime.timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT")
 
 
+def load_email_config():
+    """Load email push config, private-first, mirroring load_config in get_RSS.py.
+
+    Reads the ``EMAIL_CONFIG`` env var (GitHub Secret) if set, otherwise the
+    local ``email.dat`` file (keep it out of git). Expected lines, in order:
+
+        recipient@example.com[, another@example.com]   # 1: to (comma/semicolon separated)
+        yourgmail@gmail.com                              # 2: SMTP username / from
+        app-password                                     # 3: SMTP password
+        smtp.gmail.com:465                               # 4: host:port (optional)
+
+    Returns a dict, or None if unconfigured/incomplete (email is then skipped).
+    """
+    raw = os.environ.get("EMAIL_CONFIG", "").strip()
+    if raw:
+        lines = [line.strip() for line in raw.splitlines() if line.strip()]
+    elif os.path.exists("email.dat"):
+        with open("email.dat", "r", encoding="utf-8") as handle:
+            lines = [line.strip() for line in handle if line.strip() and not line.startswith("#")]
+    else:
+        return None
+
+    if len(lines) < 3:
+        print("Email push skipped: EMAIL_CONFIG/email.dat needs at least 3 lines (to, user, password).")
+        return None
+
+    recipients = [addr.strip() for addr in re.split(r"[;,]", lines[0]) if addr.strip()]
+    host, _, port = (lines[3] if len(lines) > 3 else "smtp.gmail.com:465").partition(":")
+    return {
+        "to": recipients,
+        "user": lines[1],
+        "password": lines[2],
+        "host": host or "smtp.gmail.com",
+        "port": int(port) if port.isdigit() else 465,
+    }
+
+
+def send_email_digest(generated_at):
+    """Email the freshly written digest (EMAIL_BODY_FILE) via SMTP over SSL.
+
+    Silently no-ops when there is no new digest this run or when email is not
+    configured, so it never breaks the RSS/AI pipeline.
+    """
+    if not os.path.exists(EMAIL_BODY_FILE):
+        return
+
+    cfg = load_email_config()
+    if not cfg:
+        return
+
+    with open(EMAIL_BODY_FILE, "r", encoding="utf-8") as handle:
+        body = handle.read()
+
+    message = MIMEText(body, "html", "utf-8")
+    message["Subject"] = f"Paper-Feed AI 总结 · {generated_at[:10]}"
+    message["From"] = formataddr(("Paper-Feed", cfg["user"]))
+    message["To"] = ", ".join(cfg["to"])
+
+    try:
+        with smtplib.SMTP_SSL(cfg["host"], cfg["port"], timeout=60) as server:
+            server.login(cfg["user"], cfg["password"])
+            server.sendmail(cfg["user"], cfg["to"], message.as_string())
+        print(f"Email digest sent to {', '.join(cfg['to'])}.")
+    except Exception as error:
+        print(f"Email push failed (pipeline continues): {error}")
+
+
 def run_ai_summary(config=None, client=None, now=None, sleep_fn=time.sleep):
     config = config or load_ai_config()
     if config is None:
@@ -765,7 +980,7 @@ def run_ai_summary(config=None, client=None, now=None, sleep_fn=time.sleep):
         return False
 
     submitted_ids = set(state["submitted_ids"])
-    feed_entries = load_feed_entries(INPUT_FEED_FILE)
+    feed_entries = load_all_feed_entries()
     candidates = [
         entry for entry in feed_entries if entry["id"] and entry["id"] not in submitted_ids
     ][: config.max_candidates]
@@ -774,26 +989,67 @@ def run_ai_summary(config=None, client=None, now=None, sleep_fn=time.sleep):
         print("AI summary skipped: no new candidate papers.")
         return False
 
-    print(f"Starting AI summary for {len(candidates)} candidate papers...")
+    # Group the (globally capped) candidates by their source journal so total
+    # API cost stays bounded by max_candidates while output is per-journal.
+    groups = {}
+    for entry in candidates:
+        slug = entry.get("feed_slug", "all")
+        bucket = groups.setdefault(slug, {"name": entry.get("feed_name", slug), "entries": []})
+        bucket["entries"].append(entry)
+
+    print(
+        f"Starting AI summary for {len(candidates)} candidate papers "
+        f"across {len(groups)} journals..."
+    )
     client = client or ChatCompletionClient(config)
+
+    run_info = {}
+    processed_ids = set()
+    email_sections = []
+    generated_at = now.isoformat().replace("+00:00", "Z")
     try:
-        report = generate_ai_summary_report(config, candidates, client, now, sleep_fn)
-        write_ai_html(report)
-        write_ai_feed(report)
+        for slug, bucket in sorted(groups.items()):
+            report = generate_ai_summary_report(config, bucket["entries"], client, now, sleep_fn)
+            html_file = ai_html_path(slug)
+            feed_file = ai_feed_path(slug)
+            write_ai_html(report, html_file, bucket["name"])
+            write_ai_feed(report, feed_file, html_file, bucket["name"])
+            run_info[slug] = {
+                "name": bucket["name"],
+                "selected": report["matched_count"],
+                "candidates": len(bucket["entries"]),
+            }
+            email_sections.append({
+                "name": bucket["name"],
+                "selected": report["matched_count"],
+                "candidates": len(bucket["entries"]),
+                "html": report["html"],
+            })
+            processed_ids.update(entry["id"] for entry in bucket["entries"])
+            print(f"  {html_file}: {report['matched_count']}/{len(bucket['entries'])} ({bucket['name']})")
+
+        write_ai_index(build_ai_index(run_info), generated_at)
+        write_email_body(email_sections, generated_at)
+        send_email_digest(generated_at)
     except Exception as error:
         print(f"AI summary failed: {error}")
         return False
 
-    submitted_ids.update(entry["id"] for entry in candidates)
+    # Migration: drop the legacy combined AI feed once per-journal feeds exist.
+    if os.path.exists(OUTPUT_FEED_FILE):
+        os.remove(OUTPUT_FEED_FILE)
+        print(f"Removed legacy {OUTPUT_FEED_FILE}.")
+
+    submitted_ids.update(processed_ids)
     write_state(
         {
-            "last_success_at": report["generated_at"],
+            "last_success_at": now.isoformat().replace("+00:00", "Z"),
             "submitted_ids": sorted(submitted_ids),
         }
     )
     print(
-        f"AI summary generated with {report['matched_count']} selected papers: "
-        f"{OUTPUT_FEED_FILE}, {OUTPUT_HTML_FILE}"
+        f"AI summary generated for {len(run_info)} journals "
+        f"({len(processed_ids)} papers): index at {OUTPUT_HTML_FILE}"
     )
     return True
 

@@ -46,15 +46,15 @@ jobs:
         AI_SUMMARY_INTERVAL_HOURS: ${{ secrets.AI_SUMMARY_INTERVAL_HOURS }}
         AI_SUMMARY_MAX_CANDIDATES: ${{ secrets.AI_SUMMARY_MAX_CANDIDATES }}
         PAPER_FEED_PUBLIC_BASE_URL: ${{ vars.PAPER_FEED_PUBLIC_BASE_URL }}
+        EMAIL_CONFIG: ${{ secrets.EMAIL_CONFIG }}
       run: python ai_summary.py
 
     - name: Commit and Push changes
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        if [ -f filtered_feed.xml ]; then git add filtered_feed.xml; fi
-        if [ -f ai_summary_feed.xml ]; then git add ai_summary_feed.xml; fi
-        if [ -f ai_summary.html ]; then git add ai_summary.html; fi
+        git add -A -- 'filtered_feed*.xml' feeds.json feeds.html 2>/dev/null || true
+        git add -A -- 'ai_summary*.xml' 'ai_summary*.html' 2>/dev/null || true
         if [ -f ai_summary_state.json ]; then git add ai_summary_state.json; fi
         if git diff --cached --quiet; then
           echo "No changes to commit"
