@@ -32,8 +32,29 @@ FEED_PREFIX = "filtered_feed"            # 每本期刊输出 feeds/filtered_fee
 LEGACY_FEED_FILE = "filtered_feed.xml"   # 旧的合并订阅源，迁移后删除
 FEEDS_INDEX_JSON = "feeds.json"          # 机器可读的订阅索引（仍放在根目录）
 FEEDS_INDEX_HTML = "feeds.html"          # 人可读的订阅索引页（仍放在根目录）
+FEEDS_OPML = "feeds.opml"                # 供 Zotero 等一键批量订阅的 OPML（根目录）
 MAX_ITEMS = 1000                         # 每本期刊最多保留的条目数
 # ----------------
+
+
+def get_public_base_url():
+    """站点公开根地址，用于生成 OPML 里的绝对订阅链接。
+
+    优先取环境变量 PAPER_FEED_PUBLIC_BASE_URL；否则在 GitHub Actions 中由
+    GITHUB_REPOSITORY 推导出 GitHub Pages 地址；本地无信息时返回空串。
+    """
+    configured = os.environ.get("PAPER_FEED_PUBLIC_BASE_URL", "").strip()
+    if configured:
+        return configured.rstrip("/")
+
+    repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    if not repository or "/" not in repository:
+        return ""
+
+    owner, repo = repository.split("/", 1)
+    if repo.lower() == f"{owner.lower()}.github.io":
+        return f"https://{owner}.github.io"
+    return f"https://{owner}.github.io/{repo}"
 
 
 def slugify(value):
@@ -283,6 +304,26 @@ a{{text-decoration:none;color:#0b62d6}}
 """
     with open(FEEDS_INDEX_HTML, "w", encoding="utf-8") as f:
         f.write(page)
+
+    # OPML：供 Zotero 等阅读器一键批量订阅。xmlUrl 必须是绝对地址。
+    base = get_public_base_url()
+    outlines = "\n".join(
+        '    <outline text="{n}" title="{n}" type="rss" xmlUrl="{u}"/>'.format(
+            n=html.escape(f["name"]),
+            u=html.escape(f"{base}/{f['file']}" if base else f["file"]),
+        )
+        for f in index
+    )
+    opml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head><title>Paper-Feed 分期刊订阅</title></head>
+  <body>
+{outlines}
+  </body>
+</opml>
+"""
+    with open(FEEDS_OPML, "w", encoding="utf-8") as f:
+        f.write(opml)
 
 
 def generate_feeds(items):
