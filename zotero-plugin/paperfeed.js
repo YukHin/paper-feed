@@ -21,6 +21,7 @@ var PaperFeed = {
     this._setDefault("parentCollection", "Paper-Feed");
     this._setDefault("enabled", true);
     this._setDefault("cleanup", true);
+    this._setDefault("scrapeDoi", true);
 
     for (const win of Zotero.getMainWindows()) this.addToWindow(win);
     this.restartTimer();
@@ -245,9 +246,15 @@ var PaperFeed = {
         let feedAdded = 0;
         for (const p of papers) {
           if (this._abort) break;
-          const doi = p.doi ? this._normDoi(p.doi) : "";
+          if (p.url && existing.urls.has(p.url)) continue;  // already have this URL
+          // DOI from the feed/URL; if none, try scraping the article page's
+          // citation_doi meta (AIP, ScienceDirect… don't expose it in the RSS).
+          let doi = p.doi ? this._normDoi(p.doi) : "";
+          if (!doi && p.url && this._getPref("scrapeDoi") !== false) {
+            doi = this._normDoi(await this._fetchDoiFromPage(p.url));
+            if (doi) p.doi = doi;
+          }
           if (!p.url && !doi) continue;
-          if (p.url && existing.urls.has(p.url)) continue;
           if (doi && existing.dois.has(doi)) continue;  // same DOI = same paper
           await this._createItem(libraryID, coll.id, p);
           if (p.url) existing.urls.add(p.url);
@@ -438,6 +445,31 @@ var PaperFeed = {
     }
     const nature = (link || "").match(/nature\.com\/articles\/([^/?#]+)/);
     if (nature) return "10.1038/" + nature[1];
+    return "";
+  },
+
+  // Fallback: fetch the article page and read the DOI from standard scholarly
+  // meta tags (citation_doi / dc.identifier / prism.doi). Returns "" on any
+  // failure so a blocked/odd page never breaks the sync.
+  async _fetchDoiFromPage(url) {
+    if (!/^https?:\/\//i.test(url || "")) return "";
+    try {
+      const xhr = await Zotero.HTTP.request("GET", url, {
+        responseType: "text",
+        timeout: 20000,
+      });
+      const html = xhr.responseText || "";
+      const patterns = [
+        /<meta[^>]+name=["'](?:citation_doi|dc\.identifier|dc\.Identifier|prism\.doi|DOI)["'][^>]+content=["']([^"']+)["']/i,
+        /<meta[^>]+content=["']([^"']+)["'][^>]+name=["'](?:citation_doi|prism\.doi)["']/i,
+      ];
+      for (const re of patterns) {
+        const m = html.match(re);
+        if (m && /10\.\d{4,9}\//.test(m[1])) return m[1].trim();
+      }
+    } catch (e) {
+      this._log("DOI page fetch failed for " + url + ": " + (e && e.message ? e.message : e));
+    }
     return "";
   },
 
