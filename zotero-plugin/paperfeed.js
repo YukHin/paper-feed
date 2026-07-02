@@ -232,15 +232,15 @@ var PaperFeed = {
         // Nest as: <parent> / <publisher> / <journal>. Journals with no known
         // publisher (or older feeds.json without the field) fall back to being
         // a direct child of <parent>.
-        let journalParentID = parent.id;
+        let journalParent = parent;
         const publisher = f.publisher;
         if (publisher) {
           if (!pubCache[publisher]) {
-            pubCache[publisher] = await this._ensureCollection(libraryID, publisher, parent.id);
+            pubCache[publisher] = await this._ensureCollection(libraryID, publisher, parent);
           }
-          journalParentID = pubCache[publisher].id;
+          journalParent = pubCache[publisher];
         }
-        coll = await this._ensureCollection(libraryID, f.name, journalParentID);
+        coll = await this._ensureCollection(libraryID, f.name, journalParent);
         const xml = await this._fetchText(this._joinUrl(base, f.file));
         const papers = this._parseRss(xml);
         let feedAdded = 0;
@@ -321,22 +321,27 @@ var PaperFeed = {
 
   // ---- Zotero data helpers ----
 
-  _findCollection(libraryID, name, parentID) {
-    const all = Zotero.Collections.getByLibrary(libraryID, true);
-    for (const c of all) {
-      const sameParent = parentID ? c.parentID === parentID : !c.parentID;
-      if (c.name === name && sameParent) return c;
+  // Find a collection named `name` directly under `parentColl` (a Collection
+  // object), or among top-level collections when parentColl is null. Looking
+  // only at the specific parent's direct children (getChildCollections) avoids
+  // relying on getByLibrary's recursive flag and makes duplicates impossible.
+  _findCollection(libraryID, name, parentColl) {
+    const siblings = parentColl
+      ? parentColl.getChildCollections()
+      : Zotero.Collections.getByLibrary(libraryID).filter((c) => !c.parentID);
+    for (const c of siblings) {
+      if (c.name === name) return c;
     }
     return null;
   },
 
-  async _ensureCollection(libraryID, name, parentID) {
-    const existing = this._findCollection(libraryID, name, parentID);
+  async _ensureCollection(libraryID, name, parentColl) {
+    const existing = this._findCollection(libraryID, name, parentColl);
     if (existing) return existing;
     const c = new Zotero.Collection();
     c.libraryID = libraryID;
     c.name = name;
-    if (parentID) c.parentID = parentID;
+    if (parentColl) c.parentID = parentColl.id;
     await c.saveTx();
     return c;
   },
