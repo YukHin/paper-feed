@@ -8,7 +8,7 @@ import datetime
 import time
 from rfeed import Item, Feed, Guid, Serializable
 from email.utils import parsedate_to_datetime
-from journal_map import get_abbr, clean_title, get_publisher
+from journal_map import get_abbr, clean_title, get_publisher, to_title_case, strip_bracket_tags
 
 
 class DcSource(Serializable):
@@ -236,8 +236,11 @@ def _build_feed_xml(title, items):
     rss_items = []
     for item in items:
         raw_journal = item['journal']
-        # 新旧条目一致处理：清理标题前缀，并把 journal 映射为标准缩写
-        item_title   = remove_illegal_xml_chars(clean_title(item['title'], raw_journal))
+        # 新旧条目一致处理：清理期刊前缀 → 去掉残留的 [ASAP] 等方括号标签 →
+        # 统一成 Title Case（每个单词首字母大写），并把 journal 映射为标准缩写
+        item_title = clean_title(item['title'], raw_journal)
+        item_title = to_title_case(strip_bracket_tags(item_title))
+        item_title = remove_illegal_xml_chars(item_title)
         clean_summary = remove_illegal_xml_chars(item['summary'])
         item_author  = remove_illegal_xml_chars(get_abbr(raw_journal))
 

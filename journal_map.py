@@ -263,6 +263,35 @@ def get_publisher(abbr: str) -> str:
     return _ABBR_TO_PUBLISHER.get((abbr or "").strip(), "Other")
 
 
+def _titlecase_word(word: str) -> str:
+    """把单个词首字母大写，但保留缩略词/含大写或数字的原样（DNA、GaN、6G、FRET）。"""
+    if not word:
+        return word
+    # 已含内部大写（GaN、pH、DNA）或含数字（6G、Eu³⁺）→ 视为专有写法，保持原样
+    if any(c.isupper() for c in word[1:]) or any(c.isdigit() for c in word):
+        return word
+    # 普通全小写/首字母词：首个字母大写，其余小写
+    return word[:1].upper() + word[1:].lower() if word[:1].isalpha() else word
+
+
+def to_title_case(title: str) -> str:
+    """把标题规范成 Title Case（每个单词首字母大写），保留缩略词与连字符结构。"""
+    if not title:
+        return title
+    # 以空白分词，逐词处理；连字符片段也分别首字母大写（Machine-Learning）
+    out_words = []
+    for token in title.split():
+        parts = token.split("-")
+        out_words.append("-".join(_titlecase_word(p) for p in parts))
+    return " ".join(out_words)
+
+
+def strip_bracket_tags(title: str) -> str:
+    """移除标题开头残留的方括号标签，如 '[ASAP] '、'[Early View] '。"""
+    import re
+    return re.sub(r'^\s*(?:\[[^\]]*\]\s*)+', '', title).strip()
+
+
 def clean_title(title: str, journal_raw: str) -> str:
     """
     移除 RSS 标题中形如 "[<journal_prefix>] " 或 "[<journal_prefix>] [ASAP] " 的前缀。

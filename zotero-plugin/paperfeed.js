@@ -220,7 +220,7 @@ var PaperFeed = {
     const index = await this._fetchJSON(base + "/feeds.json");
     const feeds = (index && index.feeds) || [];
 
-    const existingUrls = await this._getExistingUrls(libraryID);
+    const existing = await this._getExisting(libraryID);
     let added = 0;
     const pubCache = {};  // publisher name -> collection, so we make each once
 
@@ -245,9 +245,13 @@ var PaperFeed = {
         let feedAdded = 0;
         for (const p of papers) {
           if (this._abort) break;
-          if (!p.url || existingUrls.has(p.url)) continue;
+          const doi = p.doi ? this._normDoi(p.doi) : "";
+          if (!p.url && !doi) continue;
+          if (p.url && existing.urls.has(p.url)) continue;
+          if (doi && existing.dois.has(doi)) continue;  // same DOI = same paper
           await this._createItem(libraryID, coll.id, p);
-          existingUrls.add(p.url);
+          if (p.url) existing.urls.add(p.url);
+          if (doi) existing.dois.add(doi);
           added++;
           feedAdded++;
         }
@@ -330,8 +334,11 @@ var PaperFeed = {
     return c;
   },
 
-  async _getExistingUrls(libraryID) {
+  // Collect existing identifiers so we can skip papers already in the library:
+  // both by URL and by DOI (same DOI = same article, even if the URL differs).
+  async _getExisting(libraryID) {
     const urls = new Set();
+    const dois = new Set();
     const s = new Zotero.Search();
     s.libraryID = libraryID;
     s.addCondition("itemType", "isNot", "attachment");
@@ -339,11 +346,18 @@ var PaperFeed = {
     const ids = await s.search();
     const items = await Zotero.Items.getAsync(ids);
     for (const it of items) {
-      let u = "";
-      try { u = it.getField("url"); } catch (e) {}
-      if (u) urls.add(u);
+      try { const u = it.getField("url"); if (u) urls.add(u); } catch (e) {}
+      try { const d = it.getField("DOI"); if (d) dois.add(this._normDoi(d)); } catch (e) {}
     }
-    return urls;
+    return { urls, dois };
+  },
+
+  _normDoi(doi) {
+    return String(doi || "")
+      .trim()
+      .toLowerCase()
+      .replace(/^https?:\/\/(dx\.)?doi\.org\//, "")
+      .replace(/^doi:/, "");
   },
 
   async _createItem(libraryID, collectionID, p) {
