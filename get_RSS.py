@@ -27,11 +27,12 @@ class DcSource(Serializable):
         self._write_element("dc:source", self.source)
 
 # --- 配置区域 ---
-FEED_PREFIX = "filtered_feed"           # 每本期刊输出 filtered_feed.<slug>.xml
-LEGACY_FEED_FILE = "filtered_feed.xml"  # 旧的合并订阅源，迁移后删除
-FEEDS_INDEX_JSON = "feeds.json"         # 机器可读的订阅索引
-FEEDS_INDEX_HTML = "feeds.html"         # 人可读的订阅索引页
-MAX_ITEMS = 1000                        # 每本期刊最多保留的条目数
+OUTPUT_DIR = "feeds"                     # 所有分期刊订阅源统一放到这个文件夹
+FEED_PREFIX = "filtered_feed"            # 每本期刊输出 feeds/filtered_feed.<slug>.xml
+LEGACY_FEED_FILE = "filtered_feed.xml"   # 旧的合并订阅源，迁移后删除
+FEEDS_INDEX_JSON = "feeds.json"          # 机器可读的订阅索引（仍放在根目录）
+FEEDS_INDEX_HTML = "feeds.html"          # 人可读的订阅索引页（仍放在根目录）
+MAX_ITEMS = 1000                         # 每本期刊最多保留的条目数
 # ----------------
 
 
@@ -84,7 +85,7 @@ ACTIVE_GROUPER = group_by_journal
 
 
 def feed_path(slug):
-    return f"{FEED_PREFIX}.{slug}.xml"
+    return os.path.join(OUTPUT_DIR, f"{FEED_PREFIX}.{slug}.xml")
 
 def load_config(filename, env_var_name=None):
     """(保持你之前的 load_config 代码不变)"""
@@ -175,7 +176,9 @@ def _parse_feed_file(path):
 
 def get_existing_items():
     """读取已有的所有分期刊订阅源（含旧的合并源，用于平滑迁移），按 id 去重。"""
-    paths = sorted(glob.glob(f"{FEED_PREFIX}.*.xml"))
+    # 当前位置：feeds/ 下的分期刊源；外加根目录下的旧文件（合并源、上一版分期刊源）用于迁移
+    paths = sorted(glob.glob(os.path.join(OUTPUT_DIR, f"{FEED_PREFIX}.*.xml")))
+    paths += sorted(glob.glob(f"{FEED_PREFIX}.*.xml"))
     if os.path.exists(LEGACY_FEED_FILE) and LEGACY_FEED_FILE not in paths:
         paths.append(LEGACY_FEED_FILE)
 
@@ -290,6 +293,8 @@ def generate_feeds(items):
             bucket = groups.setdefault(slug, {'name': display, 'items': []})
             bucket['items'].append(item)
 
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
     index = []
     for slug, bucket in sorted(groups.items()):
         xml, count = _build_feed_xml(bucket['name'], bucket['items'])
@@ -301,12 +306,13 @@ def generate_feeds(items):
 
     write_index(index)
 
-    # 迁移：旧的合并源已按期刊拆分完毕，删除以免继续对外服务过期数据
-    if os.path.exists(LEGACY_FEED_FILE):
-        os.remove(LEGACY_FEED_FILE)
-        print(f"Removed legacy {LEGACY_FEED_FILE}.")
+    # 迁移：删除根目录下的旧订阅源（合并源 filtered_feed.xml 与上一版位于根目录的
+    # 分期刊源），它们现已移动到 OUTPUT_DIR/，避免继续对外服务过期/重复数据
+    for stale in glob.glob(f"{FEED_PREFIX}*.xml"):
+        os.remove(stale)
+        print(f"Removed stale root feed {stale}.")
 
-    print(f"Successfully generated {len(index)} per-journal feeds.")
+    print(f"Successfully generated {len(index)} per-journal feeds in {OUTPUT_DIR}/.")
 
 def main():
     # 请确保这里的调用参数与你目前的 secrets 配置一致

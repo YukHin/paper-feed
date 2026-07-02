@@ -1,358 +1,358 @@
 {
-  "generated": "2026-07-02T02:40:50",
+  "generated": "2026-07-02T10:49:18",
   "feeds": [
     {
       "slug": "acs-nano",
       "name": "ACS Nano",
-      "file": "filtered_feed.acs-nano.xml",
+      "file": "feeds/filtered_feed.acs-nano.xml",
       "count": 1
     },
     {
       "slug": "acta-mater",
       "name": "Acta Mater.",
-      "file": "filtered_feed.acta-mater.xml",
+      "file": "feeds/filtered_feed.acta-mater.xml",
       "count": 2
     },
     {
       "slug": "adv-energy-mater",
       "name": "Adv. Energy Mater.",
-      "file": "filtered_feed.adv-energy-mater.xml",
+      "file": "feeds/filtered_feed.adv-energy-mater.xml",
       "count": 4
     },
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
-      "file": "filtered_feed.adv-funct-mater.xml",
+      "file": "feeds/filtered_feed.adv-funct-mater.xml",
       "count": 98
     },
     {
       "slug": "adv-intell-discov",
       "name": "Adv. Intell. Discov.",
-      "file": "filtered_feed.adv-intell-discov.xml",
+      "file": "feeds/filtered_feed.adv-intell-discov.xml",
       "count": 5
     },
     {
       "slug": "adv-mater",
       "name": "Adv. Mater.",
-      "file": "filtered_feed.adv-mater.xml",
+      "file": "feeds/filtered_feed.adv-mater.xml",
       "count": 37
     },
     {
       "slug": "adv-sci",
       "name": "Adv. Sci.",
-      "file": "filtered_feed.adv-sci.xml",
+      "file": "feeds/filtered_feed.adv-sci.xml",
       "count": 19
     },
     {
       "slug": "advanced-energy-materials",
       "name": "Advanced Energy Materials",
-      "file": "filtered_feed.advanced-energy-materials.xml",
+      "file": "feeds/filtered_feed.advanced-energy-materials.xml",
       "count": 1
     },
     {
       "slug": "advanced-materials",
       "name": "Advanced Materials",
-      "file": "filtered_feed.advanced-materials.xml",
+      "file": "feeds/filtered_feed.advanced-materials.xml",
       "count": 2
     },
     {
       "slug": "apl-energy-current-issue",
       "name": "APL Energy Current Issue",
-      "file": "filtered_feed.apl-energy-current-issue.xml",
+      "file": "feeds/filtered_feed.apl-energy-current-issue.xml",
       "count": 1
     },
     {
       "slug": "apl-mach-learn",
       "name": "APL Mach. Learn.",
-      "file": "filtered_feed.apl-mach-learn.xml",
+      "file": "feeds/filtered_feed.apl-mach-learn.xml",
       "count": 2
     },
     {
       "slug": "appl-phys-lett",
       "name": "Appl. Phys. Lett.",
-      "file": "filtered_feed.appl-phys-lett.xml",
+      "file": "feeds/filtered_feed.appl-phys-lett.xml",
       "count": 10
     },
     {
       "slug": "appl-phys-rev",
       "name": "Appl. Phys. Rev.",
-      "file": "filtered_feed.appl-phys-rev.xml",
+      "file": "feeds/filtered_feed.appl-phys-rev.xml",
       "count": 2
     },
     {
       "slug": "arxiv",
       "name": "arXiv",
-      "file": "filtered_feed.arxiv.xml",
+      "file": "feeds/filtered_feed.arxiv.xml",
       "count": 408
     },
     {
       "slug": "carbon-energy",
       "name": "Carbon Energy",
-      "file": "filtered_feed.carbon-energy.xml",
+      "file": "feeds/filtered_feed.carbon-energy.xml",
       "count": 1
     },
     {
       "slug": "cell-rep-phys-sci",
       "name": "Cell Rep. Phys. Sci.",
-      "file": "filtered_feed.cell-rep-phys-sci.xml",
+      "file": "feeds/filtered_feed.cell-rep-phys-sci.xml",
       "count": 2
     },
     {
       "slug": "chem",
       "name": "Chem",
-      "file": "filtered_feed.chem.xml",
+      "file": "feeds/filtered_feed.chem.xml",
       "count": 67
     },
     {
       "slug": "chemrxiv",
       "name": "ChemRxiv",
-      "file": "filtered_feed.chemrxiv.xml",
+      "file": "feeds/filtered_feed.chemrxiv.xml",
       "count": 15
     },
     {
       "slug": "chinese-journal-of-catalysis",
       "name": "Chinese Journal of Catalysis",
-      "file": "filtered_feed.chinese-journal-of-catalysis.xml",
+      "file": "feeds/filtered_feed.chinese-journal-of-catalysis.xml",
       "count": 1
     },
     {
       "slug": "commun-mater",
       "name": "Commun. Mater.",
-      "file": "filtered_feed.commun-mater.xml",
+      "file": "feeds/filtered_feed.commun-mater.xml",
       "count": 4
     },
     {
       "slug": "comput-mater-sci",
       "name": "Comput. Mater. Sci.",
-      "file": "filtered_feed.comput-mater-sci.xml",
+      "file": "feeds/filtered_feed.comput-mater-sci.xml",
       "count": 7
     },
     {
       "slug": "digital-discovery",
       "name": "Digital Discovery",
-      "file": "filtered_feed.digital-discovery.xml",
+      "file": "feeds/filtered_feed.digital-discovery.xml",
       "count": 7
     },
     {
       "slug": "energy-environ-mater",
       "name": "Energy Environ. Mater.",
-      "file": "filtered_feed.energy-environ-mater.xml",
+      "file": "feeds/filtered_feed.energy-environ-mater.xml",
       "count": 1
     },
     {
       "slug": "escience",
       "name": "eScience",
-      "file": "filtered_feed.escience.xml",
+      "file": "feeds/filtered_feed.escience.xml",
       "count": 4
     },
     {
       "slug": "iscience",
       "name": "iScience",
-      "file": "filtered_feed.iscience.xml",
+      "file": "feeds/filtered_feed.iscience.xml",
       "count": 18
     },
     {
       "slug": "j-catal",
       "name": "J. Catal.",
-      "file": "filtered_feed.j-catal.xml",
+      "file": "feeds/filtered_feed.j-catal.xml",
       "count": 2
     },
     {
       "slug": "j-energy-storage",
       "name": "J. Energy Storage",
-      "file": "filtered_feed.j-energy-storage.xml",
+      "file": "feeds/filtered_feed.j-energy-storage.xml",
       "count": 26
     },
     {
       "slug": "j-materiomics",
       "name": "J. Materiomics",
-      "file": "filtered_feed.j-materiomics.xml",
+      "file": "feeds/filtered_feed.j-materiomics.xml",
       "count": 3
     },
     {
       "slug": "jacs",
       "name": "JACS",
-      "file": "filtered_feed.jacs.xml",
+      "file": "feeds/filtered_feed.jacs.xml",
       "count": 4
     },
     {
       "slug": "jacs-au",
       "name": "JACS Au",
-      "file": "filtered_feed.jacs-au.xml",
+      "file": "feeds/filtered_feed.jacs-au.xml",
       "count": 1
     },
     {
       "slug": "jctc",
       "name": "JCTC",
-      "file": "filtered_feed.jctc.xml",
+      "file": "feeds/filtered_feed.jctc.xml",
       "count": 2
     },
     {
       "slug": "joule",
       "name": "Joule",
-      "file": "filtered_feed.joule.xml",
+      "file": "feeds/filtered_feed.joule.xml",
       "count": 5
     },
     {
       "slug": "light-science-applications",
       "name": "Light: Science & Applications",
-      "file": "filtered_feed.light-science-applications.xml",
+      "file": "feeds/filtered_feed.light-science-applications.xml",
       "count": 3
     },
     {
       "slug": "mater-today",
       "name": "Mater. Today",
-      "file": "filtered_feed.mater-today.xml",
+      "file": "feeds/filtered_feed.mater-today.xml",
       "count": 1
     },
     {
       "slug": "mater-today-phys",
       "name": "Mater. Today Phys.",
-      "file": "filtered_feed.mater-today-phys.xml",
+      "file": "feeds/filtered_feed.mater-today-phys.xml",
       "count": 1
     },
     {
       "slug": "materials-research-letters",
       "name": "Materials Research Letters",
-      "file": "filtered_feed.materials-research-letters.xml",
+      "file": "feeds/filtered_feed.materials-research-letters.xml",
       "count": 1
     },
     {
       "slug": "matter",
       "name": "Matter",
-      "file": "filtered_feed.matter.xml",
+      "file": "feeds/filtered_feed.matter.xml",
       "count": 5
     },
     {
       "slug": "nano-energy",
       "name": "Nano Energy",
-      "file": "filtered_feed.nano-energy.xml",
+      "file": "feeds/filtered_feed.nano-energy.xml",
       "count": 4
     },
     {
       "slug": "nat-commun",
       "name": "Nat. Commun.",
-      "file": "filtered_feed.nat-commun.xml",
+      "file": "feeds/filtered_feed.nat-commun.xml",
       "count": 11
     },
     {
       "slug": "nat-mach-intell",
       "name": "Nat. Mach. Intell.",
-      "file": "filtered_feed.nat-mach-intell.xml",
+      "file": "feeds/filtered_feed.nat-mach-intell.xml",
       "count": 4
     },
     {
       "slug": "nat-mater",
       "name": "Nat. Mater.",
-      "file": "filtered_feed.nat-mater.xml",
+      "file": "feeds/filtered_feed.nat-mater.xml",
       "count": 3
     },
     {
       "slug": "nat-nanotechnol",
       "name": "Nat. Nanotechnol.",
-      "file": "filtered_feed.nat-nanotechnol.xml",
+      "file": "feeds/filtered_feed.nat-nanotechnol.xml",
       "count": 3
     },
     {
       "slug": "nature",
       "name": "Nature",
-      "file": "filtered_feed.nature.xml",
+      "file": "feeds/filtered_feed.nature.xml",
       "count": 18
     },
     {
       "slug": "npj-comput-mater",
       "name": "npj Comput. Mater.",
-      "file": "filtered_feed.npj-comput-mater.xml",
+      "file": "feeds/filtered_feed.npj-comput-mater.xml",
       "count": 10
     },
     {
       "slug": "phys-rev-applied",
       "name": "Phys. Rev. Applied",
-      "file": "filtered_feed.phys-rev-applied.xml",
+      "file": "feeds/filtered_feed.phys-rev-applied.xml",
       "count": 18
     },
     {
       "slug": "phys-rev-x",
       "name": "Phys. Rev. X",
-      "file": "filtered_feed.phys-rev-x.xml",
+      "file": "feeds/filtered_feed.phys-rev-x.xml",
       "count": 7
     },
     {
       "slug": "pnas",
       "name": "PNAS",
-      "file": "filtered_feed.pnas.xml",
+      "file": "feeds/filtered_feed.pnas.xml",
       "count": 4
     },
     {
       "slug": "prb",
       "name": "PRB",
-      "file": "filtered_feed.prb.xml",
+      "file": "feeds/filtered_feed.prb.xml",
       "count": 14
     },
     {
       "slug": "prl",
       "name": "PRL",
-      "file": "filtered_feed.prl.xml",
+      "file": "feeds/filtered_feed.prl.xml",
       "count": 9
     },
     {
       "slug": "prog-mater-sci",
       "name": "Prog. Mater. Sci.",
-      "file": "filtered_feed.prog-mater-sci.xml",
+      "file": "feeds/filtered_feed.prog-mater-sci.xml",
       "count": 1
     },
     {
       "slug": "sci-bull",
       "name": "Sci. Bull.",
-      "file": "filtered_feed.sci-bull.xml",
+      "file": "feeds/filtered_feed.sci-bull.xml",
       "count": 1
     },
     {
       "slug": "science-advances",
       "name": "Science Advances",
-      "file": "filtered_feed.science-advances.xml",
+      "file": "feeds/filtered_feed.science-advances.xml",
       "count": 4
     },
     {
       "slug": "science-robotics",
       "name": "Science Robotics",
-      "file": "filtered_feed.science-robotics.xml",
+      "file": "feeds/filtered_feed.science-robotics.xml",
       "count": 10
     },
     {
       "slug": "sensors-and-actuators-a-physical",
       "name": "Sensors and Actuators A: Physical",
-      "file": "filtered_feed.sensors-and-actuators-a-physical.xml",
+      "file": "feeds/filtered_feed.sensors-and-actuators-a-physical.xml",
       "count": 100
     },
     {
       "slug": "small",
       "name": "Small",
-      "file": "filtered_feed.small.xml",
+      "file": "feeds/filtered_feed.small.xml",
       "count": 12
     },
     {
       "slug": "small-methods",
       "name": "Small Methods",
-      "file": "filtered_feed.small-methods.xml",
+      "file": "feeds/filtered_feed.small-methods.xml",
       "count": 4
     },
     {
       "slug": "small-struct",
       "name": "Small Struct.",
-      "file": "filtered_feed.small-struct.xml",
+      "file": "feeds/filtered_feed.small-struct.xml",
       "count": 4
     },
     {
       "slug": "small-structures",
       "name": "Small Structures",
-      "file": "filtered_feed.small-structures.xml",
+      "file": "feeds/filtered_feed.small-structures.xml",
       "count": 1
     },
     {
       "slug": "solid-state-ionics",
       "name": "Solid State Ionics",
-      "file": "filtered_feed.solid-state-ionics.xml",
+      "file": "feeds/filtered_feed.solid-state-ionics.xml",
       "count": 3
     }
   ]

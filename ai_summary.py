@@ -13,10 +13,11 @@ from email.mime.text import MIMEText
 from email.utils import formataddr, parsedate_to_datetime
 from xml.etree import ElementTree
 
+FEED_DIR = "feeds"                        # per-journal RSS + AI files live here
 INPUT_FEED_FILE = "filtered_feed.xml"  # legacy combined feed (fallback only)
-INPUT_FEED_GLOB = "filtered_feed.*.xml"  # per-journal feeds
+INPUT_FEED_GLOB = os.path.join(FEED_DIR, "filtered_feed.*.xml")  # per-journal feeds
 OUTPUT_FEED_FILE = "ai_summary_feed.xml"  # legacy combined AI feed, removed after split
-OUTPUT_HTML_FILE = "ai_summary.html"      # AI summary index landing page
+OUTPUT_HTML_FILE = "ai_summary.html"      # AI summary index landing page (root)
 AI_OUTPUT_PREFIX = "ai_summary"           # per-journal: ai_summary.<slug>.html / .xml
 EMAIL_BODY_FILE = "email_body.html"       # transient: written only when new summaries exist
 STATE_FILE = "ai_summary_state.json"
@@ -399,11 +400,11 @@ def feed_channel_title(path):
 
 
 def ai_html_path(slug):
-    return f"{AI_OUTPUT_PREFIX}.{slug}.html"
+    return os.path.join(FEED_DIR, f"{AI_OUTPUT_PREFIX}.{slug}.html")
 
 
 def ai_feed_path(slug):
-    return f"{AI_OUTPUT_PREFIX}.{slug}.xml"
+    return os.path.join(FEED_DIR, f"{AI_OUTPUT_PREFIX}.{slug}.xml")
 
 
 def load_all_feed_entries():
@@ -414,6 +415,8 @@ def load_all_feed_entries():
     filtered_feed.xml if no per-journal feeds are present.
     """
     paths = sorted(glob.glob(INPUT_FEED_GLOB))
+    if not paths:
+        paths = sorted(glob.glob("filtered_feed.*.xml"))  # legacy: root-level per-journal feeds
     if not paths and os.path.exists(INPUT_FEED_FILE):
         paths = [INPUT_FEED_FILE]
 
@@ -812,8 +815,9 @@ def build_ai_index(run_info):
     runs (journals not updated this run keep their previous page and link).
     """
     index = []
-    for html_path in sorted(glob.glob(f"{AI_OUTPUT_PREFIX}.*.html")):
-        slug = html_path[len(AI_OUTPUT_PREFIX) + 1:-len(".html")]
+    for html_path in sorted(glob.glob(os.path.join(FEED_DIR, f"{AI_OUTPUT_PREFIX}.*.html"))):
+        base = os.path.basename(html_path)
+        slug = base[len(AI_OUTPUT_PREFIX) + 1:-len(".html")]
         feed_path = ai_feed_path(slug)
         name = feed_channel_title(feed_path) if os.path.exists(feed_path) else slug
         name = name.replace(" — AI Summary", "").strip() or slug
@@ -1003,6 +1007,7 @@ def run_ai_summary(config=None, client=None, now=None, sleep_fn=time.sleep):
     )
     client = client or ChatCompletionClient(config)
 
+    os.makedirs(FEED_DIR, exist_ok=True)
     run_info = {}
     processed_ids = set()
     email_sections = []
