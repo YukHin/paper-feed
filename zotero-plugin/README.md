@@ -8,16 +8,19 @@
 
 > ⚠️ v0.1：功能已按 Zotero 7 插件规范实现，但尚未在真实 Zotero 上充分测试，装上后可能需要一起调。
 
-## 安装（开发/本地）
+## 安装
 
-1. 把本目录下的三个文件 **`manifest.json`、`bootstrap.js`、`paperfeed.js`** 打包成一个 zip（注意这三个文件要在 zip 的**根目录**，不要多套一层文件夹），扩展名改为 `.xpi`：
+仓库里已内置打包好的 **`paper-feed-sync.xpi`**，直接用即可：
 
-   ```bash
-   cd zotero-plugin
-   zip -j paper-feed-sync.xpi manifest.json bootstrap.js paperfeed.js
-   ```
-
+1. 下载本目录下的 `paper-feed-sync.xpi`。
 2. Zotero → `工具` → `插件`（Add-ons）→ 右上角齿轮 → **Install Add-on From File…** → 选择 `paper-feed-sync.xpi`。
+
+改过源码后重新打包（三个文件须在 zip 根目录）：
+
+```bash
+cd zotero-plugin
+zip -j paper-feed-sync.xpi manifest.json bootstrap.js paperfeed.js
+```
 
 ## 配置
 
