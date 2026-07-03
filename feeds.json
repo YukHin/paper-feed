@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-03T09:31:27",
+  "generated": "2026-07-03T14:26:49",
   "feeds": [
     {
       "slug": "acs-nano",
@@ -49,13 +49,6 @@
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
       "count": 38
-    },
-    {
-      "slug": "angew-chem-int-ed",
-      "name": "Angew. Chem. Int. Ed.",
-      "publisher": "Wiley",
-      "file": "feeds/filtered_feed.angew-chem-int-ed.xml",
-      "count": 2
     },
     {
       "slug": "apl-energy-current-issue",
@@ -111,7 +104,7 @@
       "name": "Chem",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.chem.xml",
-      "count": 86
+      "count": 88
     },
     {
       "slug": "chemrxiv",
@@ -356,7 +349,7 @@
       "name": "PNAS",
       "publisher": "PNAS",
       "file": "feeds/filtered_feed.pnas.xml",
-      "count": 14
+      "count": 15
     },
     {
       "slug": "prb",
