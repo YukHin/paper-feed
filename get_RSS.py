@@ -380,18 +380,31 @@ def generate_feeds(items):
 
     print(f"Successfully generated {len(index)} per-journal feeds in {OUTPUT_DIR}/.")
 
+def is_allowlisted(entry, allow_set):
+    """直通名单：命中的期刊所有文章绕过关键词筛选。
+    可按 RSS 频道原名或标准缩写匹配（均大小写不敏感）。"""
+    if not allow_set:
+        return False
+    raw = (entry.get('journal') or '').strip().lower()
+    abbr = get_abbr(entry.get('journal') or '').strip().lower()
+    return raw in allow_set or abbr in allow_set
+
+
 def main():
     # 请确保这里的调用参数与你目前的 secrets 配置一致
-    rss_urls = load_config('journals.dat', 'RSS_JOURNALS')
+    rss_urls = load_config('sources.dat', 'RSS_JOURNALS')
     queries = load_config('keywords.dat', 'RSS_KEYWORDS')
-    
-    if not rss_urls or not queries:
+    allowlist = load_config('allowlist.dat', 'RSS_ALLOWLIST')
+    allow_set = {a.strip().lower() for a in allowlist if a.strip()}
+
+    # 只要有直通名单，即使没有关键词也能推送名单内期刊
+    if not rss_urls or (not queries and not allow_set):
         print("Error: Configuration files are empty or missing.")
         return
 
     existing_entries = get_existing_items()
     seen_ids = set(entry['id'] for entry in existing_entries)
-    
+
     all_entries = existing_entries.copy()
     new_count = 0
 
@@ -401,12 +414,14 @@ def main():
         for entry in fetched_entries:
             if entry['id'] in seen_ids:
                 continue
-            
-            if match_entry(entry, queries):
+
+            allow = is_allowlisted(entry, allow_set)
+            if allow or match_entry(entry, queries):
                 all_entries.append(entry)
                 seen_ids.add(entry['id'])
                 new_count += 1
-                print(f"Match found: {entry['title'][:50]}...")
+                tag = "Allowlist" if allow else "Match found"
+                print(f"{tag}: {entry['title'][:50]}...")
 
     print(f"Added {new_count} new entries.")
     generate_feeds(all_entries)

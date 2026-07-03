@@ -35,9 +35,10 @@
 
 #### 方式 A：文件配置（公开可见）
 直接编辑仓库中的以下文件：
-*   `journals.dat`：填入期刊 RSS 链接，一行一个。
+*   `sources.dat`：填入期刊 RSS 链接（总抓取源清单），一行一个。
 *   `keywords.dat`：填入筛选关键词，一行一个。
     *   示例：`Perovskite AND Stability`
+*   `allowlist.dat`：直通名单，列出的期刊所有文章跳过关键词筛选、直接推送（优先级高于 keywords），一行一个期刊名或缩写。
 
 #### 方式 B：环境变量配置（私密不可见）
 1.  进入仓库 **Settings** -> **Secrets and variables** -> **Actions**。

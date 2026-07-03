@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-03T03:37:48",
+  "generated": "2026-07-03T14:47:38",
   "feeds": [
     {
       "slug": "acs-nano",
@@ -27,7 +27,7 @@
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 98
+      "count": 99
     },
     {
       "slug": "adv-intell-discov",
@@ -48,7 +48,7 @@
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 36
+      "count": 37
     },
     {
       "slug": "apl-energy-current-issue",
@@ -62,7 +62,7 @@
       "name": "APL Mach. Learn.",
       "publisher": "AIP",
       "file": "feeds/filtered_feed.apl-mach-learn.xml",
-      "count": 3
+      "count": 4
     },
     {
       "slug": "appl-phys-lett",
@@ -83,7 +83,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 415
+      "count": 418
     },
     {
       "slug": "carbon-energy",
@@ -111,7 +111,7 @@
       "name": "ChemRxiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.chemrxiv.xml",
-      "count": 15
+      "count": 17
     },
     {
       "slug": "chinese-journal-of-catalysis",
@@ -146,7 +146,7 @@
       "name": "Curr. Opin. Solid State Mater. Sci.",
       "publisher": "Other",
       "file": "feeds/filtered_feed.curr-opin-solid-state-mater-sci.xml",
-      "count": 5
+      "count": 6
     },
     {
       "slug": "digital-discovery",
@@ -301,6 +301,13 @@
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-nanotechnol.xml",
       "count": 3
+    },
+    {
+      "slug": "nat-sens",
+      "name": "Nat. Sens.",
+      "publisher": "Nature Portfolio",
+      "file": "feeds/filtered_feed.nat-sens.xml",
+      "count": 1
     },
     {
       "slug": "nature",

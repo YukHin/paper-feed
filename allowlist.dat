@@ -1,0 +1,5 @@
+# 直通名单（whitelist）：此处列出的期刊，其所有文章不经关键词筛选，直接推送。
+# 适用于高度聚焦、篇篇相关的期刊（如 Nature Sensors）。
+# 每行一个期刊，可写 RSS 频道全名或标准缩写，大小写不敏感。
+Nature Sensors
+Nat. Sens.
