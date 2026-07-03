@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-03T03:28:53",
+  "generated": "2026-07-03T03:37:48",
   "feeds": [
     {
       "slug": "acs-nano",
@@ -51,13 +51,6 @@
       "count": 36
     },
     {
-      "slug": "angew-chem-int-ed",
-      "name": "Angew. Chem. Int. Ed.",
-      "publisher": "Wiley",
-      "file": "feeds/filtered_feed.angew-chem-int-ed.xml",
-      "count": 2
-    },
-    {
       "slug": "apl-energy-current-issue",
       "name": "APL Energy Current Issue",
       "publisher": "AIP",
@@ -100,13 +93,6 @@
       "count": 3
     },
     {
-      "slug": "ccs-chemistry",
-      "name": "CCS Chemistry",
-      "publisher": "Other",
-      "file": "feeds/filtered_feed.ccs-chemistry.xml",
-      "count": 8
-    },
-    {
       "slug": "cell-rep-phys-sci",
       "name": "Cell Rep. Phys. Sci.",
       "publisher": "Cell Press",
@@ -118,14 +104,7 @@
       "name": "Chem",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.chem.xml",
-      "count": 73
-    },
-    {
-      "slug": "chem-sci",
-      "name": "Chem. Sci.",
-      "publisher": "Other",
-      "file": "feeds/filtered_feed.chem-sci.xml",
-      "count": 3
+      "count": 86
     },
     {
       "slug": "chemrxiv",
