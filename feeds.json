@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-03T03:21:11",
+  "generated": "2026-07-03T03:28:53",
   "feeds": [
     {
       "slug": "acs-nano",
@@ -34,7 +34,7 @@
       "name": "Adv. Intell. Discov.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-intell-discov.xml",
-      "count": 5
+      "count": 8
     },
     {
       "slug": "adv-mater",
@@ -48,7 +48,14 @@
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 19
+      "count": 36
+    },
+    {
+      "slug": "angew-chem-int-ed",
+      "name": "Angew. Chem. Int. Ed.",
+      "publisher": "Wiley",
+      "file": "feeds/filtered_feed.angew-chem-int-ed.xml",
+      "count": 2
     },
     {
       "slug": "apl-energy-current-issue",
@@ -62,7 +69,7 @@
       "name": "APL Mach. Learn.",
       "publisher": "AIP",
       "file": "feeds/filtered_feed.apl-mach-learn.xml",
-      "count": 2
+      "count": 3
     },
     {
       "slug": "appl-phys-lett",
@@ -83,28 +90,42 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 411
+      "count": 415
     },
     {
       "slug": "carbon-energy",
       "name": "Carbon Energy",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.carbon-energy.xml",
-      "count": 1
+      "count": 3
+    },
+    {
+      "slug": "ccs-chemistry",
+      "name": "CCS Chemistry",
+      "publisher": "Other",
+      "file": "feeds/filtered_feed.ccs-chemistry.xml",
+      "count": 8
     },
     {
       "slug": "cell-rep-phys-sci",
       "name": "Cell Rep. Phys. Sci.",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.cell-rep-phys-sci.xml",
-      "count": 2
+      "count": 8
     },
     {
       "slug": "chem",
       "name": "Chem",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.chem.xml",
-      "count": 67
+      "count": 73
+    },
+    {
+      "slug": "chem-sci",
+      "name": "Chem. Sci.",
+      "publisher": "Other",
+      "file": "feeds/filtered_feed.chem-sci.xml",
+      "count": 3
     },
     {
       "slug": "chemrxiv",
@@ -128,39 +149,60 @@
       "count": 4
     },
     {
+      "slug": "commun-phys",
+      "name": "Commun. Phys.",
+      "publisher": "Other",
+      "file": "feeds/filtered_feed.commun-phys.xml",
+      "count": 1
+    },
+    {
       "slug": "comput-mater-sci",
       "name": "Comput. Mater. Sci.",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.comput-mater-sci.xml",
-      "count": 7
+      "count": 8
+    },
+    {
+      "slug": "curr-opin-solid-state-mater-sci",
+      "name": "Curr. Opin. Solid State Mater. Sci.",
+      "publisher": "Other",
+      "file": "feeds/filtered_feed.curr-opin-solid-state-mater-sci.xml",
+      "count": 5
     },
     {
       "slug": "digital-discovery",
       "name": "Digital Discovery",
       "publisher": "RSC",
       "file": "feeds/filtered_feed.digital-discovery.xml",
-      "count": 7
+      "count": 8
     },
     {
       "slug": "energy-environ-mater",
       "name": "Energy Environ. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.energy-environ-mater.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "escience",
       "name": "eScience",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.escience.xml",
-      "count": 4
+      "count": 9
+    },
+    {
+      "slug": "infomat",
+      "name": "InfoMat",
+      "publisher": "Wiley",
+      "file": "feeds/filtered_feed.infomat.xml",
+      "count": 3
     },
     {
       "slug": "iscience",
       "name": "iScience",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.iscience.xml",
-      "count": 18
+      "count": 30
     },
     {
       "slug": "j-catal",
@@ -181,7 +223,7 @@
       "name": "J. Materiomics",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.j-materiomics.xml",
-      "count": 3
+      "count": 7
     },
     {
       "slug": "jacs",
@@ -209,7 +251,7 @@
       "name": "Joule",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.joule.xml",
-      "count": 5
+      "count": 8
     },
     {
       "slug": "light-science-applications",
@@ -230,28 +272,28 @@
       "name": "Mater. Today",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.mater-today.xml",
-      "count": 1
+      "count": 9
     },
     {
       "slug": "mater-today-phys",
       "name": "Mater. Today Phys.",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.mater-today-phys.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "matter",
       "name": "Matter",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.matter.xml",
-      "count": 5
+      "count": 16
     },
     {
       "slug": "nano-energy",
       "name": "Nano Energy",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.nano-energy.xml",
-      "count": 4
+      "count": 18
     },
     {
       "slug": "nat-commun",
@@ -286,7 +328,14 @@
       "name": "Nature",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nature.xml",
-      "count": 19
+      "count": 20
+    },
+    {
+      "slug": "newton",
+      "name": "Newton",
+      "publisher": "Other",
+      "file": "feeds/filtered_feed.newton.xml",
+      "count": 6
     },
     {
       "slug": "npj-comput-mater",
@@ -314,7 +363,7 @@
       "name": "PNAS",
       "publisher": "PNAS",
       "file": "feeds/filtered_feed.pnas.xml",
-      "count": 4
+      "count": 14
     },
     {
       "slug": "prb",
@@ -322,6 +371,13 @@
       "publisher": "APS",
       "file": "feeds/filtered_feed.prb.xml",
       "count": 15
+    },
+    {
+      "slug": "prb-dynamics-dynamical-systems-lattice-effects-quantum-solids",
+      "name": "PRB: Dynamics, dynamical systems, lattice effects, quantum solids",
+      "publisher": "Other",
+      "file": "feeds/filtered_feed.prb-dynamics-dynamical-systems-lattice-effects-quantum-solids.xml",
+      "count": 4
     },
     {
       "slug": "prl",
@@ -335,7 +391,14 @@
       "name": "Prog. Mater. Sci.",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.prog-mater-sci.xml",
-      "count": 1
+      "count": 4
+    },
+    {
+      "slug": "rev-mod-phys",
+      "name": "Rev. Mod. Phys.",
+      "publisher": "Other",
+      "file": "feeds/filtered_feed.rev-mod-phys.xml",
+      "count": 5
     },
     {
       "slug": "sci-adv",
@@ -349,7 +412,7 @@
       "name": "Sci. Bull.",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.sci-bull.xml",
-      "count": 1
+      "count": 4
     },
     {
       "slug": "sci-robot",
@@ -377,14 +440,14 @@
       "name": "Small",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small.xml",
-      "count": 12
+      "count": 29
     },
     {
       "slug": "small-methods",
       "name": "Small Methods",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small-methods.xml",
-      "count": 4
+      "count": 13
     },
     {
       "slug": "small-struct",

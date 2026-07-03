@@ -9,21 +9,27 @@
     <outline text="Adv. Intell. Discov." title="Adv. Intell. Discov." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-intell-discov.xml"/>
     <outline text="Adv. Mater." title="Adv. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-mater.xml"/>
     <outline text="Adv. Sci." title="Adv. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-sci.xml"/>
+    <outline text="Angew. Chem. Int. Ed." title="Angew. Chem. Int. Ed." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.angew-chem-int-ed.xml"/>
     <outline text="APL Energy Current Issue" title="APL Energy Current Issue" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.apl-energy-current-issue.xml"/>
     <outline text="APL Mach. Learn." title="APL Mach. Learn." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.apl-mach-learn.xml"/>
     <outline text="Appl. Phys. Lett." title="Appl. Phys. Lett." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.appl-phys-lett.xml"/>
     <outline text="Appl. Phys. Rev." title="Appl. Phys. Rev." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.appl-phys-rev.xml"/>
     <outline text="arXiv" title="arXiv" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.arxiv.xml"/>
     <outline text="Carbon Energy" title="Carbon Energy" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.carbon-energy.xml"/>
+    <outline text="CCS Chemistry" title="CCS Chemistry" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.ccs-chemistry.xml"/>
     <outline text="Cell Rep. Phys. Sci." title="Cell Rep. Phys. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.cell-rep-phys-sci.xml"/>
     <outline text="Chem" title="Chem" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.chem.xml"/>
+    <outline text="Chem. Sci." title="Chem. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.chem-sci.xml"/>
     <outline text="ChemRxiv" title="ChemRxiv" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.chemrxiv.xml"/>
     <outline text="Chinese Journal of Catalysis" title="Chinese Journal of Catalysis" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.chinese-journal-of-catalysis.xml"/>
     <outline text="Commun. Mater." title="Commun. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.commun-mater.xml"/>
+    <outline text="Commun. Phys." title="Commun. Phys." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.commun-phys.xml"/>
     <outline text="Comput. Mater. Sci." title="Comput. Mater. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.comput-mater-sci.xml"/>
+    <outline text="Curr. Opin. Solid State Mater. Sci." title="Curr. Opin. Solid State Mater. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.curr-opin-solid-state-mater-sci.xml"/>
     <outline text="Digital Discovery" title="Digital Discovery" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.digital-discovery.xml"/>
     <outline text="Energy Environ. Mater." title="Energy Environ. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.energy-environ-mater.xml"/>
     <outline text="eScience" title="eScience" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.escience.xml"/>
+    <outline text="InfoMat" title="InfoMat" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.infomat.xml"/>
     <outline text="iScience" title="iScience" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.iscience.xml"/>
     <outline text="J. Catal." title="J. Catal." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.j-catal.xml"/>
     <outline text="J. Energy Storage" title="J. Energy Storage" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.j-energy-storage.xml"/>
@@ -43,13 +49,16 @@
     <outline text="Nat. Mater." title="Nat. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-mater.xml"/>
     <outline text="Nat. Nanotechnol." title="Nat. Nanotechnol." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-nanotechnol.xml"/>
     <outline text="Nature" title="Nature" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nature.xml"/>
+    <outline text="Newton" title="Newton" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.newton.xml"/>
     <outline text="npj Comput. Mater." title="npj Comput. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.npj-comput-mater.xml"/>
     <outline text="Phys. Rev. Applied" title="Phys. Rev. Applied" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.phys-rev-applied.xml"/>
     <outline text="Phys. Rev. X" title="Phys. Rev. X" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.phys-rev-x.xml"/>
     <outline text="PNAS" title="PNAS" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.pnas.xml"/>
     <outline text="PRB" title="PRB" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.prb.xml"/>
+    <outline text="PRB: Dynamics, dynamical systems, lattice effects, quantum solids" title="PRB: Dynamics, dynamical systems, lattice effects, quantum solids" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.prb-dynamics-dynamical-systems-lattice-effects-quantum-solids.xml"/>
     <outline text="PRL" title="PRL" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.prl.xml"/>
     <outline text="Prog. Mater. Sci." title="Prog. Mater. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.prog-mater-sci.xml"/>
+    <outline text="Rev. Mod. Phys." title="Rev. Mod. Phys." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.rev-mod-phys.xml"/>
     <outline text="Sci. Adv." title="Sci. Adv." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.sci-adv.xml"/>
     <outline text="Sci. Bull." title="Sci. Bull." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.sci-bull.xml"/>
     <outline text="Sci. Robot." title="Sci. Robot." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.sci-robot.xml"/>
