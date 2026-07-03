@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-03T14:47:38",
+  "generated": "2026-07-03T09:31:27",
   "feeds": [
     {
       "slug": "acs-nano",
@@ -27,7 +27,7 @@
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 99
+      "count": 120
     },
     {
       "slug": "adv-intell-discov",
@@ -41,14 +41,21 @@
       "name": "Adv. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-mater.xml",
-      "count": 39
+      "count": 49
     },
     {
       "slug": "adv-sci",
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 37
+      "count": 38
+    },
+    {
+      "slug": "angew-chem-int-ed",
+      "name": "Angew. Chem. Int. Ed.",
+      "publisher": "Wiley",
+      "file": "feeds/filtered_feed.angew-chem-int-ed.xml",
+      "count": 2
     },
     {
       "slug": "apl-energy-current-issue",
@@ -314,7 +321,7 @@
       "name": "Nature",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nature.xml",
-      "count": 20
+      "count": 21
     },
     {
       "slug": "newton",
@@ -426,14 +433,14 @@
       "name": "Small",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small.xml",
-      "count": 29
+      "count": 30
     },
     {
       "slug": "small-methods",
       "name": "Small Methods",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small-methods.xml",
-      "count": 13
+      "count": 14
     },
     {
       "slug": "small-struct",
