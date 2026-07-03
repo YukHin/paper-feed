@@ -27,6 +27,9 @@ JOURNAL_MAP = [
     # ── arXiv ────────────────────────────────────────────────────────────────
     {"prefix": "cond-mat updates on arXiv.org",             "abbr": "arXiv"},
     {"prefix": "AI for Science - latest papers",            "abbr": "arXiv"},
+    # arXiv API 检索源的频道标题是整串 "arXiv Query: search_query=..."，
+    # 必须归一成 arXiv，否则查询串会被写进 dc:source（Zotero 的出版物字段）
+    {"prefix": "arXiv Query",                               "abbr": "arXiv"},
     {"prefix": "ChemRxiv",                                  "abbr": "ChemRxiv"},
 
     # ── APS (American Physical Society) ──────────────────────────────────────
@@ -42,6 +45,7 @@ JOURNAL_MAP = [
     {"prefix": "Nature Energy",                             "abbr": "Nat. Energy"},
     {"prefix": "Nature Materials",                          "abbr": "Nat. Mater."},
     {"prefix": "Nature Nanotechnology",                     "abbr": "Nat. Nanotechnol."},
+    {"prefix": "Nature Sensors",                            "abbr": "Nat. Sens."},
     {"prefix": "Nature Machine Intelligence",               "abbr": "Nat. Mach. Intell."},
     {"prefix": "npj Computational Materials",               "abbr": "npj Comput. Mater."},
     {"prefix": "Communications Materials",                  "abbr": "Commun. Mater."},
@@ -228,7 +232,7 @@ PUBLISHER_MAP = {
     "Preprints": {"arXiv", "ChemRxiv"},
     "Nature Portfolio": {
         "Nature", "Nat. Commun.", "Nat. Mater.", "Nat. Nanotechnol.",
-        "Nat. Mach. Intell.", "npj Comput. Mater.", "Commun. Mater.",
+        "Nat. Sens.", "Nat. Mach. Intell.", "npj Comput. Mater.", "Commun. Mater.",
         "Light: Science & Applications",
     },
     "Science/AAAS": {"Science", "Sci. Adv.", "Sci. Robot."},
