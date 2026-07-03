@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-02T19:43:25",
+  "generated": "2026-07-03T03:21:11",
   "feeds": [
     {
       "slug": "acs-nano",
@@ -83,7 +83,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 408
+      "count": 411
     },
     {
       "slug": "carbon-energy",
