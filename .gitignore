@@ -1,5 +1,4 @@
 # Private config (loaded via file-or-secret; keep out of git)
-keywords.dat
 email.dat
 
 # Transient email body (regenerated each run, sent then discarded)

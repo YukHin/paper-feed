@@ -1,0 +1,42 @@
+# 过滤关键词：命中标题或摘要即收录（大小写不敏感，子串匹配）
+# 同一行用 AND 连接表示“同时包含”，例如：sensing AND metamaterial
+# 命中任一行即收录。
+
+# ── 超材料 / 超表面 核心 ────────────────────────────────
+metamaterial
+metasurface
+metastructure
+metalens
+metadevice
+
+# ── 可编程 / 可重构 / 智能 ──────────────────────────────
+programmable metamaterial
+reconfigurable metasurface
+intelligent metasurface
+reconfigurable intelligent surface
+
+# ── 声/弹性/力学 超材料 ─────────────────────────────────
+acoustic metamaterial
+elastic metamaterial
+mechanical metamaterial
+
+# ── 传感（与超材料/超表面组合）─────────────────────────
+sensing AND metamaterial
+sensing AND metasurface
+sensor AND metasurface
+terahertz AND sensing
+piezoelectric AND sensor
+flexible AND sensor
+tactile AND sensor
+
+# ── 传感（通用）────────────────────────────────────────
+sensor
+sensing
+biosensor
+wearable
+
+# ── 逆设计 / 机器学习 ───────────────────────────────────
+inverse design AND metamaterial
+topology optimization AND metamaterial
+learned metamaterial
+differentiable AND metamaterial
