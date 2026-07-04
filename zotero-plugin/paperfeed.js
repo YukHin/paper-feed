@@ -22,6 +22,10 @@ var PaperFeed = {
     this._setDefault("enabled", true);
     this._setDefault("cleanup", true);
     this._setDefault("lookupDoi", true);
+    this._setDefault("autoFetchPdf", false);  // fetch OA PDF during auto-sync
+
+    // Register custom "Find Available PDF" resolvers (open-access publishers).
+    this._registerPdfResolvers();
 
     for (const win of Zotero.getMainWindows()) this.addToWindow(win);
     this.restartTimer();
@@ -73,6 +77,9 @@ var PaperFeed = {
       this.toggleAuto();
     });
     mkItem("paperfeed-settings", "Paper-Feed：设置…", () => this.openSettings(window));
+
+    // Right-click context menu on selected items: fetch open-access PDF.
+    this.addItemMenu(window);
   },
 
   removeFromWindow(window) {
@@ -81,6 +88,26 @@ var PaperFeed = {
       const el = doc.getElementById(id);
       if (el) el.remove();
     }
+    this.removeItemMenu(window);
+  },
+
+  // Add a "抓取 PDF" entry to the item list's right-click menu (zotero-itemmenu).
+  addItemMenu(window) {
+    const doc = window.document;
+    const popup = doc.getElementById("zotero-itemmenu");
+    if (!popup || doc.getElementById("paperfeed-fetch-pdf")) return;
+    const item = doc.createXULElement("menuitem");
+    item.id = "paperfeed-fetch-pdf";
+    item.setAttribute("label", "Paper-Feed：抓取 PDF（开放获取）");
+    item.addEventListener("command", () => {
+      this.fetchPdfForSelected(window).catch((e) => this._log("fetch pdf error: " + e));
+    });
+    popup.appendChild(item);
+  },
+
+  removeItemMenu(window) {
+    const el = window.document.getElementById("paperfeed-fetch-pdf");
+    if (el) el.remove();
   },
 
   _autoLabel() {
@@ -172,8 +199,16 @@ var PaperFeed = {
     );
     this._setPref("cleanup", cleanupYes);
 
+    // 同步时自动抓取开放获取 PDF（默认关；逐条抓取较慢且可能碰付费墙/限流）
+    const autoPdfYes = ps.confirm(
+      window, "Paper-Feed 设置",
+      "定期同步时自动抓取开放获取 PDF？\n（每新增一条就尝试抓一次，较慢；付费无 OA 的抓不到，会跳过）\n\n确定=开启，取消=关闭"
+    );
+    this._setPref("autoFetchPdf", autoPdfYes);
+
     this.restartTimer();
-    this._notify("设置已保存（自动清理：" + (cleanupYes ? "开" : "关") + "）");
+    this._notify("设置已保存（自动清理：" + (cleanupYes ? "开" : "关") +
+      "；同步抓 PDF：" + (autoPdfYes ? "开" : "关") + "）");
   },
 
   // ---- timer ----
@@ -256,7 +291,12 @@ var PaperFeed = {
           }
           if (!p.url && !doi) continue;
           if (doi && existing.dois.has(doi)) continue;  // same DOI = same paper
-          await this._createItem(libraryID, coll.id, p);
+          const created = await this._createItem(libraryID, coll.id, p);
+          // Optionally fetch the open-access PDF right after creating the item.
+          if (created && this._getPref("autoFetchPdf") === true) {
+            try { await this._resolvePdf(created); }
+            catch (e) { this._log("auto pdf fetch failed: " + (e && e.message ? e.message : e)); }
+          }
           if (p.url) existing.urls.add(p.url);
           if (doi) existing.dois.add(doi);
           added++;
@@ -384,6 +424,7 @@ var PaperFeed = {
     item.setCollections([collectionID]);
     item.addTag("unread");  // mark freshly pulled papers as unread
     await item.saveTx();
+    return item;
   },
 
   // ---- fetch + parse ----
@@ -430,12 +471,19 @@ var PaperFeed = {
         url: link,
         guid: guid,
         abstract: this._stripHtml(get("description")),
-        journal: get("dc:source") || get("source") || get("author"),
+        journal: this._normalizeJournal(get("dc:source") || get("source") || get("author")),
         date: this._normalizeDate(get("pubDate")),
         doi: get("prism:doi") || get("dc:identifier") || this._extractDoi(guid, link),
       });
     }
     return out;
+  },
+
+  // Guard against raw feed-channel titles leaking into publicationTitle, e.g.
+  // arXiv API feeds titled "arXiv Query: search_query=...".
+  _normalizeJournal(name) {
+    if (/^arxiv\b/i.test((name || "").trim())) return "arXiv";
+    return name;
   },
 
   // Derive a DOI from the item's guid/link. Most publishers embed it directly
@@ -513,6 +561,220 @@ var PaperFeed = {
     if (!s) return "";
     const d = new Date(s);
     return isNaN(d.getTime()) ? s : d.toISOString().slice(0, 10);
+  },
+
+  // ---- PDF fetch (right-click + custom resolvers) ----
+
+  // Merge our custom "Find Available PDF" resolvers into Zotero's global pref
+  // (extensions.zotero.findPDFs.resolvers), deduped by name so we never
+  // clobber the user's own resolvers and never pile up duplicates on restart.
+  // One generic resolver scrapes the DOI landing page's <meta
+  // name="citation_pdf_url"> tag — the standard Highwire/Google-Scholar meta
+  // that Nature (incl. Nature Sensors), PNAS, Science, AAAS, etc. all emit,
+  // pointing straight at the article PDF.
+  _registerPdfResolvers() {
+    const KEY = "findPDFs.resolvers";  // -> extensions.zotero.findPDFs.resolvers
+    let arr = [];
+    try {
+      const raw = Zotero.Prefs.get(KEY);
+      if (raw) arr = JSON.parse(raw);
+      if (!Array.isArray(arr)) arr = [];
+    } catch (e) { arr = []; }
+
+    const ours = [
+      {
+        name: "Paper-Feed: citation_pdf_url",
+        method: "GET",
+        url: "https://doi.org/{doi}",
+        mode: "html",
+        selector: "meta[name='citation_pdf_url']",
+        attribute: "content",
+        automatic: false,
+      },
+    ];
+    const ourNames = new Set(ours.map((r) => r.name));
+    const kept = arr.filter((r) => r && !ourNames.has(r.name));
+    try {
+      Zotero.Prefs.set(KEY, JSON.stringify(kept.concat(ours)));
+      this._log("registered PDF resolvers (" + ours.length + ")");
+    } catch (e) {
+      this._log("resolver register failed: " + (e && e.message ? e.message : e));
+    }
+  },
+
+  // Fetch a PDF for each selected regular item and attach it. Uses Zotero's
+  // native resolver engine first (built-in OA/DOI + our custom resolver),
+  // then falls back to publisher-direct URLs for Nature Portfolio and PNAS.
+  async fetchPdfForSelected(window) {
+    const pane = window.ZoteroPane ||
+      (Zotero.getActiveZoteroPane && Zotero.getActiveZoteroPane());
+    let items = (pane && pane.getSelectedItems) ? pane.getSelectedItems() : [];
+    items = items.filter((it) => it.isRegularItem && it.isRegularItem());
+    if (!items.length) { this._notify("请先选中至少一条文献"); return; }
+
+    this._notify("开始抓取 " + items.length + " 条的 PDF…");
+    let ok = 0, have = 0, fail = 0;
+    for (const item of items) {
+      try {
+        if (this._hasPdf(item)) { have++; continue; }
+        const got = await this._resolvePdf(item);
+        if (got) ok++; else fail++;
+      } catch (e) {
+        fail++;
+        this._log("fetch pdf failed for item " + item.id + ": " +
+          (e && e.message ? e.message : e));
+      }
+    }
+    this._notify("抓取完成：成功 " + ok + "，已有 " + have + "，未找到 " + fail);
+  },
+
+  _hasPdf(item) {
+    try {
+      for (const id of item.getAttachments()) {
+        const att = Zotero.Items.get(id);
+        if (att && att.attachmentContentType === "application/pdf") return true;
+      }
+    } catch (e) {}
+    return false;
+  },
+
+  async _resolvePdf(item) {
+    // 1) Zotero's native engine: built-in OA (Unpaywall/DOI) + our resolver.
+    try {
+      if (Zotero.Attachments.addAvailablePDF) {
+        const att = await Zotero.Attachments.addAvailablePDF(item);
+        if (att) return att;
+      }
+    } catch (e) {
+      this._log("native addAvailablePDF: " + (e && e.message ? e.message : e));
+    }
+
+    // 2) Publisher-direct fallback (open resources: Nature Portfolio, PNAS).
+    const doi = this._normDoi(item.getField("DOI"));
+    const url = item.getField("url") || "";
+    const journal = (item.getField("publicationTitle") || "").toLowerCase();
+    for (const c of this._pdfCandidates(doi, url, journal)) {
+      const att = await this._downloadAndAttach(item, c.url, c.referer);
+      if (att) return att;
+    }
+
+    // 3) PMC / EuropePMC (open access) — covers PNAS and other PMC-deposited
+    // papers whose publisher site blocks direct PDF downloads.
+    const pmc = await this._tryPmc(item, doi);
+    if (pmc) return pmc;
+
+    return null;
+  },
+
+  // Build candidate direct-PDF URLs from the item's DOI/URL/journal.
+  _pdfCandidates(doi, url, journal) {
+    const out = [];
+    // arXiv (always OA): https://arxiv.org/pdf/<id>.pdf  — handles new ids
+    // (2401.12345v2) and legacy ids (cond-mat/0611292), from the abs/pdf URL
+    // or a 10.48550/arXiv.<id> DOI.
+    let axId = "";
+    const ax = url.match(/arxiv\.org\/(?:abs|pdf)\/([^?#]+)/i);
+    if (ax) axId = ax[1].replace(/\.pdf$/i, "");
+    else if (doi.indexOf("10.48550/arxiv.") === 0) axId = doi.slice("10.48550/arxiv.".length);
+    if (axId) {
+      out.push({
+        url: "https://arxiv.org/pdf/" + axId + ".pdf",
+        referer: "https://arxiv.org/",
+      });
+    }
+    // Nature Portfolio: https://www.nature.com/articles/<id>.pdf
+    const nm = url.match(/nature\.com\/articles\/([^/?#]+)/);
+    const natId = nm ? nm[1]
+      : (doi.indexOf("10.1038/") === 0 ? doi.slice("10.1038/".length) : "");
+    if (natId) {
+      out.push({
+        url: "https://www.nature.com/articles/" + natId + ".pdf",
+        referer: "https://www.nature.com/",
+      });
+    }
+    // Science / AAAS family (Science, Sci. Adv., Sci. Robot., Sci. Transl.
+    // Med., Sci. Immunol., Sci. Signal.): all live on science.org, which is
+    // Cloudflare-gated and hands HTML to anonymous bots. We still try the
+    // direct PDF because Zotero's request carries the user's cookies — so it
+    // succeeds when they have entitlement (campus/login) or the article is
+    // free; otherwise the %PDF check discards the HTML and we fall through to
+    // the PMC/EuropePMC route (which covers Sci. Adv. and NIH-deposited work).
+    if (doi.indexOf("10.1126/") === 0) {
+      out.push({
+        url: "https://www.science.org/doi/pdf/" + doi + "?download=true",
+        referer: "https://www.science.org/",
+      });
+    }
+    // Note: PNAS' own site (pnas.org) is likewise Cloudflare-gated, so we don't
+    // hit it directly — PNAS is deposited in PMC and handled by the
+    // PMC/EuropePMC fallback in _resolvePdf instead.
+    return out;
+  },
+
+  // DOI -> PMCID (NCBI ID converter) -> EuropePMC "render" PDF endpoint, which
+  // (unlike pnas.org / ncbi.nlm.nih.gov) serves the raw PDF to plain requests.
+  // Covers PNAS and the many other papers deposited in PubMed Central.
+  async _tryPmc(item, doi) {
+    if (!doi) return null;
+    let pmcid = "";
+    try {
+      const u = "https://www.ncbi.nlm.nih.gov/pmc/utils/idconv/v1.0/?format=json" +
+        "&tool=paper-feed-sync&email=paper-feed-sync@users.noreply.github.com" +
+        "&ids=" + encodeURIComponent(doi);
+      const xhr = await Zotero.HTTP.request("GET", u, { responseType: "text", timeout: 20000 });
+      const data = JSON.parse(xhr.responseText || "{}");
+      const rec = (data.records || [])[0] || {};
+      pmcid = rec.pmcid || "";
+    } catch (e) {
+      this._log("PMCID lookup failed: " + (e && e.message ? e.message : e));
+      return null;
+    }
+    if (!pmcid) return null;
+    return await this._downloadAndAttach(
+      item, "https://europepmc.org/articles/" + pmcid + "?pdf=render",
+      "https://europepmc.org/");
+  },
+
+  // Download bytes, verify the %PDF magic (paywalls hand back HTML), write to a
+  // temp file and import as a child attachment. Returns the attachment or null.
+  async _downloadAndAttach(item, pdfUrl, referer) {
+    let buf;
+    try {
+      const xhr = await Zotero.HTTP.request("GET", pdfUrl, {
+        responseType: "arraybuffer",
+        timeout: 60000,
+        headers: referer ? { Referer: referer } : {},
+      });
+      buf = xhr.response;
+    } catch (e) {
+      this._log("pdf GET failed " + pdfUrl + ": " + (e && e.message ? e.message : e));
+      return null;
+    }
+    const bytes = new Uint8Array(buf);
+    if (bytes.length < 5 || bytes[0] !== 0x25 || bytes[1] !== 0x50 ||
+        bytes[2] !== 0x44 || bytes[3] !== 0x46) {  // "%PDF"
+      this._log("not a PDF (likely paywall/HTML): " + pdfUrl);
+      return null;
+    }
+    let path;
+    try {
+      const dir = Zotero.getTempDirectory().path;
+      path = PathUtils.join(dir, "paperfeed-" + item.id + "-" + Date.now() + ".pdf");
+      await IOUtils.write(path, bytes);
+      const att = await Zotero.Attachments.importFromFile({
+        file: path,
+        parentItemID: item.id,
+        contentType: "application/pdf",
+        title: "Full Text PDF",
+      });
+      this._log("attached PDF from " + pdfUrl);
+      return att;
+    } catch (e) {
+      this._log("attach failed " + pdfUrl + ": " + (e && e.message ? e.message : e));
+      return null;
+    } finally {
+      if (path) { try { await IOUtils.remove(path); } catch (e) {} }
+    }
   },
 
   // ---- misc ----

@@ -11,7 +11,7 @@
 - 同步后自动清理父分类下**完全没有文献**的空分类（可关）。
 
 > 已在 Zotero 9.0.4 实测可安装运行。当前为快速迭代版本，遇到问题请看 `帮助 → Debug Output Logging` 里 `[Paper-Feed]` 日志。
-
+d
 ## 安装
 
 仓库里已内置打包好的 **`paper-feed-sync.xpi`**，直接用即可：
@@ -40,11 +40,27 @@ Zotero 菜单：`工具` → **Paper-Feed：设置…**，依次填写：
 - 也可随时手动触发：`工具` → **Paper-Feed：立即同步**。
 - 同步日志见 Zotero 的 `帮助` → `Debug Output Logging`，过滤 `[Paper-Feed]`。
 
+### 抓取开放获取 PDF（右键）
+
+在条目列表里**选中一条或多条**文献 → **右键** → **Paper-Feed：抓取 PDF（开放获取）**。插件会：
+
+1. 先走 Zotero 原生「查找可用 PDF」引擎（内置开放获取 / Unpaywall + 下述自定义解析器）；
+2. 再走出版商 / 开放获取直链兜底，下载后校验 `%PDF` 魔数（防止把付费墙 HTML 存成假 PDF），通过才作为子附件挂到条目上：
+   - **arXiv**：`arxiv.org/pdf/<id>.pdf`（纯 OA，最稳）；
+   - **Nature Portfolio（正刊 + 子刊，含 Nature Sensors / Nature Communications）**：`nature.com/articles/<id>.pdf`（OA 直接抓；付费文章需你有访问权限）；
+   - **Science / AAAS（正刊 + Sci. Adv. / Sci. Robot. / Sci. Transl. Med. 等子刊）**：`science.org/doi/pdf/<doi>`。science.org 有 Cloudflare 反爬，**匿名抓不到**（魔数校验会丢弃 HTML）；但 Zotero 请求带你的 cookie，**校园网/已登录时可下**，OA 的则靠下面的 PMC 兜底；
+   - **PMC / EuropePMC**：DOI →（NCBI）PMCID → `europepmc.org/articles/<PMCID>?pdf=render`。**PNAS、Science Advances 等走这条**（这些站点本身反爬、直链拿不到，但都存进 PMC），同时覆盖大量 NIH 资助、已进 PubMed Central 的文章；
+3. 已有 PDF 附件的条目自动跳过，最后弹窗汇报「成功 / 已有 / 未找到」。
+
+插件启动时会向 Zotero 的 `extensions.zotero.findPDFs.resolvers` 注册一条通用解析器（抓 DOI 落地页的 `<meta name="citation_pdf_url">`，覆盖 Nature、PNAS、Science 等多数出版商），按名字去重、不覆盖你已有的解析器。因此 Zotero 自带的**右键 →「查找可用的 PDF」**也会一并受益。
+
+> 仅解析**开放获取 / 合法公开**资源，不含 Sci-Hub 等；付费且无 OA 版本的文章仍抓不到（会计入「未找到」）。
+
 ## 说明与已知限制
 
 - **去重**同时看 `url` 与 `DOI`，与"库里当前的条目"比对。因此手动删掉、但仍在源里的文献，下次同步会被**重新拉回**。若要"删了不再拉"，需加忽略名单（记录已删 URL/DOI）——要的话告诉我。
 - 条目类型统一为 `journalArticle`，字段映射：标题→title、摘要（description 去标签）→abstractNote、期刊（dc:source）→publicationTitle、日期→date、链接→url、DOI→DOI。
-- 不抓取 PDF 全文，只建题录（符合 RSS 源本身的内容）。
+- **自动同步只建题录、不抓 PDF**（符合 RSS 源本身的内容）；PDF 需**手动右键抓取**（见上）。
 - Crossref 反查每篇最多一次网络请求，仅对链接推不出 DOI 的条目触发；可用 `lookupDoi` 关闭。
 
 ## 后续可加（按需）
@@ -55,6 +71,8 @@ Zotero 菜单：`工具` → **Paper-Feed：设置…**，依次填写：
 
 ## 更新历史（Changelog）
 
+- **0.3.0** — 新增**右键抓取开放获取 PDF**：注册 `citation_pdf_url` 自定义解析器到 Zotero「查找可用 PDF」，条目右键「Paper-Feed：抓取 PDF」调用原生引擎，直链兜底覆盖 **arXiv / Nature Portfolio（含 Nature Sensors）/ PMC·EuropePMC（PNAS 等）**，`%PDF` 魔数校验后挂附件；可选**同步时自动抓取**（`autoFetchPdf`，默认关）。
+- **0.2.1** — 出版物字段兜底归一：`dc:source` 若是 arXiv API 频道原始标题（`arXiv Query: search_query=...`），统一写成 `arXiv`。
 - **0.2.0** — 查重改用「父分类的直接子级」定位，彻底杜绝多次同步重复建分类。
 - **0.1.9** — 缺失 DOI 时改用 **Crossref 按标题反查**（不受 Cloudflare 影响），带标题匹配校验防误贴。
 - **0.1.8** — （已被 0.1.9 取代）尝试抓取文章页 `citation_doi` 元标签补 DOI。
