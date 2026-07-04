@@ -544,19 +544,51 @@ var PaperFeed = {
     const raw = input.value.trim();
     if (!raw) return;
 
-    // 2) choose target: this collection, or a preset-named subcollection
-    // (created under the base collection if it doesn't exist yet).
-    const presets = this._parseKeywords(this._getPref("presetCollections") || "");
-    const labels = ["① 直接加到「" + base.name + "」"].concat(
-      presets.map((n) => "＋ 子分类：" + n));
+    // 2) target options: (a) the right-clicked collection, (b) any FEED journal
+    // from feeds.json — even ones with no papers yet, so a manual paper lands in
+    // the same 父分类/出版社/期刊 slot the feed would use — (c) custom presets.
+    const options = [{ label: "① 直接加到「" + base.name + "」", kind: "base" }];
+    let feeds = [];
+    try {
+      const b = (this._getPref("baseUrl") || "").replace(/\/+$/, "");
+      if (b) {
+        const index = await this._fetchJSON(b + "/feeds.json");
+        feeds = (index && index.feeds) || [];
+      }
+    } catch (e) { this._log("addPaper: feeds.json fetch failed: " + e); }
+    feeds.slice()
+      .sort((a, b) => ((a.publisher || "") + a.name).localeCompare((b.publisher || "") + b.name))
+      .forEach((f) => options.push({
+        label: "📡 " + (f.publisher ? f.publisher + " / " : "") + f.name,
+        kind: "journal", feed: f,
+      }));
+    this._parseKeywords(this._getPref("presetCollections") || "")
+      .forEach((n) => options.push({ label: "＋ 子分类：" + n, kind: "preset", name: n }));
+
     const sel = { value: 0 };
     if (!Services.prompt.select(window, "选择归入的分类",
-      "把这篇论文放到哪里？（预设名可在 设置 → Paper-Feed 修改）",
-      labels.length, labels, sel)) return;
+      "把这篇论文放到哪里？（📡 = feed 订阅期刊，选中会按 出版社/期刊 建好）",
+      options.length, options.map((o) => o.label), sel)) return;
+    const choice = options[sel.value] || options[0];
 
+    // Resolve the target collection, creating the feed's publisher/journal nest
+    // (or a preset subcollection) if it does not exist yet.
     let target = base;
-    if (sel.value > 0) {
-      target = await this._ensureCollection(libraryID, presets[sel.value - 1], base);
+    try {
+      if (choice.kind === "journal") {
+        const parentName = this._getPref("parentCollection") || "Paper-Feed";
+        const parent = await this._ensureCollection(libraryID, parentName, null);
+        let jp = parent;
+        if (choice.feed.publisher) {
+          jp = await this._ensureCollection(libraryID, choice.feed.publisher, parent);
+        }
+        target = await this._ensureCollection(libraryID, choice.feed.name, jp);
+      } else if (choice.kind === "preset") {
+        target = await this._ensureCollection(libraryID, choice.name, base);
+      }
+    } catch (e) {
+      this._notify("创建分类失败：" + (e && e.message ? e.message : e));
+      return;
     }
 
     // 3) resolve metadata + create

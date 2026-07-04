@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Paper-Feed Sync",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Subscribe to paper-feed per-journal RSS feeds, auto-create a collection per journal, periodically pull new papers, and fetch open-access PDFs via right-click (custom Find-Available-PDF resolvers).",
   "author": "paper-feed",
   "icons": {
