@@ -1,56 +1,68 @@
 <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- light frosted-glass tile -->
-    <linearGradient id="tile" x1="0" y1="0" x2="0.3" y2="1">
-      <stop offset="0" stop-color="#fdfdff"/>
-      <stop offset="0.5" stop-color="#eef0f9"/>
-      <stop offset="1" stop-color="#e0e3f1"/>
+    <!-- domed glass tile: light top, gently darker bottom -->
+    <linearGradient id="tile" x1="0" y1="0" x2="0.25" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#eceef8"/>
+      <stop offset="1" stop-color="#d6d9ea"/>
     </linearGradient>
-    <radialGradient id="dome" cx="0.5" cy="-0.05" r="0.85">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
-      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.15"/>
+    <radialGradient id="dome" cx="0.5" cy="-0.1" r="0.95">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="0.45" stop-color="#ffffff" stop-opacity="0.18"/>
       <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
-    <!-- Zotero red, with glassy volume -->
-    <linearGradient id="zred" x1="0" y1="0" x2="0.25" y2="1">
-      <stop offset="0" stop-color="#f4756a"/>
-      <stop offset="0.5" stop-color="#dd3a3d"/>
-      <stop offset="1" stop-color="#b51e2b"/>
+    <radialGradient id="floorShade" cx="0.5" cy="1.05" r="0.7">
+      <stop offset="0" stop-color="#9096b8" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#9096b8" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Zotero red face, lit from top-left for volume -->
+    <linearGradient id="zred" x1="0.05" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#fa8478"/>
+      <stop offset="0.45" stop-color="#e04044"/>
+      <stop offset="1" stop-color="#a81826"/>
     </linearGradient>
     <linearGradient id="zsheen" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.65"/>
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.7"/>
       <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
-    <filter id="zshadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="#8a1220" flood-opacity="0.35"/>
+    <!-- soft ambient float shadow + tight contact shadow -->
+    <filter id="zfloat" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#6e0f1c" flood-opacity="0.32"/>
     </filter>
     <filter id="rssShadow" x="-60%" y="-60%" width="220%" height="220%">
-      <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#b51e2b" flood-opacity="0.4"/>
+      <feDropShadow dx="0" dy="1.2" stdDeviation="1.2" flood-color="#8a1220" flood-opacity="0.45"/>
     </filter>
   </defs>
 
-  <!-- glass tile -->
+  <!-- glass tile with dome highlight and floor shading -->
   <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#tile)"/>
+  <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#floorShade)"/>
   <rect x="4" y="4" width="120" height="120" rx="28" fill="url(#dome)"/>
-  <!-- crisp rim light -->
   <rect x="5.3" y="5.3" width="117.4" height="117.4" rx="26.7"
         fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="1.5"/>
   <rect x="4.7" y="4.7" width="118.6" height="118.6" rx="27.4"
-        fill="none" stroke="#c3c7dc" stroke-opacity="0.5" stroke-width="0.8"/>
+        fill="none" stroke="#b9bdd6" stroke-opacity="0.55" stroke-width="0.8"/>
 
-  <!-- Zotero "Z", glossy glass letterform, centred -->
-  <g filter="url(#zshadow)">
+  <!-- extruded side of the Z (depth), offset down-right behind the face -->
+  <path d="M38 38 H90 V51 L57 79 H90 V92 H38 V79 L71 51 H38 Z"
+        transform="translate(2.4,3.4)" fill="#7c1220"/>
+
+  <!-- Z face -->
+  <g filter="url(#zfloat)">
     <path d="M38 38 H90 V51 L57 79 H90 V92 H38 V79 L71 51 H38 Z" fill="url(#zred)"/>
   </g>
-  <!-- specular sheen across the top bar of the Z -->
+  <!-- top-left rim highlight for a beveled edge -->
+  <path d="M38 38 H90 V51 L57 79 H90 V92 H38 V79 L71 51 H38 Z"
+        fill="none" stroke="#ffd7cf" stroke-opacity="0.55" stroke-width="1.1"/>
+  <!-- specular sheen across the top bar -->
   <rect x="43" y="40.5" width="42" height="6" rx="3" fill="url(#zsheen)"/>
 
-  <!-- small RSS feed mark, top-right corner — signals the paper-feed source -->
+  <!-- small RSS feed mark, top-right corner -->
   <g filter="url(#rssShadow)">
-    <g fill="none" stroke="#dd3a3d" stroke-width="4" stroke-linecap="round">
+    <g fill="none" stroke="#e04044" stroke-width="4" stroke-linecap="round">
       <path d="M92 28 a10 10 0 0 1 10 10"/>
       <path d="M92 20 a18 18 0 0 1 18 18"/>
     </g>
-    <circle cx="92.5" cy="37.5" r="3.4" fill="#dd3a3d"/>
+    <circle cx="92.5" cy="37.5" r="3.4" fill="#e04044"/>
   </g>
 </svg>
