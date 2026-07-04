@@ -334,7 +334,8 @@ var PaperFeed = {
     try {
     const libraryID = Zotero.Libraries.userLibraryID;
     const parentName = this._getPref("parentCollection") || "Paper-Feed";
-    this._notify("开始同步…");
+    const prog = this._progressStart("Paper-Feed 同步");
+    this._progressUpdate(prog, 1, "读取订阅索引…");
 
     const parent = await this._ensureCollection(libraryID, parentName, null);
     const index = await this._fetchJSON(base + "/feeds.json");
@@ -342,10 +343,14 @@ var PaperFeed = {
 
     const existing = await this._getExisting(libraryID);
     let added = 0;
+    const total = feeds.length || 1;
     const pubCache = {};  // publisher name -> collection, so we make each once
 
-    for (const f of feeds) {
+    for (let i = 0; i < feeds.length; i++) {
+      const f = feeds[i];
       if (this._abort) { this._log("sync aborted by user"); break; }
+      this._progressUpdate(prog, (i / total) * 100,
+        "同步中 " + (i + 1) + "/" + total + "：" + f.name + "（新增 " + added + "）");
       let coll;
       try {
         // Nest as: <parent> / <publisher> / <journal>. Journals with no known
@@ -394,13 +399,13 @@ var PaperFeed = {
 
     let cleaned = 0;
     if (!this._abort && this._getPref("cleanup") !== false) {
+      this._progressUpdate(prog, 99, "清理空分类…");
       cleaned = await this._cleanupEmpty(parent);
     }
 
-    this._notify(
+    this._progressDone(prog,
       (this._abort ? "同步已停止，" : "同步完成，") + "新增 " + added + " 条文献" +
-      (cleaned ? "，清理空分类 " + cleaned + " 个" : "")
-    );
+      (cleaned ? "，清理空分类 " + cleaned + " 个" : ""));
     this._log("sync done, added " + added + ", cleaned " + cleaned);
     } finally {
       this._syncing = false;
@@ -1021,6 +1026,43 @@ var PaperFeed = {
     } finally {
       if (path) { try { await IOUtils.remove(path); } catch (e) {} }
     }
+  },
+
+  // ---- progress ----
+
+  // A persistent progress window with a determinate bar (ItemProgress), used to
+  // show sync advancing across the feed list. Returns null if the API is
+  // unavailable, in which case callers fall back to _notify.
+  _progressStart(headline) {
+    try {
+      const pw = new Zotero.ProgressWindow({ closeOnClick: false });
+      pw.changeHeadline(headline);
+      let icon = "chrome://zotero/skin/toolbar-advanced-search.png";
+      try { if (this.rootURI) icon = this.rootURI + "icon@48.png"; } catch (e) {}
+      const ip = new pw.ItemProgress(icon, "准备中…");
+      pw.show();
+      return { pw, ip };
+    } catch (e) {
+      this._log("progress start failed: " + (e && e.message ? e.message : e));
+      return null;
+    }
+  },
+
+  _progressUpdate(prog, pct, text) {
+    if (!prog) return;
+    try {
+      if (prog.ip.setProgress) prog.ip.setProgress(Math.max(1, Math.min(99, Math.round(pct))));
+      if (text && prog.ip.setText) prog.ip.setText(text);
+    } catch (e) {}
+  },
+
+  _progressDone(prog, text, ms) {
+    if (!prog) { this._notify(text); return; }
+    try {
+      if (prog.ip.setProgress) prog.ip.setProgress(100);
+      if (text && prog.ip.setText) prog.ip.setText(text);
+      prog.pw.startCloseTimer(ms || 4500);
+    } catch (e) { this._notify(text); }
   },
 
   // ---- misc ----
