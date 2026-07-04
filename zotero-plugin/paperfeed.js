@@ -24,6 +24,7 @@ var PaperFeed = {
     this._setDefault("lookupDoi", true);
     this._setDefault("autoFetchPdf", false);  // fetch OA PDF during auto-sync
     this._setDefault("blockWords", "");       // 屏蔽词（清理用；空=不执行）
+    this._setDefault("presetCollections", "手动收藏\n待读\n重点关注");  // 预设子分类名
 
     // Expose the singleton so the preferences pane can call back into it
     // (e.g. restart the timer after the interval changes).
@@ -526,33 +527,52 @@ var PaperFeed = {
   async addPaperToCollection(window) {
     const pane = window.ZoteroPane ||
       (Zotero.getActiveZoteroPane && Zotero.getActiveZoteroPane());
-    const coll = pane && pane.getSelectedCollection && pane.getSelectedCollection();
-    if (!coll) {
-      this._notify("请先在左侧选中一个分类（可先右键“新建子分类”）");
-      return;
-    }
-    const input = { value: "" };
-    const ok = Services.prompt.prompt(
-      window, "Paper-Feed 手动添加论文",
-      "输入 DOI 或文章链接（DOI 优先，可自动补全题录）：", input, null, {});
-    if (!ok || !input.value.trim()) return;
+    const libraryID = Zotero.Libraries.userLibraryID;
 
+    // Base collection = the right-clicked one, else the Paper-Feed parent.
+    let base = pane && pane.getSelectedCollection && pane.getSelectedCollection();
+    if (!base) {
+      const parentName = this._getPref("parentCollection") || "Paper-Feed";
+      base = this._findCollection(libraryID, parentName, null);
+    }
+    if (!base) { this._notify("请先在左侧选中一个分类"); return; }
+
+    // 1) DOI / URL
+    const input = { value: "" };
+    if (!Services.prompt.prompt(window, "Paper-Feed 手动添加论文",
+      "输入 DOI 或文章链接（DOI 优先，可自动补全题录）：", input, null, {})) return;
     const raw = input.value.trim();
+    if (!raw) return;
+
+    // 2) choose target: this collection, or a preset-named subcollection
+    // (created under the base collection if it doesn't exist yet).
+    const presets = this._parseKeywords(this._getPref("presetCollections") || "");
+    const labels = ["① 直接加到「" + base.name + "」"].concat(
+      presets.map((n) => "＋ 子分类：" + n));
+    const sel = { value: 0 };
+    if (!Services.prompt.select(window, "选择归入的分类",
+      "把这篇论文放到哪里？（预设名可在 设置 → Paper-Feed 修改）",
+      labels.length, labels, sel)) return;
+
+    let target = base;
+    if (sel.value > 0) {
+      target = await this._ensureCollection(libraryID, presets[sel.value - 1], base);
+    }
+
+    // 3) resolve metadata + create
     try {
       const p = await this._resolvePaperInput(raw);
       if (!p) { this._notify("无法识别该输入，请提供 DOI 或链接"); return; }
 
-      const libraryID = Zotero.Libraries.userLibraryID;
       const existing = await this._getExisting(libraryID);
       const ndoi = p.doi ? this._normDoi(p.doi) : "";
       if ((p.url && existing.urls.has(p.url)) || (ndoi && existing.dois.has(ndoi))) {
         this._notify("库中已存在该文献，未重复添加");
         return;
       }
-      const item = await this._createItem(libraryID, coll.id, p);
+      const item = await this._createItem(libraryID, target.id, p);
       if (item) { item.addTag("manual"); await item.saveTx(); }  // mark manual
-      this._notify("已添加到 “" + coll.name + "”：" +
-        (p.title || raw).slice(0, 40));
+      this._notify("已添加到 “" + target.name + "”：" + (p.title || raw).slice(0, 40));
     } catch (e) {
       this._notify("添加失败：" + (e && e.message ? e.message : e));
     }

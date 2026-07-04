@@ -81,6 +81,7 @@ zip -j paper-feed-sync.xpi manifest.json bootstrap.js paperfeed.js prefs.xhtml p
 
 ## 更新历史（Changelog）
 
+- **0.6.1** — 手动添加论文时，目标分类可从**预设子分类名**里选（设置 → Paper-Feed 可自定义，默认「手动收藏/待读/重点关注」），选中的名字若不存在会自动在当前分类下创建；也可选「直接加到当前分类」。
 - **0.6.0** — 新增**手动添加论文**：右键左侧分类 → `Paper-Feed：添加论文（DOI/链接）到此分类`，输入 DOI（Crossref 补全标题/作者/期刊/日期/摘要）或链接，建到该分类下，按 URL/DOI 去重、打 `manual` 标签。用于补 feed 没抓到、但你想收的论文。
 - **0.5.1** — 修复设置面板不保存/不回显：绑定脚本改为外部 `prefs.js`（面板内联 `<script>` 被 CSP 拦截而未运行），经 `PreferencePanes.register({scripts})` 加载。
 - **0.5.0** — 设置移入 **Zotero 设置面板**（不再用工具菜单弹窗）；清理改为**按手动输入的屏蔽词**（命中标题/摘要即移入回收站，**未设置不执行**）；新增插件**图标**（液态玻璃风）。

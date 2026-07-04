@@ -56,6 +56,13 @@
     <html:span class="pf-hint">用于「工具 → Paper-Feed：按屏蔽词清理题录」。<html:b>留空则不执行清理</html:b>（安全默认）。移入回收站，可恢复。</html:span>
   </html:div>
 
+  <html:div class="pf-row">
+    <html:span class="pf-label">预设子分类名</html:span>
+    <html:textarea id="pf-presetCollections" rows="4"
+                   placeholder="每行一个，手动添加论文时可从中选择&#10;例如：&#10;手动收藏&#10;待读&#10;重点关注"></html:textarea>
+    <html:span class="pf-hint">右键分类「添加论文（DOI/链接）」时，可从这些名字里选一个作为子分类（不存在则自动创建）。</html:span>
+  </html:div>
+
   <!-- bindings live in prefs.js, loaded via PreferencePanes.register({scripts})
        because inline scripts are blocked by the pane's CSP -->
 </vbox>

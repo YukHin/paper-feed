@@ -53,6 +53,7 @@
       return (s || "").trim() || "Paper-Feed";
     });
     bindText("pf-blockWords", "blockWords", null);
+    bindText("pf-presetCollections", "presetCollections", null);
     bindCheck("pf-cleanup", "cleanup");
     bindCheck("pf-autoFetchPdf", "autoFetchPdf");
   }
