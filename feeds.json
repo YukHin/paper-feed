@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-03T19:41:14",
+  "generated": "2026-07-04T03:52:18",
   "feeds": [
     {
       "slug": "acs-nano",
@@ -279,7 +279,7 @@
       "name": "Nat. Commun.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-commun.xml",
-      "count": 11
+      "count": 12
     },
     {
       "slug": "nat-mach-intell",
