@@ -2,39 +2,39 @@
 <opml version="2.0">
   <head><title>Paper-Feed 分期刊订阅</title></head>
   <body>
-    <outline text="Adv. Funct. Mater." title="Adv. Funct. Mater." type="rss" xmlUrl="feeds/filtered_feed.adv-funct-mater.xml"/>
-    <outline text="Adv. Mater." title="Adv. Mater." type="rss" xmlUrl="feeds/filtered_feed.adv-mater.xml"/>
-    <outline text="Adv. Sci." title="Adv. Sci." type="rss" xmlUrl="feeds/filtered_feed.adv-sci.xml"/>
-    <outline text="APL Mach. Learn." title="APL Mach. Learn." type="rss" xmlUrl="feeds/filtered_feed.apl-mach-learn.xml"/>
-    <outline text="arXiv" title="arXiv" type="rss" xmlUrl="feeds/filtered_feed.arxiv.xml"/>
-    <outline text="Carbon Energy" title="Carbon Energy" type="rss" xmlUrl="feeds/filtered_feed.carbon-energy.xml"/>
-    <outline text="Cell Rep. Phys. Sci." title="Cell Rep. Phys. Sci." type="rss" xmlUrl="feeds/filtered_feed.cell-rep-phys-sci.xml"/>
-    <outline text="Chem" title="Chem" type="rss" xmlUrl="feeds/filtered_feed.chem.xml"/>
-    <outline text="Curr. Opin. Solid State Mater. Sci." title="Curr. Opin. Solid State Mater. Sci." type="rss" xmlUrl="feeds/filtered_feed.curr-opin-solid-state-mater-sci.xml"/>
-    <outline text="eScience" title="eScience" type="rss" xmlUrl="feeds/filtered_feed.escience.xml"/>
-    <outline text="InfoMat" title="InfoMat" type="rss" xmlUrl="feeds/filtered_feed.infomat.xml"/>
-    <outline text="iScience" title="iScience" type="rss" xmlUrl="feeds/filtered_feed.iscience.xml"/>
-    <outline text="J. Materiomics" title="J. Materiomics" type="rss" xmlUrl="feeds/filtered_feed.j-materiomics.xml"/>
-    <outline text="Light: Science &amp; Applications" title="Light: Science &amp; Applications" type="rss" xmlUrl="feeds/filtered_feed.light-science-applications.xml"/>
-    <outline text="Mater. Today" title="Mater. Today" type="rss" xmlUrl="feeds/filtered_feed.mater-today.xml"/>
-    <outline text="Matter" title="Matter" type="rss" xmlUrl="feeds/filtered_feed.matter.xml"/>
-    <outline text="Nano Energy" title="Nano Energy" type="rss" xmlUrl="feeds/filtered_feed.nano-energy.xml"/>
-    <outline text="Nat. Commun." title="Nat. Commun." type="rss" xmlUrl="feeds/filtered_feed.nat-commun.xml"/>
-    <outline text="Nat. Nanotechnol." title="Nat. Nanotechnol." type="rss" xmlUrl="feeds/filtered_feed.nat-nanotechnol.xml"/>
-    <outline text="Nat. Sens." title="Nat. Sens." type="rss" xmlUrl="feeds/filtered_feed.nat-sens.xml"/>
-    <outline text="Nature" title="Nature" type="rss" xmlUrl="feeds/filtered_feed.nature.xml"/>
-    <outline text="Newton" title="Newton" type="rss" xmlUrl="feeds/filtered_feed.newton.xml"/>
-    <outline text="npj Comput. Mater." title="npj Comput. Mater." type="rss" xmlUrl="feeds/filtered_feed.npj-comput-mater.xml"/>
-    <outline text="Phys. Rev. Applied" title="Phys. Rev. Applied" type="rss" xmlUrl="feeds/filtered_feed.phys-rev-applied.xml"/>
-    <outline text="Phys. Rev. X" title="Phys. Rev. X" type="rss" xmlUrl="feeds/filtered_feed.phys-rev-x.xml"/>
-    <outline text="PNAS" title="PNAS" type="rss" xmlUrl="feeds/filtered_feed.pnas.xml"/>
-    <outline text="PRB" title="PRB" type="rss" xmlUrl="feeds/filtered_feed.prb.xml"/>
-    <outline text="PRB: Dynamics, dynamical systems, lattice effects, quantum solids" title="PRB: Dynamics, dynamical systems, lattice effects, quantum solids" type="rss" xmlUrl="feeds/filtered_feed.prb-dynamics-dynamical-systems-lattice-effects-quantum-solids.xml"/>
-    <outline text="PRL" title="PRL" type="rss" xmlUrl="feeds/filtered_feed.prl.xml"/>
-    <outline text="Rev. Mod. Phys." title="Rev. Mod. Phys." type="rss" xmlUrl="feeds/filtered_feed.rev-mod-phys.xml"/>
-    <outline text="Sci. Adv." title="Sci. Adv." type="rss" xmlUrl="feeds/filtered_feed.sci-adv.xml"/>
-    <outline text="Sci. Bull." title="Sci. Bull." type="rss" xmlUrl="feeds/filtered_feed.sci-bull.xml"/>
-    <outline text="Sensors and Actuators A: Physical" title="Sensors and Actuators A: Physical" type="rss" xmlUrl="feeds/filtered_feed.sensors-and-actuators-a-physical.xml"/>
-    <outline text="Small" title="Small" type="rss" xmlUrl="feeds/filtered_feed.small.xml"/>
+    <outline text="Adv. Funct. Mater." title="Adv. Funct. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-funct-mater.xml"/>
+    <outline text="Adv. Mater." title="Adv. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-mater.xml"/>
+    <outline text="Adv. Sci." title="Adv. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-sci.xml"/>
+    <outline text="APL Mach. Learn." title="APL Mach. Learn." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.apl-mach-learn.xml"/>
+    <outline text="arXiv" title="arXiv" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.arxiv.xml"/>
+    <outline text="Carbon Energy" title="Carbon Energy" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.carbon-energy.xml"/>
+    <outline text="Cell Rep. Phys. Sci." title="Cell Rep. Phys. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.cell-rep-phys-sci.xml"/>
+    <outline text="Chem" title="Chem" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.chem.xml"/>
+    <outline text="Curr. Opin. Solid State Mater. Sci." title="Curr. Opin. Solid State Mater. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.curr-opin-solid-state-mater-sci.xml"/>
+    <outline text="eScience" title="eScience" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.escience.xml"/>
+    <outline text="InfoMat" title="InfoMat" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.infomat.xml"/>
+    <outline text="iScience" title="iScience" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.iscience.xml"/>
+    <outline text="J. Materiomics" title="J. Materiomics" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.j-materiomics.xml"/>
+    <outline text="Light: Science &amp; Applications" title="Light: Science &amp; Applications" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.light-science-applications.xml"/>
+    <outline text="Mater. Today" title="Mater. Today" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.mater-today.xml"/>
+    <outline text="Matter" title="Matter" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.matter.xml"/>
+    <outline text="Nano Energy" title="Nano Energy" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nano-energy.xml"/>
+    <outline text="Nat. Commun." title="Nat. Commun." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-commun.xml"/>
+    <outline text="Nat. Nanotechnol." title="Nat. Nanotechnol." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-nanotechnol.xml"/>
+    <outline text="Nat. Sens." title="Nat. Sens." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-sens.xml"/>
+    <outline text="Nature" title="Nature" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nature.xml"/>
+    <outline text="Newton" title="Newton" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.newton.xml"/>
+    <outline text="npj Comput. Mater." title="npj Comput. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.npj-comput-mater.xml"/>
+    <outline text="Phys. Rev. Applied" title="Phys. Rev. Applied" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.phys-rev-applied.xml"/>
+    <outline text="Phys. Rev. X" title="Phys. Rev. X" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.phys-rev-x.xml"/>
+    <outline text="PNAS" title="PNAS" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.pnas.xml"/>
+    <outline text="PRB" title="PRB" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.prb.xml"/>
+    <outline text="PRB: Dynamics, dynamical systems, lattice effects, quantum solids" title="PRB: Dynamics, dynamical systems, lattice effects, quantum solids" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.prb-dynamics-dynamical-systems-lattice-effects-quantum-solids.xml"/>
+    <outline text="PRL" title="PRL" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.prl.xml"/>
+    <outline text="Rev. Mod. Phys." title="Rev. Mod. Phys." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.rev-mod-phys.xml"/>
+    <outline text="Sci. Adv." title="Sci. Adv." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.sci-adv.xml"/>
+    <outline text="Sci. Bull." title="Sci. Bull." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.sci-bull.xml"/>
+    <outline text="Sensors and Actuators A: Physical" title="Sensors and Actuators A: Physical" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.sensors-and-actuators-a-physical.xml"/>
+    <outline text="Small" title="Small" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.small.xml"/>
   </body>
 </opml>
