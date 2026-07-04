@@ -28,6 +28,11 @@
       <stop offset="0" stop-color="#ffffff"/>
       <stop offset="1" stop-color="#dfe4ff"/>
     </linearGradient>
+    <!-- Zotero red for the Z badge -->
+    <linearGradient id="zot" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8544a"/>
+      <stop offset="1" stop-color="#c31f2b"/>
+    </linearGradient>
     <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
       <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1a0c52" flood-opacity="0.38"/>
     </filter>
@@ -64,7 +69,15 @@
   </g>
 
   <!-- document text lines (translucent) -->
-  <rect x="41" y="66" width="34" height="5.5" rx="2.75" fill="#ffffff" fill-opacity="0.72"/>
-  <rect x="41" y="79" width="30" height="5.5" rx="2.75" fill="#ffffff" fill-opacity="0.6"/>
-  <rect x="41" y="92" width="22" height="5.5" rx="2.75" fill="#ffffff" fill-opacity="0.48"/>
+  <rect x="41" y="64" width="30" height="5.5" rx="2.75" fill="#ffffff" fill-opacity="0.72"/>
+  <rect x="41" y="76" width="26" height="5.5" rx="2.75" fill="#ffffff" fill-opacity="0.6"/>
+
+  <!-- Zotero "Z" badge, bottom-right — brand accent, diagonally balancing the
+       RSS mark in the top-right -->
+  <g filter="url(#soft)">
+    <circle cx="84" cy="96" r="13" fill="url(#zot)"/>
+  </g>
+  <circle cx="84" cy="96" r="13" fill="none" stroke="#ffffff" stroke-opacity="0.75" stroke-width="1.4"/>
+  <path d="M78 91 H90 L78 101 H90" fill="none" stroke="#ffffff" stroke-width="2.8"
+        stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
