@@ -23,6 +23,11 @@ var PaperFeed = {
     this._setDefault("cleanup", true);
     this._setDefault("lookupDoi", true);
     this._setDefault("autoFetchPdf", false);  // fetch OA PDF during auto-sync
+    this._setDefault("blockWords", "");       // 屏蔽词（清理用；空=不执行）
+
+    // Expose the singleton so the preferences pane can call back into it
+    // (e.g. restart the timer after the interval changes).
+    Zotero.PaperFeed = this;
 
     // Register custom "Find Available PDF" resolvers (open-access publishers).
     this._registerPdfResolvers();
@@ -39,6 +44,7 @@ var PaperFeed = {
   uninit() {
     this.stopTimer();
     if (this._startupTimer) { this._startupTimer.cancel(); this._startupTimer = null; }
+    if (Zotero.PaperFeed === this) delete Zotero.PaperFeed;
     for (const win of Zotero.getMainWindows()) this.removeFromWindow(win);
   },
 
@@ -73,13 +79,12 @@ var PaperFeed = {
     mkItem("paperfeed-rebuild", "Paper-Feed：重建（清空后重新同步）", () => {
       this.rebuild(window).catch((e) => this._log("rebuild error: " + e));
     });
-    mkItem("paperfeed-cleanup-kw", "Paper-Feed：按关键词清理题录（删不匹配的）", () => {
-      this.cleanupByKeywords(window).catch((e) => this._log("cleanup error: " + e));
+    mkItem("paperfeed-cleanup-kw", "Paper-Feed：按屏蔽词清理题录", () => {
+      this.cleanupByBlockWords(window).catch((e) => this._log("cleanup error: " + e));
     });
     this._toggleItem = mkItem("paperfeed-toggle", this._autoLabel(), () => {
       this.toggleAuto();
     });
-    mkItem("paperfeed-settings", "Paper-Feed：设置…", () => this.openSettings(window));
 
     // Right-click context menu on selected items: fetch open-access PDF.
     this.addItemMenu(window);
@@ -87,7 +92,7 @@ var PaperFeed = {
 
   removeFromWindow(window) {
     const doc = window.document;
-    for (const id of ["paperfeed-sync-now", "paperfeed-stop", "paperfeed-rebuild", "paperfeed-cleanup-kw", "paperfeed-toggle", "paperfeed-settings"]) {
+    for (const id of ["paperfeed-sync-now", "paperfeed-stop", "paperfeed-rebuild", "paperfeed-cleanup-kw", "paperfeed-toggle"]) {
       const el = doc.getElementById(id);
       if (el) el.remove();
     }
@@ -155,23 +160,18 @@ var PaperFeed = {
   },
 
   // Trash every feed-synced item under the parent collection whose title +
-  // abstract does NOT match the current keywords.dat (fetched from the site
-  // base URL). Scope is strictly the parent subtree, so items you filed
-  // elsewhere (Survey / Papers / …) are never touched. Items go to Zotero's
-  // Trash (recoverable), not erased. Asks for confirmation with the count.
-  async cleanupByKeywords(window) {
+  // abstract contains any user-defined block word (设置 → 屏蔽词). Scope is
+  // strictly the parent subtree, so items you filed elsewhere (Survey /
+  // Papers / …) are never touched. Items go to Zotero's Trash (recoverable),
+  // not erased. If no block words are set, the action does nothing (by design).
+  async cleanupByBlockWords(window) {
     if (this._syncing) { this._notify("正在同步中，请先停止再清理"); return; }
-    const base = (this._getPref("baseUrl") || "").replace(/\/+$/, "");
-    if (!base) { this._notify("请先在设置里填写站点基址"); return; }
 
-    let queries;
-    try {
-      queries = this._parseKeywords(await this._fetchText(base + "/keywords.dat"));
-    } catch (e) {
-      this._notify("无法获取 keywords.dat：" + (e && e.message ? e.message : e));
+    const blocks = this._parseKeywords(this._getPref("blockWords") || "");
+    if (!blocks.length) {
+      this._notify("未设置屏蔽词：请在 设置 → Paper-Feed 里填写后再执行（未设置不清理）");
       return;
     }
-    if (!queries.length) { this._notify("keywords.dat 为空，已取消"); return; }
 
     const libraryID = Zotero.Libraries.userLibraryID;
     const parentName = this._getPref("parentCollection") || "Paper-Feed";
@@ -188,17 +188,18 @@ var PaperFeed = {
       try {
         text = (it.getField("title") || "") + " " + (it.getField("abstractNote") || "");
       } catch (e) {}
-      if (!this._matchKeywords(text, queries)) toTrash.push(it.id);
+      if (this._matchKeywords(text, blocks)) toTrash.push(it.id);  // hits a block word
     }
 
     if (!toTrash.length) {
-      this._notify("没有需要清理的题录（全部匹配关键词）");
+      this._notify("没有命中屏蔽词的题录，无需清理");
       return;
     }
     const ok = Services.prompt.confirm(
-      window, "Paper-Feed 按关键词清理",
-      "将把 “" + parentName + "” 下 " + toTrash.length + " 条不匹配当前关键词的题录移入" +
-      "回收站（可在 Zotero 回收站恢复）。\n共扫描 " + items.size + " 条。\n\n确定继续？"
+      window, "Paper-Feed 按屏蔽词清理",
+      "将把 “" + parentName + "” 下 " + toTrash.length + " 条命中屏蔽词的题录移入" +
+      "回收站（可在 Zotero 回收站恢复）。\n共扫描 " + items.size + " 条，屏蔽词 " +
+      blocks.length + " 条。\n\n确定继续？"
     );
     if (!ok) return;
 
@@ -211,8 +212,8 @@ var PaperFeed = {
           if (it) { it.deleted = true; await it.saveTx(); }
         }
       }
-      this._log("cleanup: trashed " + toTrash.length + " items");
-      this._notify("已移入回收站 " + toTrash.length + " 条不匹配题录");
+      this._log("cleanup: trashed " + toTrash.length + " items by block words");
+      this._notify("已移入回收站 " + toTrash.length + " 条命中屏蔽词的题录");
     } catch (e) {
       this._notify("清理失败：" + (e && e.message ? e.message : e));
     }
@@ -230,8 +231,8 @@ var PaperFeed = {
     for (const child of children) this._collectItems(child, acc);
   },
 
-  // Parse keywords.dat: one query per non-comment line; "AND" splits a line
-  // into substrings that must all be present. Mirrors the backend matcher.
+  // Parse a textarea/word list: one term per non-comment line; "AND" splits a
+  // line into substrings that must all be present. Mirrors the backend matcher.
   _parseKeywords(text) {
     return String(text || "")
       .split(/\r?\n/)
@@ -268,44 +269,6 @@ var PaperFeed = {
       this._notify("已启用自动同步，每 " + (this._getPref("intervalHours") || 6) + " 小时一次");
     }
     this._refreshToggleLabels();
-  },
-
-  openSettings(window) {
-    const ps = Services.prompt;
-    const base = { value: this._getPref("baseUrl") || "" };
-    if (!ps.prompt(window, "Paper-Feed 设置",
-      "站点基址（例如 https://yukhin.github.io/paper-feed）", base, null, {})) return;
-    this._setPref("baseUrl", (base.value || "").trim().replace(/\/+$/, ""));
-
-    const iv = { value: String(this._getPref("intervalHours") || 6) };
-    if (ps.prompt(window, "Paper-Feed 设置", "自动更新间隔（小时）", iv, null, {})) {
-      const n = parseFloat(iv.value);
-      if (n > 0) this._setPref("intervalHours", n);
-    }
-
-    const parent = { value: this._getPref("parentCollection") || "Paper-Feed" };
-    if (ps.prompt(window, "Paper-Feed 设置", "父分类名称", parent, null, {})) {
-      if (parent.value.trim()) this._setPref("parentCollection", parent.value.trim());
-    }
-
-    // 同步后自动清理空分类（仅删除整个子树无文献的分类，安全）
-    const cleanupYes = ps.confirm(
-      window, "Paper-Feed 设置",
-      "同步后自动清理空分类？\n（只删除 " + (this._getPref("parentCollection") || "Paper-Feed") +
-      " 下完全没有文献的分类，不会删除任何文献）\n\n确定=开启，取消=关闭"
-    );
-    this._setPref("cleanup", cleanupYes);
-
-    // 同步时自动抓取开放获取 PDF（默认关；逐条抓取较慢且可能碰付费墙/限流）
-    const autoPdfYes = ps.confirm(
-      window, "Paper-Feed 设置",
-      "定期同步时自动抓取开放获取 PDF？\n（每新增一条就尝试抓一次，较慢；付费无 OA 的抓不到，会跳过）\n\n确定=开启，取消=关闭"
-    );
-    this._setPref("autoFetchPdf", autoPdfYes);
-
-    this.restartTimer();
-    this._notify("设置已保存（自动清理：" + (cleanupYes ? "开" : "关") +
-      "；同步抓 PDF：" + (autoPdfYes ? "开" : "关") + "）");
   },
 
   // ---- timer ----

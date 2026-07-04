@@ -19,26 +19,32 @@ d
 1. 下载本目录下的 `paper-feed-sync.xpi`。
 2. Zotero → `工具` → `插件`（Add-ons）→ 右上角齿轮 → **Install Add-on From File…** → 选择 `paper-feed-sync.xpi`。
 
-改过源码后重新打包（三个文件须在 zip 根目录）：
+改过源码后重新打包（所有文件须在 zip 根目录）：
 
 ```bash
 cd zotero-plugin
-zip -j paper-feed-sync.xpi manifest.json bootstrap.js paperfeed.js
+zip -j paper-feed-sync.xpi manifest.json bootstrap.js paperfeed.js prefs.xhtml icon@48.png icon@96.png
 ```
 
 ## 配置
 
-Zotero 菜单：`工具` → **Paper-Feed：设置…**，依次填写：
+设置在 **Zotero 的 设置（Settings/偏好设置）→ Paper-Feed** 面板里（不再放工具菜单）：
 
 - **站点基址**：例如 `https://yukhin.github.io/paper-feed`（就是 `feeds.json` / `feeds/…` 所在的根地址）。
 - **自动更新间隔（小时）**：默认 `6`。
 - **父分类名称**：默认 `Paper-Feed`。
+- **同步后自动清理空分类** / **同步时自动抓取开放获取 PDF**（开关）。
+- **屏蔽词**：手动输入，供「按屏蔽词清理题录」使用；**留空则不执行清理**。
 
 ## 使用
 
 - 配置好基址后，插件会在启动约 20 秒后同步一次，并按设定的间隔重复。
-- 也可随时手动触发：`工具` → **Paper-Feed：立即同步**。
+- 手动操作在 `工具` 菜单：**立即同步 / 停止 / 重建 / 按屏蔽词清理题录 / 启停自动同步**。
 - 同步日志见 Zotero 的 `帮助` → `Debug Output Logging`，过滤 `[Paper-Feed]`。
+
+### 按屏蔽词清理题录
+
+在 设置 → Paper-Feed 的**屏蔽词**里每行填一个词（同一行用 `AND` 表示需同时包含），然后 `工具` → **Paper-Feed：按屏蔽词清理题录**。插件会把**父分类子树内**标题或摘要命中屏蔽词的题录**移入回收站**（可恢复，删前弹窗确认数量）；只在 Feed Inbox 范围内操作，不碰你自己的分类。**未设置屏蔽词则不执行。**
 
 ### 抓取开放获取 PDF（右键）
 
@@ -71,7 +77,8 @@ Zotero 菜单：`工具` → **Paper-Feed：设置…**，依次填写：
 
 ## 更新历史（Changelog）
 
-- **0.4.0** — 新增 `工具 → Paper-Feed：按关键词清理题录`：从站点拉取 `keywords.dat`，把**父分类子树内**标题+摘要不匹配当前关键词的题录**移入回收站**（可恢复，删前弹窗确认数量）；仅在 Feed Inbox 范围内操作，不碰你自己的分类。
+- **0.5.0** — 设置移入 **Zotero 设置面板**（不再用工具菜单弹窗）；清理改为**按手动输入的屏蔽词**（命中标题/摘要即移入回收站，**未设置不执行**）；新增插件**图标**（液态玻璃风）。
+- **0.4.0** — 新增按关键词清理题录：把**父分类子树内**不匹配的题录**移入回收站**（可恢复，删前弹窗确认）；仅在 Feed Inbox 范围内操作，不碰你自己的分类。（0.5.0 起改为按屏蔽词。）
 - **0.3.0** — 新增**右键抓取开放获取 PDF**：注册 `citation_pdf_url` 自定义解析器到 Zotero「查找可用 PDF」，条目右键「Paper-Feed：抓取 PDF」调用原生引擎，直链兜底覆盖 **arXiv / Nature Portfolio（含 Nature Sensors）/ PMC·EuropePMC（PNAS 等）**，`%PDF` 魔数校验后挂附件；可选**同步时自动抓取**（`autoFetchPdf`，默认关）。
 - **0.2.1** — 出版物字段兜底归一：`dc:source` 若是 arXiv API 频道原始标题（`arXiv Query: search_query=...`），统一写成 `arXiv`。
 - **0.2.0** — 查重改用「父分类的直接子级」定位，彻底杜绝多次同步重复建分类。

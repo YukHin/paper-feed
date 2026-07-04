@@ -1,0 +1,104 @@
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      style="padding: 16px; max-width: 640px;">
+
+  <html:style>
+    .pf-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+    .pf-head img { width:32px; height:32px; }
+    .pf-head .pf-title { font-size:15px; font-weight:700; }
+    .pf-row { margin-bottom:14px; }
+    .pf-row > .pf-label { display:block; font-weight:600; margin-bottom:4px; }
+    .pf-row .pf-hint { display:block; color:#888; font-size:11px; margin-top:3px; }
+    .pf-row input[type="text"], .pf-row input[type="number"], .pf-row textarea {
+      width:100%; box-sizing:border-box; padding:5px 7px;
+    }
+    .pf-check { display:flex; align-items:center; gap:6px; font-weight:600; }
+  </html:style>
+
+  <html:div class="pf-head">
+    <html:img src="icon@48.png"/>
+    <html:span class="pf-title">Paper-Feed Sync 设置</html:span>
+  </html:div>
+
+  <html:div class="pf-row">
+    <html:span class="pf-label">站点基址</html:span>
+    <html:input id="pf-baseUrl" type="text"
+                placeholder="https://yukhin.github.io/paper-feed"/>
+    <html:span class="pf-hint">feeds.json / feeds/… 所在的根地址。</html:span>
+  </html:div>
+
+  <html:div class="pf-row">
+    <html:span class="pf-label">自动更新间隔（小时）</html:span>
+    <html:input id="pf-intervalHours" type="number" min="0" step="0.5"/>
+  </html:div>
+
+  <html:div class="pf-row">
+    <html:span class="pf-label">父分类名称</html:span>
+    <html:input id="pf-parentCollection" type="text"/>
+  </html:div>
+
+  <html:div class="pf-row">
+    <html:label class="pf-check">
+      <html:input id="pf-cleanup" type="checkbox"/> 同步后自动清理空分类
+    </html:label>
+  </html:div>
+
+  <html:div class="pf-row">
+    <html:label class="pf-check">
+      <html:input id="pf-autoFetchPdf" type="checkbox"/> 同步时自动抓取开放获取 PDF（较慢，默认关）
+    </html:label>
+  </html:div>
+
+  <html:div class="pf-row">
+    <html:span class="pf-label">屏蔽词</html:span>
+    <html:textarea id="pf-blockWords" rows="7"
+                   placeholder="每行一个，标题或摘要含任一即可清理&#10;同一行用 AND 表示需同时包含&#10;例如：&#10;battery&#10;catalysis&#10;perovskite"></html:textarea>
+    <html:span class="pf-hint">用于「工具 → Paper-Feed：按屏蔽词清理题录」。<html:b>留空则不执行清理</html:b>（安全默认）。移入回收站，可恢复。</html:span>
+  </html:div>
+
+  <html:script><![CDATA[
+    (function () {
+      var PREF = "extensions.paperfeed.";
+      var Z = (typeof Zotero !== "undefined" && Zotero) ||
+              (typeof window !== "undefined" && window.Zotero) || null;
+      if (!Z) return;
+      function get(k) { return Z.Prefs.get(PREF + k, true); }
+      function set(k, v) { Z.Prefs.set(PREF + k, v, true); }
+
+      function bindText(id, key, transform, restartTimer) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var v = get(key);
+        el.value = (v === undefined || v === null) ? "" : String(v);
+        el.addEventListener("change", function () {
+          var val = transform ? transform(el.value) : el.value;
+          set(key, val);
+          if (restartTimer && Z.PaperFeed && Z.PaperFeed.restartTimer) {
+            try { Z.PaperFeed.restartTimer(); } catch (e) {}
+          }
+        });
+      }
+      function bindCheck(id, key) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.checked = get(key) === true;
+        var handler = function () { set(key, el.checked); };
+        el.addEventListener("command", handler);
+        el.addEventListener("change", handler);
+      }
+
+      bindText("pf-baseUrl", "baseUrl", function (s) {
+        return (s || "").trim().replace(/\/+$/, "");
+      });
+      bindText("pf-intervalHours", "intervalHours", function (s) {
+        var n = parseFloat(s); return (n > 0) ? n : 6;
+      }, true);
+      bindText("pf-parentCollection", "parentCollection", function (s) {
+        return (s || "").trim() || "Paper-Feed";
+      });
+      bindText("pf-blockWords", "blockWords", null);
+      bindCheck("pf-cleanup", "cleanup");
+      bindCheck("pf-autoFetchPdf", "autoFetchPdf");
+    })();
+  ]]></html:script>
+</vbox>

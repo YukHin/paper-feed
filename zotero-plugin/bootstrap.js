@@ -15,6 +15,19 @@ async function startup({ id, version, rootURI }) {
 
   Services.scriptloader.loadSubScript(rootURI + "paperfeed.js");
   PaperFeed.init({ id, version, rootURI });
+
+  // Settings live in Zotero's preferences (Settings) window, not the Tools menu.
+  try {
+    Zotero.PreferencePanes.register({
+      pluginID: id,
+      src: rootURI + "prefs.xhtml",
+      label: "Paper-Feed",
+      image: rootURI + "icon@48.png",
+    });
+  } catch (e) {
+    log("preference pane register failed: " + e);
+  }
+
   log("started " + version);
 }
 
