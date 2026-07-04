@@ -1,6 +1,8 @@
 # 过滤关键词：命中标题或摘要即收录（大小写不敏感，子串匹配）
 # 同一行用 AND 连接表示“同时包含”，例如：sensing AND metamaterial
 # 命中任一行即收录。
+# 说明：聚焦超材料/超表面 + 物理学习；传感只保留与超材料/超表面的组合，
+# 避免把材料/化学期刊里的普通传感器文章大量带入。
 
 # ── 超材料 / 超表面 核心 ────────────────────────────────
 metamaterial
@@ -20,20 +22,18 @@ acoustic metamaterial
 elastic metamaterial
 mechanical metamaterial
 
-# ── 传感（与超材料/超表面组合）─────────────────────────
+# ── 晶体 / 波前调控 ─────────────────────────────────────
+phononic crystal
+photonic crystal
+wavefront shaping
+
+# ── 传感（仅限与超材料/超表面组合，避免材料/化学噪声）──
 sensing AND metamaterial
 sensing AND metasurface
+sensor AND metamaterial
 sensor AND metasurface
-terahertz AND sensing
-piezoelectric AND sensor
-flexible AND sensor
-tactile AND sensor
-
-# ── 传感（通用）────────────────────────────────────────
-sensor
-sensing
-biosensor
-wearable
+terahertz AND metasurface
+terahertz AND metamaterial
 
 # ── 逆设计 / 机器学习 ───────────────────────────────────
 inverse design AND metamaterial
