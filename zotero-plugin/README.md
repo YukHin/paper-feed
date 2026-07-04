@@ -23,7 +23,7 @@ d
 
 ```bash
 cd zotero-plugin
-zip -j paper-feed-sync.xpi manifest.json bootstrap.js paperfeed.js prefs.xhtml icon@48.png icon@96.png
+zip -j paper-feed-sync.xpi manifest.json bootstrap.js paperfeed.js prefs.xhtml prefs.js icon@48.png icon@96.png
 ```
 
 ## 配置
@@ -77,6 +77,7 @@ zip -j paper-feed-sync.xpi manifest.json bootstrap.js paperfeed.js prefs.xhtml i
 
 ## 更新历史（Changelog）
 
+- **0.5.1** — 修复设置面板不保存/不回显：绑定脚本改为外部 `prefs.js`（面板内联 `<script>` 被 CSP 拦截而未运行），经 `PreferencePanes.register({scripts})` 加载。
 - **0.5.0** — 设置移入 **Zotero 设置面板**（不再用工具菜单弹窗）；清理改为**按手动输入的屏蔽词**（命中标题/摘要即移入回收站，**未设置不执行**）；新增插件**图标**（液态玻璃风）。
 - **0.4.0** — 新增按关键词清理题录：把**父分类子树内**不匹配的题录**移入回收站**（可恢复，删前弹窗确认）；仅在 Feed Inbox 范围内操作，不碰你自己的分类。（0.5.0 起改为按屏蔽词。）
 - **0.3.0** — 新增**右键抓取开放获取 PDF**：注册 `citation_pdf_url` 自定义解析器到 Zotero「查找可用 PDF」，条目右键「Paper-Feed：抓取 PDF」调用原生引擎，直链兜底覆盖 **arXiv / Nature Portfolio（含 Nature Sensors）/ PMC·EuropePMC（PNAS 等）**，`%PDF` 魔数校验后挂附件；可选**同步时自动抓取**（`autoFetchPdf`，默认关）。

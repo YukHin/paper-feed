@@ -21,6 +21,7 @@ async function startup({ id, version, rootURI }) {
     Zotero.PreferencePanes.register({
       pluginID: id,
       src: rootURI + "prefs.xhtml",
+      scripts: [rootURI + "prefs.js"],
       label: "Paper-Feed",
       image: rootURI + "icon@48.png",
     });

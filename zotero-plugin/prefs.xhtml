@@ -56,49 +56,6 @@
     <html:span class="pf-hint">用于「工具 → Paper-Feed：按屏蔽词清理题录」。<html:b>留空则不执行清理</html:b>（安全默认）。移入回收站，可恢复。</html:span>
   </html:div>
 
-  <html:script><![CDATA[
-    (function () {
-      var PREF = "extensions.paperfeed.";
-      var Z = (typeof Zotero !== "undefined" && Zotero) ||
-              (typeof window !== "undefined" && window.Zotero) || null;
-      if (!Z) return;
-      function get(k) { return Z.Prefs.get(PREF + k, true); }
-      function set(k, v) { Z.Prefs.set(PREF + k, v, true); }
-
-      function bindText(id, key, transform, restartTimer) {
-        var el = document.getElementById(id);
-        if (!el) return;
-        var v = get(key);
-        el.value = (v === undefined || v === null) ? "" : String(v);
-        el.addEventListener("change", function () {
-          var val = transform ? transform(el.value) : el.value;
-          set(key, val);
-          if (restartTimer && Z.PaperFeed && Z.PaperFeed.restartTimer) {
-            try { Z.PaperFeed.restartTimer(); } catch (e) {}
-          }
-        });
-      }
-      function bindCheck(id, key) {
-        var el = document.getElementById(id);
-        if (!el) return;
-        el.checked = get(key) === true;
-        var handler = function () { set(key, el.checked); };
-        el.addEventListener("command", handler);
-        el.addEventListener("change", handler);
-      }
-
-      bindText("pf-baseUrl", "baseUrl", function (s) {
-        return (s || "").trim().replace(/\/+$/, "");
-      });
-      bindText("pf-intervalHours", "intervalHours", function (s) {
-        var n = parseFloat(s); return (n > 0) ? n : 6;
-      }, true);
-      bindText("pf-parentCollection", "parentCollection", function (s) {
-        return (s || "").trim() || "Paper-Feed";
-      });
-      bindText("pf-blockWords", "blockWords", null);
-      bindCheck("pf-cleanup", "cleanup");
-      bindCheck("pf-autoFetchPdf", "autoFetchPdf");
-    })();
-  ]]></html:script>
+  <!-- bindings live in prefs.js, loaded via PreferencePanes.register({scripts})
+       because inline scripts are blocked by the pane's CSP -->
 </vbox>
