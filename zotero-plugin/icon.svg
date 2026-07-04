@@ -1,6 +1,5 @@
 <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- domed glass tile: light top, gently darker bottom -->
     <linearGradient id="tile" x1="0" y1="0" x2="0.25" y2="1">
       <stop offset="0" stop-color="#ffffff"/>
       <stop offset="0.55" stop-color="#eceef8"/>
@@ -15,22 +14,25 @@
       <stop offset="0" stop-color="#9096b8" stop-opacity="0.45"/>
       <stop offset="1" stop-color="#9096b8" stop-opacity="0"/>
     </radialGradient>
-    <!-- Zotero red face, lit from top-left for volume -->
     <linearGradient id="zred" x1="0.05" y1="0" x2="0.85" y2="1">
       <stop offset="0" stop-color="#fa8478"/>
       <stop offset="0.45" stop-color="#e04044"/>
       <stop offset="1" stop-color="#a81826"/>
     </linearGradient>
+    <linearGradient id="rssgrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8f84"/>
+      <stop offset="1" stop-color="#d5333a"/>
+    </linearGradient>
     <linearGradient id="zsheen" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#ffffff" stop-opacity="0.7"/>
       <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
-    <!-- soft ambient float shadow + tight contact shadow -->
     <filter id="zfloat" x="-40%" y="-40%" width="180%" height="180%">
-      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#6e0f1c" flood-opacity="0.32"/>
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#6e0f1c" flood-opacity="0.34"/>
     </filter>
-    <filter id="rssShadow" x="-60%" y="-60%" width="220%" height="220%">
-      <feDropShadow dx="0" dy="1.2" stdDeviation="1.2" flood-color="#8a1220" flood-opacity="0.45"/>
+    <!-- soft shadow for the back-layer RSS, so it reads as a separate plane -->
+    <filter id="rssFloat" x="-70%" y="-70%" width="240%" height="240%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.2" flood-color="#7a1420" flood-opacity="0.4"/>
     </filter>
   </defs>
 
@@ -43,26 +45,27 @@
   <rect x="4.7" y="4.7" width="118.6" height="118.6" rx="27.4"
         fill="none" stroke="#b9bdd6" stroke-opacity="0.55" stroke-width="0.8"/>
 
-  <!-- extruded side of the Z (depth), offset down-right behind the face -->
+  <!-- BACK LAYER: RSS feed mark, enlarged. Its origin sits behind the Z's top
+       bar; the waves emerge from the top-right, so it reads as a plane behind. -->
+  <g filter="url(#rssFloat)">
+    <g fill="none" stroke="url(#rssgrad)" stroke-width="5.5" stroke-linecap="round">
+      <path d="M82 30 a15 15 0 0 1 15 15"/>
+      <path d="M82 18 a27 27 0 0 1 27 27"/>
+    </g>
+    <circle cx="82.5" cy="45" r="5" fill="url(#rssgrad)"/>
+  </g>
+
+  <!-- FRONT LAYER: the Z, extruded and floating above — occludes the RSS -->
+  <!-- extruded side (depth) -->
   <path d="M38 38 H90 V51 L57 79 H90 V92 H38 V79 L71 51 H38 Z"
         transform="translate(2.4,3.4)" fill="#7c1220"/>
-
   <!-- Z face -->
   <g filter="url(#zfloat)">
     <path d="M38 38 H90 V51 L57 79 H90 V92 H38 V79 L71 51 H38 Z" fill="url(#zred)"/>
   </g>
-  <!-- top-left rim highlight for a beveled edge -->
+  <!-- top-left rim highlight -->
   <path d="M38 38 H90 V51 L57 79 H90 V92 H38 V79 L71 51 H38 Z"
         fill="none" stroke="#ffd7cf" stroke-opacity="0.55" stroke-width="1.1"/>
   <!-- specular sheen across the top bar -->
   <rect x="43" y="40.5" width="42" height="6" rx="3" fill="url(#zsheen)"/>
-
-  <!-- small RSS feed mark, top-right corner -->
-  <g filter="url(#rssShadow)">
-    <g fill="none" stroke="#e04044" stroke-width="4" stroke-linecap="round">
-      <path d="M92 28 a10 10 0 0 1 10 10"/>
-      <path d="M92 20 a18 18 0 0 1 18 18"/>
-    </g>
-    <circle cx="92.5" cy="37.5" r="3.4" fill="#e04044"/>
-  </g>
 </svg>
