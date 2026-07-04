@@ -71,6 +71,7 @@ Zotero 菜单：`工具` → **Paper-Feed：设置…**，依次填写：
 
 ## 更新历史（Changelog）
 
+- **0.4.0** — 新增 `工具 → Paper-Feed：按关键词清理题录`：从站点拉取 `keywords.dat`，把**父分类子树内**标题+摘要不匹配当前关键词的题录**移入回收站**（可恢复，删前弹窗确认数量）；仅在 Feed Inbox 范围内操作，不碰你自己的分类。
 - **0.3.0** — 新增**右键抓取开放获取 PDF**：注册 `citation_pdf_url` 自定义解析器到 Zotero「查找可用 PDF」，条目右键「Paper-Feed：抓取 PDF」调用原生引擎，直链兜底覆盖 **arXiv / Nature Portfolio（含 Nature Sensors）/ PMC·EuropePMC（PNAS 等）**，`%PDF` 魔数校验后挂附件；可选**同步时自动抓取**（`autoFetchPdf`，默认关）。
 - **0.2.1** — 出版物字段兜底归一：`dc:source` 若是 arXiv API 频道原始标题（`arXiv Query: search_query=...`），统一写成 `arXiv`。
 - **0.2.0** — 查重改用「父分类的直接子级」定位，彻底杜绝多次同步重复建分类。

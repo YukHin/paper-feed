@@ -3,7 +3,7 @@
     "paper-feed-sync@yukhin.github.io": {
       "updates": [
         {
-          "version": "0.3.0",
+          "version": "0.4.0",
           "update_link": "https://yukhin.github.io/paper-feed/zotero-plugin/paper-feed-sync.xpi",
           "applications": {
             "zotero": {

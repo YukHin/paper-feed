@@ -73,6 +73,9 @@ var PaperFeed = {
     mkItem("paperfeed-rebuild", "Paper-Feed：重建（清空后重新同步）", () => {
       this.rebuild(window).catch((e) => this._log("rebuild error: " + e));
     });
+    mkItem("paperfeed-cleanup-kw", "Paper-Feed：按关键词清理题录（删不匹配的）", () => {
+      this.cleanupByKeywords(window).catch((e) => this._log("cleanup error: " + e));
+    });
     this._toggleItem = mkItem("paperfeed-toggle", this._autoLabel(), () => {
       this.toggleAuto();
     });
@@ -84,7 +87,7 @@ var PaperFeed = {
 
   removeFromWindow(window) {
     const doc = window.document;
-    for (const id of ["paperfeed-sync-now", "paperfeed-stop", "paperfeed-rebuild", "paperfeed-toggle", "paperfeed-settings"]) {
+    for (const id of ["paperfeed-sync-now", "paperfeed-stop", "paperfeed-rebuild", "paperfeed-cleanup-kw", "paperfeed-toggle", "paperfeed-settings"]) {
       const el = doc.getElementById(id);
       if (el) el.remove();
     }
@@ -149,6 +152,100 @@ var PaperFeed = {
     }
     this._abort = false;
     await this.syncNow();
+  },
+
+  // Trash every feed-synced item under the parent collection whose title +
+  // abstract does NOT match the current keywords.dat (fetched from the site
+  // base URL). Scope is strictly the parent subtree, so items you filed
+  // elsewhere (Survey / Papers / …) are never touched. Items go to Zotero's
+  // Trash (recoverable), not erased. Asks for confirmation with the count.
+  async cleanupByKeywords(window) {
+    if (this._syncing) { this._notify("正在同步中，请先停止再清理"); return; }
+    const base = (this._getPref("baseUrl") || "").replace(/\/+$/, "");
+    if (!base) { this._notify("请先在设置里填写站点基址"); return; }
+
+    let queries;
+    try {
+      queries = this._parseKeywords(await this._fetchText(base + "/keywords.dat"));
+    } catch (e) {
+      this._notify("无法获取 keywords.dat：" + (e && e.message ? e.message : e));
+      return;
+    }
+    if (!queries.length) { this._notify("keywords.dat 为空，已取消"); return; }
+
+    const libraryID = Zotero.Libraries.userLibraryID;
+    const parentName = this._getPref("parentCollection") || "Paper-Feed";
+    const parent = this._findCollection(libraryID, parentName, null);
+    if (!parent) { this._notify("未找到父分类 “" + parentName + "”"); return; }
+
+    // Gather unique regular items across the whole parent subtree.
+    const items = new Map();
+    this._collectItems(parent, items);
+
+    const toTrash = [];
+    for (const it of items.values()) {
+      let text = "";
+      try {
+        text = (it.getField("title") || "") + " " + (it.getField("abstractNote") || "");
+      } catch (e) {}
+      if (!this._matchKeywords(text, queries)) toTrash.push(it.id);
+    }
+
+    if (!toTrash.length) {
+      this._notify("没有需要清理的题录（全部匹配关键词）");
+      return;
+    }
+    const ok = Services.prompt.confirm(
+      window, "Paper-Feed 按关键词清理",
+      "将把 “" + parentName + "” 下 " + toTrash.length + " 条不匹配当前关键词的题录移入" +
+      "回收站（可在 Zotero 回收站恢复）。\n共扫描 " + items.size + " 条。\n\n确定继续？"
+    );
+    if (!ok) return;
+
+    try {
+      if (Zotero.Items.trashTx) {
+        await Zotero.Items.trashTx(toTrash);
+      } else {
+        for (const id of toTrash) {
+          const it = Zotero.Items.get(id);
+          if (it) { it.deleted = true; await it.saveTx(); }
+        }
+      }
+      this._log("cleanup: trashed " + toTrash.length + " items");
+      this._notify("已移入回收站 " + toTrash.length + " 条不匹配题录");
+    } catch (e) {
+      this._notify("清理失败：" + (e && e.message ? e.message : e));
+    }
+  },
+
+  // Recursively collect regular items in a collection subtree into `acc`
+  // (Map id -> item), so an item filed in multiple subcollections counts once.
+  _collectItems(coll, acc) {
+    try {
+      for (const it of coll.getChildItems(false, false)) {
+        if (it.isRegularItem && it.isRegularItem()) acc.set(it.id, it);
+      }
+    } catch (e) {}
+    const children = coll.getChildCollections ? coll.getChildCollections() : [];
+    for (const child of children) this._collectItems(child, acc);
+  },
+
+  // Parse keywords.dat: one query per non-comment line; "AND" splits a line
+  // into substrings that must all be present. Mirrors the backend matcher.
+  _parseKeywords(text) {
+    return String(text || "")
+      .split(/\r?\n/)
+      .map((l) => l.trim())
+      .filter((l) => l && l[0] !== "#");
+  },
+
+  _matchKeywords(text, queries) {
+    text = (text || "").toLowerCase();
+    for (const q of queries) {
+      const parts = q.split("AND").map((s) => s.trim().toLowerCase()).filter(Boolean);
+      if (parts.length && parts.every((p) => text.indexOf(p) !== -1)) return true;
+    }
+    return false;
   },
 
   // Abort an in-progress sync and cancel the pending startup sync.
