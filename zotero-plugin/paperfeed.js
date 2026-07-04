@@ -86,8 +86,10 @@ var PaperFeed = {
       this.toggleAuto();
     });
 
-    // Right-click context menu on selected items: fetch open-access PDF.
+    // Right-click context menus: item list (fetch PDF) + collection tree
+    // (manually add a paper by DOI/URL).
     this.addItemMenu(window);
+    this.addCollectionMenu(window);
   },
 
   removeFromWindow(window) {
@@ -97,6 +99,7 @@ var PaperFeed = {
       if (el) el.remove();
     }
     this.removeItemMenu(window);
+    this.removeCollectionMenu(window);
   },
 
   // Add a "抓取 PDF" entry to the item list's right-click menu (zotero-itemmenu).
@@ -115,6 +118,26 @@ var PaperFeed = {
 
   removeItemMenu(window) {
     const el = window.document.getElementById("paperfeed-fetch-pdf");
+    if (el) el.remove();
+  },
+
+  // Add "手动添加论文" to the collection tree's right-click menu
+  // (zotero-collectionmenu) so users can file papers the feed missed.
+  addCollectionMenu(window) {
+    const doc = window.document;
+    const popup = doc.getElementById("zotero-collectionmenu");
+    if (!popup || doc.getElementById("paperfeed-add-paper")) return;
+    const item = doc.createXULElement("menuitem");
+    item.id = "paperfeed-add-paper";
+    item.setAttribute("label", "Paper-Feed：添加论文（DOI/链接）到此分类");
+    item.addEventListener("command", () => {
+      this.addPaperToCollection(window).catch((e) => this._log("add paper error: " + e));
+    });
+    popup.appendChild(item);
+  },
+
+  removeCollectionMenu(window) {
+    const el = window.document.getElementById("paperfeed-add-paper");
     if (el) el.remove();
   },
 
@@ -481,10 +504,121 @@ var PaperFeed = {
     if (p.journal) item.setField("publicationTitle", p.journal);
     if (p.date) item.setField("date", p.date);
     if (p.doi) item.setField("DOI", p.doi);
+    if (p.authors && p.authors.length) {
+      try {
+        item.setCreators(p.authors.map((a) => ({
+          creatorType: "author",
+          firstName: a.firstName || "",
+          lastName: a.lastName || "",
+        })));
+      } catch (e) { this._log("setCreators failed: " + e); }
+    }
     item.setCollections([collectionID]);
     item.addTag("unread");  // mark freshly pulled papers as unread
     await item.saveTx();
     return item;
+  },
+
+  // ---- manual add (right-click a collection) ----
+
+  // Prompt for a DOI/URL and file the paper into the right-clicked collection.
+  // Resolves rich metadata from Crossref for a DOI; otherwise stores the URL.
+  async addPaperToCollection(window) {
+    const pane = window.ZoteroPane ||
+      (Zotero.getActiveZoteroPane && Zotero.getActiveZoteroPane());
+    const coll = pane && pane.getSelectedCollection && pane.getSelectedCollection();
+    if (!coll) {
+      this._notify("请先在左侧选中一个分类（可先右键“新建子分类”）");
+      return;
+    }
+    const input = { value: "" };
+    const ok = Services.prompt.prompt(
+      window, "Paper-Feed 手动添加论文",
+      "输入 DOI 或文章链接（DOI 优先，可自动补全题录）：", input, null, {});
+    if (!ok || !input.value.trim()) return;
+
+    const raw = input.value.trim();
+    try {
+      const p = await this._resolvePaperInput(raw);
+      if (!p) { this._notify("无法识别该输入，请提供 DOI 或链接"); return; }
+
+      const libraryID = Zotero.Libraries.userLibraryID;
+      const existing = await this._getExisting(libraryID);
+      const ndoi = p.doi ? this._normDoi(p.doi) : "";
+      if ((p.url && existing.urls.has(p.url)) || (ndoi && existing.dois.has(ndoi))) {
+        this._notify("库中已存在该文献，未重复添加");
+        return;
+      }
+      const item = await this._createItem(libraryID, coll.id, p);
+      if (item) { item.addTag("manual"); await item.saveTx(); }  // mark manual
+      this._notify("已添加到 “" + coll.name + "”：" +
+        (p.title || raw).slice(0, 40));
+    } catch (e) {
+      this._notify("添加失败：" + (e && e.message ? e.message : e));
+    }
+  },
+
+  // Turn a user-typed DOI / DOI-URL / arXiv URL / plain URL into a paper object.
+  async _resolvePaperInput(raw) {
+    let doi = this._normDoi(raw);
+    const m = raw.match(/10\.\d{4,9}\/[^\s"'<>]+/);
+    if (!/^10\.\d{4,9}\//.test(doi) && m) doi = this._normDoi(m[0]);
+    if (/^10\.\d{4,9}\//.test(doi)) {
+      const meta = await this._fetchMetaByDoi(doi);
+      if (meta) return meta;
+      // DOI given but Crossref missed it — still store the DOI + resolver URL.
+      return { doi: doi, url: "https://doi.org/" + doi, title: "", journal: "", date: "" };
+    }
+    const ax = raw.match(/arxiv\.org\/(?:abs|pdf)\/([^\s?#]+?)(?:\.pdf)?$/i);
+    if (ax) {
+      const id = ax[1];
+      return {
+        title: "arXiv:" + id, url: "https://arxiv.org/abs/" + id, journal: "arXiv",
+        doi: "10.48550/arXiv." + id.replace(/v\d+$/, ""), date: "",
+      };
+    }
+    if (/^https?:\/\//i.test(raw)) {
+      return { title: raw, url: raw, journal: "", date: "", doi: "" };
+    }
+    return null;
+  },
+
+  // Fetch title/authors/journal/date/abstract for a DOI from Crossref.
+  async _fetchMetaByDoi(doi) {
+    const url = "https://api.crossref.org/works/" + encodeURIComponent(doi) +
+      "?mailto=paper-feed-sync@users.noreply.github.com";
+    try {
+      const xhr = await Zotero.HTTP.request("GET", url, {
+        responseType: "text", timeout: 20000,
+        headers: { "User-Agent": "paper-feed-sync (Zotero plugin)" },
+      });
+      const msg = (JSON.parse(xhr.responseText || "{}").message) || {};
+      const title = (msg.title && msg.title[0]) || "";
+      if (!title) return null;
+      const journal = (msg["container-title"] && msg["container-title"][0]) || "";
+      const dp = ((msg.published || msg["published-online"] || msg["published-print"] ||
+        {})["date-parts"] || [[]])[0] || [];
+      const date = dp.length
+        ? dp.map((n, i) => (i === 0 ? String(n) : String(n).padStart(2, "0"))).join("-")
+        : "";
+      const authors = (msg.author || []).map((a) => ({
+        firstName: a.given || "",
+        lastName: a.family || a.name || "",
+      })).filter((a) => a.firstName || a.lastName);
+      return {
+        title,
+        journal,
+        date,
+        abstract: this._stripHtml(msg.abstract || ""),
+        doi: msg.DOI || doi,
+        url: "https://doi.org/" + (msg.DOI || doi),
+        authors,
+      };
+    } catch (e) {
+      this._log("DOI meta fetch failed for " + doi + ": " +
+        (e && e.message ? e.message : e));
+      return null;
+    }
   },
 
   // ---- fetch + parse ----

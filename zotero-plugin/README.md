@@ -46,6 +46,10 @@ zip -j paper-feed-sync.xpi manifest.json bootstrap.js paperfeed.js prefs.xhtml p
 
 在 设置 → Paper-Feed 的**屏蔽词**里每行填一个词（同一行用 `AND` 表示需同时包含），然后 `工具` → **Paper-Feed：按屏蔽词清理题录**。插件会把**父分类子树内**标题或摘要命中屏蔽词的题录**移入回收站**（可恢复，删前弹窗确认数量）；只在 Feed Inbox 范围内操作，不碰你自己的分类。**未设置屏蔽词则不执行。**
 
+### 手动添加论文（feed 没抓到的）
+
+先在左侧建好分类（Zotero 原生「新建子分类」即可），然后**右键该分类** → **Paper-Feed：添加论文（DOI/链接）到此分类**，输入 **DOI**（推荐，自动从 Crossref 补全标题/作者/期刊/日期/摘要）或文章**链接**。新条目建到该分类下，按 URL/DOI 去重，打 `manual` 标签（不会被屏蔽词清理误删）。
+
 ### 抓取开放获取 PDF（右键）
 
 在条目列表里**选中一条或多条**文献 → **右键** → **Paper-Feed：抓取 PDF（开放获取）**。插件会：
@@ -77,6 +81,7 @@ zip -j paper-feed-sync.xpi manifest.json bootstrap.js paperfeed.js prefs.xhtml p
 
 ## 更新历史（Changelog）
 
+- **0.6.0** — 新增**手动添加论文**：右键左侧分类 → `Paper-Feed：添加论文（DOI/链接）到此分类`，输入 DOI（Crossref 补全标题/作者/期刊/日期/摘要）或链接，建到该分类下，按 URL/DOI 去重、打 `manual` 标签。用于补 feed 没抓到、但你想收的论文。
 - **0.5.1** — 修复设置面板不保存/不回显：绑定脚本改为外部 `prefs.js`（面板内联 `<script>` 被 CSP 拦截而未运行），经 `PreferencePanes.register({scripts})` 加载。
 - **0.5.0** — 设置移入 **Zotero 设置面板**（不再用工具菜单弹窗）；清理改为**按手动输入的屏蔽词**（命中标题/摘要即移入回收站，**未设置不执行**）；新增插件**图标**（液态玻璃风）。
 - **0.4.0** — 新增按关键词清理题录：把**父分类子树内**不匹配的题录**移入回收站**（可恢复，删前弹窗确认）；仅在 Feed Inbox 范围内操作，不碰你自己的分类。（0.5.0 起改为按屏蔽词。）
