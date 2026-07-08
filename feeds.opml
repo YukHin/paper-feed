@@ -6,6 +6,7 @@
     <outline text="Adv. Mater." title="Adv. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-mater.xml"/>
     <outline text="Adv. Sci." title="Adv. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-sci.xml"/>
     <outline text="APL Mach. Learn." title="APL Mach. Learn." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.apl-mach-learn.xml"/>
+    <outline text="Appl. Phys. Lett." title="Appl. Phys. Lett." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.appl-phys-lett.xml"/>
     <outline text="Appl. Phys. Rev." title="Appl. Phys. Rev." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.appl-phys-rev.xml"/>
     <outline text="arXiv" title="arXiv" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.arxiv.xml"/>
     <outline text="Carbon Energy" title="Carbon Energy" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.carbon-energy.xml"/>

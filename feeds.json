@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-07T20:07:24",
+  "generated": "2026-07-08T03:33:04",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -30,11 +30,18 @@
       "count": 1
     },
     {
+      "slug": "appl-phys-lett",
+      "name": "Appl. Phys. Lett.",
+      "publisher": "AIP",
+      "file": "feeds/filtered_feed.appl-phys-lett.xml",
+      "count": 1
+    },
+    {
       "slug": "appl-phys-rev",
       "name": "Appl. Phys. Rev.",
       "publisher": "AIP",
       "file": "feeds/filtered_feed.appl-phys-rev.xml",
-      "count": 2
+      "count": 3
     },
     {
       "slug": "arxiv",
@@ -118,7 +125,7 @@
       "name": "Matter",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.matter.xml",
-      "count": 5
+      "count": 6
     },
     {
       "slug": "nano-energy",
