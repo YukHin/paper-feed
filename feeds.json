@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-08T08:41:11",
+  "generated": "2026-07-08T14:32:56",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -174,7 +174,7 @@
       "name": "npj Comput. Mater.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.npj-comput-mater.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "phys-rev-applied",
