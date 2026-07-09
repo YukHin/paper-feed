@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-09T04:01:58",
+  "generated": "2026-07-09T10:03:58",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -202,7 +202,7 @@
       "name": "PRB",
       "publisher": "APS",
       "file": "feeds/filtered_feed.prb.xml",
-      "count": 2
+      "count": 4
     },
     {
       "slug": "prb-dynamics-dynamical-systems-lattice-effects-quantum-solids",
