@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-09T10:03:58",
+  "generated": "2026-07-09T15:28:10",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -70,6 +70,13 @@
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.chem.xml",
       "count": 2
+    },
+    {
+      "slug": "commun-mater",
+      "name": "Commun. Mater.",
+      "publisher": "Nature Portfolio",
+      "file": "feeds/filtered_feed.commun-mater.xml",
+      "count": 1
     },
     {
       "slug": "curr-opin-solid-state-mater-sci",
