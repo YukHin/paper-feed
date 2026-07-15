@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-15T13:59:43",
+  "generated": "2026-07-15T19:23:59",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -167,14 +167,14 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 15
+      "count": 17
     },
     {
       "slug": "nature",
       "name": "Nature",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nature.xml",
-      "count": 3
+      "count": 4
     },
     {
       "slug": "newton",
