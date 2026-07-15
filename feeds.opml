@@ -12,6 +12,7 @@
     <outline text="Carbon Energy" title="Carbon Energy" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.carbon-energy.xml"/>
     <outline text="Cell Rep. Phys. Sci." title="Cell Rep. Phys. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.cell-rep-phys-sci.xml"/>
     <outline text="Chem" title="Chem" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.chem.xml"/>
+    <outline text="ChemRxiv" title="ChemRxiv" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.chemrxiv.xml"/>
     <outline text="Commun. Mater." title="Commun. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.commun-mater.xml"/>
     <outline text="Curr. Opin. Solid State Mater. Sci." title="Curr. Opin. Solid State Mater. Sci." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.curr-opin-solid-state-mater-sci.xml"/>
     <outline text="eScience" title="eScience" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.escience.xml"/>
