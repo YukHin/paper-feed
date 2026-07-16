@@ -1,19 +1,19 @@
 {
-  "generated": "2026-07-16T14:11:34",
+  "generated": "2026-07-16T19:23:53",
   "feeds": [
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 27
+      "count": 28
     },
     {
       "slug": "adv-mater",
       "name": "Adv. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-mater.xml",
-      "count": 20
+      "count": 21
     },
     {
       "slug": "adv-sci",
@@ -272,7 +272,7 @@
       "name": "Small",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small.xml",
-      "count": 3
+      "count": 4
     }
   ]
 }
