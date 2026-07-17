@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-17T08:22:38",
+  "generated": "2026-07-17T13:55:30",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -76,7 +76,7 @@
       "name": "ChemRxiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.chemrxiv.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "commun-mater",
@@ -111,7 +111,7 @@
       "name": "iScience",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.iscience.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "j-materiomics",
