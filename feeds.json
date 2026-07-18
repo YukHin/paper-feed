@@ -1,26 +1,26 @@
 {
-  "generated": "2026-07-18T03:16:07",
+  "generated": "2026-07-18T08:04:26",
   "feeds": [
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 28
+      "count": 29
     },
     {
       "slug": "adv-mater",
       "name": "Adv. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-mater.xml",
-      "count": 22
+      "count": 24
     },
     {
       "slug": "adv-sci",
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 2
+      "count": 4
     },
     {
       "slug": "apl-mach-learn",
