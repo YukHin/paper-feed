@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-20T14:25:28",
+  "generated": "2026-07-20T19:51:47",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -139,7 +139,7 @@
       "name": "Matter",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.matter.xml",
-      "count": 7
+      "count": 8
     },
     {
       "slug": "nano-energy",
@@ -181,7 +181,7 @@
       "name": "Newton",
       "publisher": "Other",
       "file": "feeds/filtered_feed.newton.xml",
-      "count": 3
+      "count": 4
     },
     {
       "slug": "npj-comput-mater",
