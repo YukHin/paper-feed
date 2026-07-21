@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-21T08:40:52",
+  "generated": "2026-07-21T14:10:39",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -167,7 +167,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 21
+      "count": 22
     },
     {
       "slug": "nature",
@@ -237,6 +237,13 @@
       "name": "Prog. Mater. Sci.",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.prog-mater-sci.xml",
+      "count": 1
+    },
+    {
+      "slug": "rev-mater-res",
+      "name": "Rev. Mater. Res.",
+      "publisher": "Other",
+      "file": "feeds/filtered_feed.rev-mater-res.xml",
       "count": 1
     },
     {
