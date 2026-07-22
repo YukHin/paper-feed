@@ -1,12 +1,12 @@
 {
-  "generated": "2026-07-22T03:29:10",
+  "generated": "2026-07-22T08:40:14",
   "feeds": [
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 30
+      "count": 31
     },
     {
       "slug": "adv-mater",
