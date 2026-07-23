@@ -1,19 +1,19 @@
 {
-  "generated": "2026-07-23T03:34:22",
+  "generated": "2026-07-23T08:41:40",
   "feeds": [
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 31
+      "count": 32
     },
     {
       "slug": "adv-mater",
       "name": "Adv. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-mater.xml",
-      "count": 26
+      "count": 28
     },
     {
       "slug": "adv-sci",
@@ -48,7 +48,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 130
+      "count": 131
     },
     {
       "slug": "carbon-energy",
