@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-23T08:41:40",
+  "generated": "2026-07-23T14:23:33",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -146,7 +146,7 @@
       "name": "Nano Energy",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.nano-energy.xml",
-      "count": 2
+      "count": 3
     },
     {
       "slug": "nat-commun",
@@ -167,7 +167,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 22
+      "count": 24
     },
     {
       "slug": "nature",
