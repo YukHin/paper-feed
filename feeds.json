@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-23T19:37:22",
+  "generated": "2026-07-24T03:30:16",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -34,7 +34,7 @@
       "name": "Appl. Phys. Lett.",
       "publisher": "AIP",
       "file": "feeds/filtered_feed.appl-phys-lett.xml",
-      "count": 3
+      "count": 4
     },
     {
       "slug": "appl-phys-rev",
