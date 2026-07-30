@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-30T02:57:03",
+  "generated": "2026-07-30T08:42:03",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -20,7 +20,7 @@
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 8
+      "count": 10
     },
     {
       "slug": "apl-mach-learn",
@@ -48,7 +48,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 136
+      "count": 137
     },
     {
       "slug": "carbon-energy",
