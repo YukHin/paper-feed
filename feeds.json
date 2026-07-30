@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-30T08:42:03",
+  "generated": "2026-07-30T14:23:33",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -167,7 +167,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 28
+      "count": 30
     },
     {
       "slug": "nature",
