@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-31T09:13:10",
+  "generated": "2026-07-31T14:25:56",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -167,7 +167,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 30
+      "count": 32
     },
     {
       "slug": "nature",
@@ -216,7 +216,7 @@
       "name": "PRB",
       "publisher": "APS",
       "file": "feeds/filtered_feed.prb.xml",
-      "count": 6
+      "count": 8
     },
     {
       "slug": "prb-dynamics-dynamical-systems-lattice-effects-quantum-solids",
