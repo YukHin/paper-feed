@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-31T14:25:56",
+  "generated": "2026-07-31T19:45:13",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -83,6 +83,13 @@
       "name": "Commun. Mater.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.commun-mater.xml",
+      "count": 1
+    },
+    {
+      "slug": "commun-phys",
+      "name": "Commun. Phys.",
+      "publisher": "Nature Portfolio",
+      "file": "feeds/filtered_feed.commun-phys.xml",
       "count": 1
     },
     {
