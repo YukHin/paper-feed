@@ -1,12 +1,12 @@
 {
-  "generated": "2026-08-03T03:41:00",
+  "generated": "2026-08-03T10:00:48",
   "feeds": [
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 36
+      "count": 37
     },
     {
       "slug": "adv-mater",
@@ -20,7 +20,7 @@
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 11
+      "count": 12
     },
     {
       "slug": "apl-mach-learn",
@@ -48,7 +48,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 138
+      "count": 140
     },
     {
       "slug": "carbon-energy",
@@ -168,6 +168,13 @@
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-nanotechnol.xml",
       "count": 2
+    },
+    {
+      "slug": "nat-phys",
+      "name": "Nat. Phys.",
+      "publisher": "Nature Portfolio",
+      "file": "feeds/filtered_feed.nat-phys.xml",
+      "count": 1
     },
     {
       "slug": "nat-sens",
