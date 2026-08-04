@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-04T08:50:27",
+  "generated": "2026-08-04T14:33:28",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -20,7 +20,7 @@
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 12
+      "count": 14
     },
     {
       "slug": "apl-mach-learn",
@@ -160,7 +160,7 @@
       "name": "Nat. Commun.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-commun.xml",
-      "count": 8
+      "count": 9
     },
     {
       "slug": "nat-nanotechnol",
@@ -244,7 +244,7 @@
       "name": "PRL",
       "publisher": "APS",
       "file": "feeds/filtered_feed.prl.xml",
-      "count": 5
+      "count": 6
     },
     {
       "slug": "prog-mater-sci",
