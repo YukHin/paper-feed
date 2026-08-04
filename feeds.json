@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-04T03:25:16",
+  "generated": "2026-08-04T08:50:27",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -48,7 +48,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 140
+      "count": 144
     },
     {
       "slug": "carbon-energy",
@@ -160,7 +160,7 @@
       "name": "Nat. Commun.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-commun.xml",
-      "count": 7
+      "count": 8
     },
     {
       "slug": "nat-nanotechnol",
