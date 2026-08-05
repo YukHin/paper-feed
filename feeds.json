@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-05T08:47:24",
+  "generated": "2026-08-05T14:26:00",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -9,11 +9,18 @@
       "count": 37
     },
     {
+      "slug": "adv-intell-discov",
+      "name": "Adv. Intell. Discov.",
+      "publisher": "Wiley",
+      "file": "feeds/filtered_feed.adv-intell-discov.xml",
+      "count": 2
+    },
+    {
       "slug": "adv-mater",
       "name": "Adv. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-mater.xml",
-      "count": 33
+      "count": 34
     },
     {
       "slug": "adv-sci",
@@ -230,7 +237,7 @@
       "name": "PRB",
       "publisher": "APS",
       "file": "feeds/filtered_feed.prb.xml",
-      "count": 8
+      "count": 9
     },
     {
       "slug": "prb-dynamics-dynamical-systems-lattice-effects-quantum-solids",
@@ -294,6 +301,13 @@
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small.xml",
       "count": 8
+    },
+    {
+      "slug": "small-methods",
+      "name": "Small Methods",
+      "publisher": "Wiley",
+      "file": "feeds/filtered_feed.small-methods.xml",
+      "count": 1
     }
   ]
 }
