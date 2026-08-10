@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-10T13:26:06",
+  "generated": "2026-08-10T19:06:48",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -167,7 +167,7 @@
       "name": "Nat. Commun.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-commun.xml",
-      "count": 9
+      "count": 10
     },
     {
       "slug": "nat-nanotechnol",
