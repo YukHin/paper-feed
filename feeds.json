@@ -1,12 +1,12 @@
 {
-  "generated": "2026-08-11T07:19:22",
+  "generated": "2026-08-11T13:22:25",
   "feeds": [
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 37
+      "count": 38
     },
     {
       "slug": "adv-intell-discov",
@@ -177,6 +177,13 @@
       "count": 10
     },
     {
+      "slug": "nat-mater",
+      "name": "Nat. Mater.",
+      "publisher": "Nature Portfolio",
+      "file": "feeds/filtered_feed.nat-mater.xml",
+      "count": 1
+    },
+    {
       "slug": "nat-nanotechnol",
       "name": "Nat. Nanotechnol.",
       "publisher": "Nature Portfolio",
@@ -244,7 +251,7 @@
       "name": "PRB",
       "publisher": "APS",
       "file": "feeds/filtered_feed.prb.xml",
-      "count": 11
+      "count": 12
     },
     {
       "slug": "prb-dynamics-dynamical-systems-lattice-effects-quantum-solids",
