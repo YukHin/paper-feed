@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-12T07:43:09",
+  "generated": "2026-08-12T13:26:11",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -27,7 +27,7 @@
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 16
+      "count": 17
     },
     {
       "slug": "apl-mach-learn",
