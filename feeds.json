@@ -1,12 +1,12 @@
 {
-  "generated": "2026-08-14T07:42:49",
+  "generated": "2026-08-14T13:22:21",
   "feeds": [
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 38
+      "count": 39
     },
     {
       "slug": "adv-intell-discov",
@@ -20,14 +20,14 @@
       "name": "Adv. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-mater.xml",
-      "count": 36
+      "count": 39
     },
     {
       "slug": "adv-sci",
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 18
+      "count": 19
     },
     {
       "slug": "apl-mach-learn",
@@ -314,13 +314,20 @@
       "name": "Small",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small.xml",
-      "count": 8
+      "count": 9
     },
     {
       "slug": "small-methods",
       "name": "Small Methods",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small-methods.xml",
+      "count": 1
+    },
+    {
+      "slug": "small-struct",
+      "name": "Small Struct.",
+      "publisher": "Wiley",
+      "file": "feeds/filtered_feed.small-struct.xml",
       "count": 1
     }
   ]
