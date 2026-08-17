@@ -1,12 +1,12 @@
 {
-  "generated": "2026-08-17T07:09:04",
+  "generated": "2026-08-17T12:58:11",
   "feeds": [
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 40
+      "count": 41
     },
     {
       "slug": "adv-intell-discov",
@@ -202,7 +202,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 35
+      "count": 36
     },
     {
       "slug": "nature",
