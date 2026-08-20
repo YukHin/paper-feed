@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-20T13:03:02",
+  "generated": "2026-08-20T18:51:32",
   "feeds": [
     {
       "slug": "adv-funct-mater",
@@ -160,7 +160,7 @@
       "name": "Matter",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.matter.xml",
-      "count": 9
+      "count": 10
     },
     {
       "slug": "nano-energy",
