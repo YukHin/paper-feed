@@ -1,12 +1,12 @@
 {
-  "generated": "2026-08-21T06:59:00",
+  "generated": "2026-08-21T13:02:22",
   "feeds": [
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 43
+      "count": 44
     },
     {
       "slug": "adv-intell-discov",
@@ -20,7 +20,7 @@
       "name": "Adv. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-mater.xml",
-      "count": 39
+      "count": 41
     },
     {
       "slug": "adv-sci",
@@ -160,7 +160,7 @@
       "name": "Matter",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.matter.xml",
-      "count": 10
+      "count": 11
     },
     {
       "slug": "nano-energy",
