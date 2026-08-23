@@ -1,12 +1,12 @@
 {
-  "generated": "2026-08-23T06:53:40",
+  "generated": "2026-08-23T12:54:36",
   "feeds": [
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 44
+      "count": 45
     },
     {
       "slug": "adv-intell-discov",
@@ -314,7 +314,7 @@
       "name": "Small",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small.xml",
-      "count": 10
+      "count": 11
     },
     {
       "slug": "small-methods",
