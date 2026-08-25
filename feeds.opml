@@ -2,6 +2,7 @@
 <opml version="2.0">
   <head><title>Paper-Feed 分期刊订阅</title></head>
   <body>
+    <outline text="Adv. Energy Mater." title="Adv. Energy Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-energy-mater.xml"/>
     <outline text="Adv. Funct. Mater." title="Adv. Funct. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-funct-mater.xml"/>
     <outline text="Adv. Intell. Discov." title="Adv. Intell. Discov." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-intell-discov.xml"/>
     <outline text="Adv. Mater." title="Adv. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.adv-mater.xml"/>

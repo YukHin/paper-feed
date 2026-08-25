@@ -1,12 +1,19 @@
 {
-  "generated": "2026-08-25T06:59:33",
+  "generated": "2026-08-25T13:00:57",
   "feeds": [
+    {
+      "slug": "adv-energy-mater",
+      "name": "Adv. Energy Mater.",
+      "publisher": "Wiley",
+      "file": "feeds/filtered_feed.adv-energy-mater.xml",
+      "count": 1
+    },
     {
       "slug": "adv-funct-mater",
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 45
+      "count": 46
     },
     {
       "slug": "adv-intell-discov",
@@ -27,7 +34,7 @@
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 20
+      "count": 22
     },
     {
       "slug": "apl-mach-learn",
