@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-27T22:10:40",
+  "generated": "2026-08-28T11:07:05",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -69,7 +69,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 176
+      "count": 179
     },
     {
       "slug": "carbon-energy",
@@ -139,7 +139,7 @@
       "name": "iScience",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.iscience.xml",
-      "count": 2
+      "count": 3
     },
     {
       "slug": "j-materiomics",
@@ -209,7 +209,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 44
+      "count": 45
     },
     {
       "slug": "nature",
