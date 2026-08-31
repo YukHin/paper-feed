@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-31T05:13:14",
+  "generated": "2026-08-31T13:26:27",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -188,7 +188,7 @@
       "name": "Nat. Mater.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-mater.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "nat-nanotechnol",
