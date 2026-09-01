@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-01T04:48:33",
+  "generated": "2026-09-01T11:31:51",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -13,7 +13,7 @@
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 46
+      "count": 47
     },
     {
       "slug": "adv-intell-discov",
@@ -209,7 +209,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 45
+      "count": 46
     },
     {
       "slug": "nature",
