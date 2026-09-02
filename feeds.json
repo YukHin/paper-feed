@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-02T04:10:04",
+  "generated": "2026-09-02T11:06:39",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -195,7 +195,7 @@
       "name": "Nat. Nanotechnol.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-nanotechnol.xml",
-      "count": 2
+      "count": 3
     },
     {
       "slug": "nat-phys",
@@ -272,7 +272,7 @@
       "name": "PRL",
       "publisher": "APS",
       "file": "feeds/filtered_feed.prl.xml",
-      "count": 9
+      "count": 10
     },
     {
       "slug": "prog-mater-sci",
