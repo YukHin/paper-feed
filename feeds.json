@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-02T20:55:25",
+  "generated": "2026-09-03T04:06:46",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -69,7 +69,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 185
+      "count": 187
     },
     {
       "slug": "carbon-energy",
@@ -104,7 +104,7 @@
       "name": "Commun. Mater.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.commun-mater.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "commun-phys",
