@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-04T11:04:28",
+  "generated": "2026-09-04T16:12:58",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -111,6 +111,13 @@
       "name": "Commun. Phys.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.commun-phys.xml",
+      "count": 1
+    },
+    {
+      "slug": "comput-mater-sci",
+      "name": "Comput. Mater. Sci.",
+      "publisher": "Elsevier",
+      "file": "feeds/filtered_feed.comput-mater-sci.xml",
       "count": 1
     },
     {
