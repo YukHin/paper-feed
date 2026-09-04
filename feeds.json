@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-04T04:12:22",
+  "generated": "2026-09-04T11:04:28",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -34,7 +34,7 @@
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 23
+      "count": 25
     },
     {
       "slug": "apl-mach-learn",
