@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-03T20:54:18",
+  "generated": "2026-09-04T04:12:22",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -69,7 +69,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 187
+      "count": 188
     },
     {
       "slug": "carbon-energy",
