@@ -26,6 +26,7 @@
     <outline text="J. Materiomics" title="J. Materiomics" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.j-materiomics.xml"/>
     <outline text="Light: Science &amp; Applications" title="Light: Science &amp; Applications" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.light-science-applications.xml"/>
     <outline text="Mater. Today" title="Mater. Today" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.mater-today.xml"/>
+    <outline text="Mater. Today Phys." title="Mater. Today Phys." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.mater-today-phys.xml"/>
     <outline text="Matter" title="Matter" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.matter.xml"/>
     <outline text="Nano Energy" title="Nano Energy" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nano-energy.xml"/>
     <outline text="Nat. Commun." title="Nat. Commun." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-commun.xml"/>
