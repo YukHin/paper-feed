@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-13T04:30:53",
+  "generated": "2026-09-13T11:36:17",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -118,7 +118,7 @@
       "name": "Comput. Mater. Sci.",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.comput-mater-sci.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "curr-opin-solid-state-mater-sci",
