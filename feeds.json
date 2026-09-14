@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-14T04:37:04",
+  "generated": "2026-09-14T12:30:20",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -27,14 +27,14 @@
       "name": "Adv. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-mater.xml",
-      "count": 46
+      "count": 47
     },
     {
       "slug": "adv-sci",
       "name": "Adv. Sci.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-sci.xml",
-      "count": 26
+      "count": 27
     },
     {
       "slug": "apl-mach-learn",
@@ -195,7 +195,7 @@
       "name": "Nat. Commun.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-commun.xml",
-      "count": 13
+      "count": 14
     },
     {
       "slug": "nat-mater",
@@ -223,7 +223,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 49
+      "count": 50
     },
     {
       "slug": "nature",
