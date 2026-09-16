@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-16T04:33:00",
+  "generated": "2026-09-16T11:20:19",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -97,7 +97,7 @@
       "name": "ChemRxiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.chemrxiv.xml",
-      "count": 4
+      "count": 6
     },
     {
       "slug": "commun-mater",
@@ -272,7 +272,7 @@
       "name": "PRB",
       "publisher": "APS",
       "file": "feeds/filtered_feed.prb.xml",
-      "count": 13
+      "count": 14
     },
     {
       "slug": "prb-dynamics-dynamical-systems-lattice-effects-quantum-solids",
@@ -335,7 +335,7 @@
       "name": "Small",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small.xml",
-      "count": 11
+      "count": 12
     },
     {
       "slug": "small-methods",
