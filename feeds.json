@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-18T16:16:13",
+  "generated": "2026-09-18T20:47:42",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -219,6 +219,13 @@
       "count": 1
     },
     {
+      "slug": "nat-rev-phys",
+      "name": "Nat. Rev. Phys.",
+      "publisher": "Nature Portfolio",
+      "file": "feeds/filtered_feed.nat-rev-phys.xml",
+      "count": 1
+    },
+    {
       "slug": "nat-sens",
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
@@ -321,7 +328,7 @@
       "name": "Sci. Bull.",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.sci-bull.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "sensors-and-actuators-a-physical",

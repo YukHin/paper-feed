@@ -33,6 +33,7 @@
     <outline text="Nat. Mater." title="Nat. Mater." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-mater.xml"/>
     <outline text="Nat. Nanotechnol." title="Nat. Nanotechnol." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-nanotechnol.xml"/>
     <outline text="Nat. Phys." title="Nat. Phys." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-phys.xml"/>
+    <outline text="Nat. Rev. Phys." title="Nat. Rev. Phys." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-rev-phys.xml"/>
     <outline text="Nat. Sens." title="Nat. Sens." type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nat-sens.xml"/>
     <outline text="Nature" title="Nature" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.nature.xml"/>
     <outline text="Newton" title="Newton" type="rss" xmlUrl="https://YukHin.github.io/paper-feed/feeds/filtered_feed.newton.xml"/>
