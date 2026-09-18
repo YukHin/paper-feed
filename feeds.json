@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-18T04:23:58",
+  "generated": "2026-09-18T11:01:41",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -13,7 +13,7 @@
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 52
+      "count": 53
     },
     {
       "slug": "adv-intell-discov",
@@ -27,7 +27,7 @@
       "name": "Adv. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-mater.xml",
-      "count": 47
+      "count": 48
     },
     {
       "slug": "adv-sci",
@@ -272,7 +272,7 @@
       "name": "PRB",
       "publisher": "APS",
       "file": "feeds/filtered_feed.prb.xml",
-      "count": 14
+      "count": 15
     },
     {
       "slug": "prb-dynamics-dynamical-systems-lattice-effects-quantum-solids",
