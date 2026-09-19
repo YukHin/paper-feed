@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-19T10:45:18",
+  "generated": "2026-09-19T15:46:57",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -195,7 +195,7 @@
       "name": "Nat. Commun.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-commun.xml",
-      "count": 14
+      "count": 15
     },
     {
       "slug": "nat-mater",
