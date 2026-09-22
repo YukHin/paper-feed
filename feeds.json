@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-21T21:55:09",
+  "generated": "2026-09-22T04:33:15",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -55,7 +55,7 @@
       "name": "Appl. Phys. Lett.",
       "publisher": "AIP",
       "file": "feeds/filtered_feed.appl-phys-lett.xml",
-      "count": 18
+      "count": 20
     },
     {
       "slug": "appl-phys-rev",
@@ -69,7 +69,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 206
+      "count": 210
     },
     {
       "slug": "carbon-energy",
