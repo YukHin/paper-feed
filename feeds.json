@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-25T04:39:11",
+  "generated": "2026-09-25T11:39:55",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -230,7 +230,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 56
+      "count": 57
     },
     {
       "slug": "nature",
@@ -279,7 +279,7 @@
       "name": "PRB",
       "publisher": "APS",
       "file": "feeds/filtered_feed.prb.xml",
-      "count": 15
+      "count": 16
     },
     {
       "slug": "prb-dynamics-dynamical-systems-lattice-effects-quantum-solids",
