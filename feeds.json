@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-28T05:04:10",
+  "generated": "2026-09-28T13:37:28",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -216,7 +216,7 @@
       "name": "Nat. Phys.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-phys.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "nat-rev-phys",
@@ -230,7 +230,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 57
+      "count": 58
     },
     {
       "slug": "nature",
