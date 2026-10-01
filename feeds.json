@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-30T22:08:46",
+  "generated": "2026-10-01T05:31:48",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -55,7 +55,7 @@
       "name": "Appl. Phys. Lett.",
       "publisher": "AIP",
       "file": "feeds/filtered_feed.appl-phys-lett.xml",
-      "count": 21
+      "count": 22
     },
     {
       "slug": "appl-phys-rev",
@@ -69,7 +69,7 @@
       "name": "arXiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.arxiv.xml",
-      "count": 224
+      "count": 226
     },
     {
       "slug": "carbon-energy",
@@ -279,7 +279,7 @@
       "name": "PRB",
       "publisher": "APS",
       "file": "feeds/filtered_feed.prb.xml",
-      "count": 16
+      "count": 17
     },
     {
       "slug": "prb-dynamics-dynamical-systems-lattice-effects-quantum-solids",
