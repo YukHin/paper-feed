@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-01T05:31:48",
+  "generated": "2026-10-01T12:58:13",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -97,7 +97,7 @@
       "name": "ChemRxiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.chemrxiv.xml",
-      "count": 6
+      "count": 7
     },
     {
       "slug": "commun-mater",
