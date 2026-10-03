@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-03T11:30:29",
+  "generated": "2026-10-03T16:06:34",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -174,7 +174,7 @@
       "name": "Mater. Today Phys.",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.mater-today-phys.xml",
-      "count": 1
+      "count": 2
     },
     {
       "slug": "matter",
