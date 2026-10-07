@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-07T13:08:22",
+  "generated": "2026-10-07T22:59:32",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -181,7 +181,7 @@
       "name": "Matter",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.matter.xml",
-      "count": 11
+      "count": 13
     },
     {
       "slug": "nano-energy",
@@ -237,14 +237,14 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 63
+      "count": 64
     },
     {
       "slug": "nature",
       "name": "Nature",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nature.xml",
-      "count": 6
+      "count": 7
     },
     {
       "slug": "newton",
