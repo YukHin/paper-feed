@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-08T13:15:38",
+  "generated": "2026-10-08T23:13:22",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -79,13 +79,6 @@
       "count": 1
     },
     {
-      "slug": "ccs-chemistry",
-      "name": "CCS Chemistry",
-      "publisher": "Other",
-      "file": "feeds/filtered_feed.ccs-chemistry.xml",
-      "count": 1
-    },
-    {
       "slug": "cell-rep-phys-sci",
       "name": "Cell Rep. Phys. Sci.",
       "publisher": "Cell Press",
@@ -97,7 +90,7 @@
       "name": "Chem",
       "publisher": "Cell Press",
       "file": "feeds/filtered_feed.chem.xml",
-      "count": 2
+      "count": 3
     },
     {
       "slug": "chemrxiv",
