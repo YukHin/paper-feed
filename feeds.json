@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-08T05:45:14",
+  "generated": "2026-10-08T13:15:38",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -13,7 +13,7 @@
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 57
+      "count": 59
     },
     {
       "slug": "adv-intell-discov",
@@ -76,6 +76,13 @@
       "name": "Carbon Energy",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.carbon-energy.xml",
+      "count": 1
+    },
+    {
+      "slug": "ccs-chemistry",
+      "name": "CCS Chemistry",
+      "publisher": "Other",
+      "file": "feeds/filtered_feed.ccs-chemistry.xml",
       "count": 1
     },
     {
