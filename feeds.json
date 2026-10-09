@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-09T05:49:55",
+  "generated": "2026-10-09T13:02:06",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -13,7 +13,7 @@
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 59
+      "count": 60
     },
     {
       "slug": "adv-intell-discov",
