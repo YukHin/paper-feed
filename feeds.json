@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-12T05:38:57",
+  "generated": "2026-10-12T15:08:38",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -13,7 +13,7 @@
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 61
+      "count": 62
     },
     {
       "slug": "adv-intell-discov",
@@ -97,7 +97,7 @@
       "name": "ChemRxiv",
       "publisher": "Preprints",
       "file": "feeds/filtered_feed.chemrxiv.xml",
-      "count": 7
+      "count": 8
     },
     {
       "slug": "commun-mater",
@@ -237,7 +237,7 @@
       "name": "Nat. Sens.",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nat-sens.xml",
-      "count": 64
+      "count": 65
     },
     {
       "slug": "nature",
