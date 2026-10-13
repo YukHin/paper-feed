@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-13T00:30:11",
+  "generated": "2026-10-13T14:01:33",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -13,7 +13,7 @@
       "name": "Adv. Funct. Mater.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.adv-funct-mater.xml",
-      "count": 62
+      "count": 63
     },
     {
       "slug": "adv-intell-discov",
@@ -55,7 +55,7 @@
       "name": "Appl. Phys. Lett.",
       "publisher": "AIP",
       "file": "feeds/filtered_feed.appl-phys-lett.xml",
-      "count": 24
+      "count": 28
     },
     {
       "slug": "appl-phys-rev",
@@ -363,7 +363,7 @@
       "name": "Small Struct.",
       "publisher": "Wiley",
       "file": "feeds/filtered_feed.small-struct.xml",
-      "count": 2
+      "count": 3
     }
   ]
 }
