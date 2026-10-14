@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-14T11:38:45",
+  "generated": "2026-10-14T17:00:06",
   "feeds": [
     {
       "slug": "adv-energy-mater",
@@ -188,7 +188,7 @@
       "name": "Nano Energy",
       "publisher": "Elsevier",
       "file": "feeds/filtered_feed.nano-energy.xml",
-      "count": 3
+      "count": 4
     },
     {
       "slug": "nat-commun",
@@ -244,7 +244,7 @@
       "name": "Nature",
       "publisher": "Nature Portfolio",
       "file": "feeds/filtered_feed.nature.xml",
-      "count": 7
+      "count": 8
     },
     {
       "slug": "newton",
